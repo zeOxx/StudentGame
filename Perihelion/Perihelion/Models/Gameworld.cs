@@ -28,7 +28,7 @@ namespace Perihelion.Models
         {
             initializeGameworld(contentHolder);
             camera = new Camera(view);
-            hud = new HUD(contentHolder, camera.Center);
+            hud = new HUD(contentHolder, camera);
         }
 
         public Player getPlayer()
@@ -67,7 +67,7 @@ namespace Perihelion.Models
         public void update()
         {
             camera.update(playerObject.getPosition());
-            hud.updateHudPositions(camera.Center);
+            hud.updateHudPositions(camera);
             hud.update();
         }
 

@@ -23,12 +23,14 @@ namespace Perihelion
         Vector2 healthAuxBarPosition;
         Vector2 specialPosition;
 
+
+        private int margin = 10;
         /************************************************************************/
         /* Constructor                                                          */
         /************************************************************************/
-        public HUD(ContentHolder contentHolder, Vector2 camCenter)
+        public HUD(ContentHolder contentHolder, Camera camera)
         {
-            updateHudPositions(camCenter);
+            updateHudPositions(camera);
 
             healthAuxBar = new Models.Interface(contentHolder.healthAuxBar, healthAuxBarPosition.X, healthAuxBarPosition.Y, new Vector2(0, 0));
             special = new Models.Interface(contentHolder.special, specialPosition.X, specialPosition.Y, new Vector2(0, 0));
@@ -50,10 +52,12 @@ namespace Perihelion
             special.Draw(spriteBatch);
         }
 
-        public void updateHudPositions(Vector2 camCenter)
+        public void updateHudPositions(Camera camera)
         {
-            healthAuxBarPosition = new Vector2(camCenter.X + 10, camCenter.Y + 10);
-            specialPosition = new Vector2(camCenter.X + 10, camCenter.Y + 646);
+            healthAuxBarPosition = new Vector2(camera.Center.X - (camera.View.Width / 2 - margin), 
+                camera.Center.Y - (camera.View.Height / 2 - margin));
+            specialPosition = new Vector2(camera.Center.X - (camera.View.Width / 2 - margin), 
+                camera.Center.Y + camera.View.Height / 2 - 74);  // 74 = texture.height + margin
         }
     }
 }
