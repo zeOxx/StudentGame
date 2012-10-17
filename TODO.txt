@@ -1,0 +1,7 @@
+TODO list, not in any particular order
+
+- movement speed should be sped up/down, not set to a specific value
+- level editor of some kind
+- AI
+- Add shooting
+- Collision
