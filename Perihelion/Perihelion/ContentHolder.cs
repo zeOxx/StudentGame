@@ -16,6 +16,7 @@ namespace Perihelion
         // Player textures
         public Texture2D texturePlayer;
         public Texture2D texturePlayerTurret;
+        public Texture2D texturePlayerBullet;
 
         // Object textures
         public Texture2D textureRock01;
@@ -30,6 +31,7 @@ namespace Perihelion
             // Player
             texturePlayer = content.Load<Texture2D>("ship_bare");
             texturePlayerTurret = content.Load<Texture2D>("ship_turret");
+            texturePlayerBullet = content.Load<Texture2D>("bullet");
 
             // Objects
             textureRock01 = content.Load<Texture2D>("rock_01");

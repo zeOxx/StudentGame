@@ -11,8 +11,8 @@ namespace Perihelion.Models
     {
         bool isDestructable;
 
-        public DestructibleProjectile(Texture2D texture, float x, float y, Vector2 velocity, int damage, bool isDestructable)
-            : base(texture, x, y, velocity, damage)
+        public DestructibleProjectile(Texture2D texture, float x, float y, Vector2 velocity,int activeTime, int damage, float speed, bool isDestructable)
+            : base(texture, x, y, velocity, activeTime, damage, speed)
         {
             setDestructable(isDestructable);
         }

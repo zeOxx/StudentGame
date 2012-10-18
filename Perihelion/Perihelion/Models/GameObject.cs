@@ -13,7 +13,7 @@ namespace Perihelion.Models
         protected Vector2 origin;
         protected Vector2 position;
         protected Vector2 velocity;
-        private double rotationAngle = 0.0;
+        protected double rotationAngle = 0.0;
         protected float maxSpeed = 0;
         protected float speed = 0;
         
@@ -79,14 +79,15 @@ namespace Perihelion.Models
             this.origin = new Vector2(0, 0);
         }
 
-        protected void setSpeed(float speed)
-        {
-            this.speed = speed;
-        }
-
         protected void setMaxSpeed(float maxSpeed)
         {
             this.maxSpeed = maxSpeed;
+        }
+
+        protected float Speed
+        {
+            get { return this.speed; }
+            set { this.speed = value; }
         }
         /************************************************************************/
         /*                                                                      */
@@ -106,25 +107,26 @@ namespace Perihelion.Models
             return texture;
         }
 
-        public float getSpeed()
-        {
-            return this.speed;
-        }
-
         public float getMaxSpeed()
         {
             return this.maxSpeed;
         }
         /************************************************************************/
-        /*                                                                      */
+        /* Other methods                                                        */
         /************************************************************************/
         public virtual void update (Vector2 velocity)
         {
             updatePosition();
-            updateVelocity(velocity);
-            updateAngle(velocity);
+
+            // only update velocity if velocity has actually changed
+            if (velocity != this.velocity)
+            {
+                updateVelocity(velocity);
+                updateAngle(velocity);
+            }
         }
 
+        // TEMP KEYBOARD UPDATING
         public void updatePosition(float deltaX, float deltaY)
         {
             position.X = position.X + deltaX;
@@ -145,11 +147,9 @@ namespace Perihelion.Models
         public void updateAngle(Vector2 velocity)
         {
             // Only updates the sprite if there is velocity.
+            // THIS IS CURRENTLY KIND OF BROKEN
             if (velocity.X != 0.0f && velocity.Y != 0.0f)
-            {
-                System.Diagnostics.Debug.WriteLine("Boooi");
                 rotationAngle = Math.Atan2((double)velocity.X, (double)velocity.Y);
-            }
         }
 
                

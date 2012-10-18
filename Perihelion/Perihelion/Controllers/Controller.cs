@@ -15,7 +15,6 @@ namespace Perihelion.Controllers
         
         //************** VARIABLES ******************
         private Player playerObject;
-        //private Projectile bullets;
 
         public Controller()
         {
@@ -50,12 +49,9 @@ namespace Perihelion.Controllers
         //Gameworld as argument is JUST FOR TESTING-PURPOSES
         public void checkInput(GameTime gameTime, InputHandler inputHandler, Gameworld gameWorld)
         {
-            //playerObject.updateVelocity(inputHandler.getMovementInputFromPlayer());
-            //playerObject.updatePosition();
-
             Vector2 movementVector = inputHandler.getMovementInputFromPlayer();
             Vector2 rightStick = inputHandler.getShootingInputFromPlayer();
-            playerObject.update(movementVector, rightStick);
+            playerObject.update(movementVector, rightStick, gameTime);
 
 
             //Temp input
@@ -94,10 +90,5 @@ namespace Perihelion.Controllers
 
             }
         }
-
-//         public void updateBullets(Vector2 motion)
-//         {
-// 
-//         }
     }
 }
