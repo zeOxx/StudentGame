@@ -9,30 +9,31 @@ namespace Perihelion.Models
 {
     class Projectile : GameObject
     {
-        int damage;
+        private int damage;
+        private int activeTime;
 
         /************************************************************************/
         /* Constructor                                                          */
         /************************************************************************/
-        public Projectile(Texture2D texture, float x, float y, Vector2 velocity, int damage) : base(texture, x, y, velocity)
+        public Projectile(Texture2D texture, float x, float y, Vector2 velocity, int damage, int activeTime) : base(texture, x, y, velocity)
         {
-            setDamage(damage);
+            Damage = damage;
+            ActiveTime = activeTime;
         }
 
         /************************************************************************/
-        /* Setters                                                              */
+        /* Setters and getters                                                  */
         /************************************************************************/
-        private void setDamage(int damage)
+        private int Damage
         {
-            this.damage = damage;
+            get { return this.damage; }
+            set { this.damage = value; }
         }
 
-        /************************************************************************/
-        /* Getters                                                              */
-        /************************************************************************/
-        public int getDamage()
+        private int ActiveTime
         {
-            return damage;
+            get { return this.activeTime; }
+            set { this.activeTime = value; }
         }
     }
 }
