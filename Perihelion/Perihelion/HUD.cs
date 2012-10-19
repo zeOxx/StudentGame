@@ -57,7 +57,7 @@ namespace Perihelion
             healthAuxBarPosition = new Vector2(camera.Center.X - (camera.View.Width / 2 - margin), 
                 camera.Center.Y - (camera.View.Height / 2 - margin));
             specialPosition = new Vector2(camera.Center.X - (camera.View.Width / 2 - margin), 
-                camera.Center.Y + camera.View.Height / 2 - 74);  // 74 = texture.height + margin
+                camera.Center.Y + camera.View.Height / 2 - 42);  // 42 = texture.height + margin
         }
     }
 }

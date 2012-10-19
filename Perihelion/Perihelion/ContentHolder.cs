@@ -29,17 +29,17 @@ namespace Perihelion
         public ContentHolder(ContentManager content)
         {   
             // Player
-            texturePlayer = content.Load<Texture2D>("ship_bare");
-            texturePlayerTurret = content.Load<Texture2D>("ship_turret");
-            texturePlayerBullet = content.Load<Texture2D>("bullet");
+            texturePlayer = content.Load<Texture2D>("PlayerTextures\\ship_bare");
+            texturePlayerTurret = content.Load<Texture2D>("PlayerTextures\\ship_turret");
+            texturePlayerBullet = content.Load<Texture2D>("PlayerTextures\\bullet");
 
             // Objects
-            textureRock01 = content.Load<Texture2D>("rock_01");
-            textureRock02 = content.Load<Texture2D>("rock_02");
+            textureRock01 = content.Load<Texture2D>("Environment\\rock_01");
+            textureRock02 = content.Load<Texture2D>("Environment\\rock_02");
 
             // HUD
-            healthAuxBar = content.Load<Texture2D>("hud_healthAux");
-            special = content.Load<Texture2D>("hud_special_01");
+            healthAuxBar = content.Load<Texture2D>("HUD\\hud_healthAux");
+            special = content.Load<Texture2D>("HUD\\hud_special_01");
         }
     }
 }

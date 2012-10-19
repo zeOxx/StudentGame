@@ -63,48 +63,55 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="rock_01.png">
+    <Compile Include="Environment\rock_01.png">
       <Name>rock_01</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="bullet.png">
+    <Compile Include="PlayerTextures\bullet.png">
       <Name>bullet</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="rock_02.png">
+    <Compile Include="Environment\rock_02.png">
       <Name>rock_02</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="hud_healthAux.png">
+    <Compile Include="HUD\hud_healthAux.png">
       <Name>hud_healthAux</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="hud_special_01.png">
+    <Compile Include="HUD\hud_special_01.png">
       <Name>hud_special_01</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ship_bare.png">
+    <Compile Include="PlayerTextures\ship_bare.png">
       <Name>ship_bare</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="ship_turret.png">
+    <Compile Include="PlayerTextures\ship_turret.png">
       <Name>ship_turret</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="PlayerTextures\weapon_special_01.png">
+      <Name>weapon_special_01</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
