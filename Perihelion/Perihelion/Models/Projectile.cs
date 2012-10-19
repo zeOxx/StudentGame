@@ -21,9 +21,17 @@ namespace Perihelion.Models
             ActiveTime = activeTime;
             Damage = damage;
 
+
+
+            //double stigningsTall = velocity.Y / velocity.X;
+            //double deltaStigning = 1 - stigningsTall;
+            //velocity.Y = (float)deltaStigning * velocity.Y;
+            //velocity.X = (float)deltaStigning * velocity.X; 
+
             Speed = speed;
 
             setBulletDirection(velocity);
+
             TotalActiveTime = 0;
 
             setOrigin(new Vector2((getTexture().Width/2), getTexture().Height));
@@ -55,6 +63,10 @@ namespace Perihelion.Models
         /************************************************************************/
         public void update(GameTime gameTime)
         {
+            double grader = (Math.Atan2((double)velocity.X, (double)velocity.Y));
+            velocity.X = (float)Math.Sin(grader);
+            velocity.Y = (float)Math.Cos(grader);
+
             base.update(velocity);
 
             this.totalActiveTime += gameTime.ElapsedGameTime.Milliseconds;
