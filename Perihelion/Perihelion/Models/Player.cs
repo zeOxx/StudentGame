@@ -29,7 +29,7 @@ namespace Perihelion.Models
         private int bulletSpeed = 7;
 
         // Create a list with bullets in it
-        List<Models.Projectile> bullets;
+        List<Projectile> bullets;
 
         /************************************************************************/
         /*  Constructors for Player object                                      */
@@ -57,7 +57,7 @@ namespace Perihelion.Models
 
             IsShooting = false;
 
-            bullets = new List<Models.Projectile>();
+            bullets = new List<Projectile>();
         }
 
         public Player(Texture2D texture, Texture2D texture_turret, Texture2D texture_bullet, float x, float y, Vector2 velocity, int currentHealth, int maxHealth, float damageMultiplier, float attackMultiplier, float wellMultiplier, int wellStatus, int auxiliaryPower)
@@ -136,7 +136,7 @@ namespace Perihelion.Models
                     // Reset shotTimer
                     shotTimer = 0;
 
-                    Models.Projectile tempBullet = new Models.Projectile(
+                    Projectile tempBullet = new Projectile(
                         texture_bullet, 
                         this.position.X, 
                         this.position.Y, 
