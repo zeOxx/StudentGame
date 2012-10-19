@@ -25,6 +25,8 @@ namespace Perihelion.Models
 
             setBulletDirection(velocity);
             totalActiveTime = 0;
+
+            setOrigin(new Vector2((getTexture().Width/2), getTexture().Height));
         }
          
         /************************************************************************/

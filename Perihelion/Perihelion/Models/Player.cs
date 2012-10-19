@@ -16,7 +16,6 @@ namespace Perihelion.Models
         protected Texture2D texture_turret;
         protected Texture2D texture_bullet;
         protected double turretRotationAngle = 0.0;
-        protected Vector2 bulletDirection;
         
         // Powers and stuff
         private float wellMultiplier;
@@ -185,21 +184,22 @@ namespace Perihelion.Models
 
         public override void Draw(SpriteBatch spriteBatch)
         {
+            base.Draw(spriteBatch);
+
+            spriteBatch.Draw(texture_turret,
+                position,
+                null,
+                Color.White,
+                (float)turretRotationAngle,
+                origin,
+                1.0f,
+                SpriteEffects.None,
+                0f);
+
             foreach (Models.Projectile projectiles in bullets)
             {
                 projectiles.Draw(spriteBatch);
             }
-            spriteBatch.Draw(texture_turret, 
-                position, 
-                null, 
-                Color.White, 
-                (float)turretRotationAngle, 
-                origin, 
-                1.0f, 
-                SpriteEffects.None, 
-                0f);
-
-            base.Draw(spriteBatch);
         }
     }
 }

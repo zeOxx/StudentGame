@@ -66,18 +66,28 @@ namespace Perihelion.Models
         {
             this.velocity = velocity;
         }
-
-        void setOrigin(Texture2D texture)
+        
+        // Three different setOrigin methods.
+        //  1.setOrigin(Texture2D texture): Sets the origin at the center of the texture
+        //  2.setOrigin(Vector2 newOrigin): Sets the origin to whatever the newOrigin vector is
+        //  3.setOriginZero(): Sets the origin to 0,0.
+        //
+        //  Number 1 is the default method default
+        public void setOrigin(Texture2D texture)
         {
-            // Sets the origin to the center of the object
             this.origin = new Vector2(texture.Width / 2, texture.Height / 2);
+        }
+
+        public void setOrigin(Vector2 newOrigin)
+        {
+            this.origin = newOrigin;
         }
 
         public void setOriginZero()
         {
-            // Sets the origin to 0,0
             this.origin = new Vector2(0, 0);
         }
+        // ***** END OF ORIGIN METHODS ***** //
 
         protected void setMaxSpeed(float maxSpeed)
         {
@@ -119,11 +129,11 @@ namespace Perihelion.Models
             updatePosition();
 
             // only update velocity if velocity has actually changed
-            if (velocity != this.velocity)
-            {
+            //if (velocity != this.velocity)
+            //{
                 updateVelocity(velocity);
                 updateAngle(velocity);
-            }
+            //}
         }
 
         // TEMP KEYBOARD UPDATING

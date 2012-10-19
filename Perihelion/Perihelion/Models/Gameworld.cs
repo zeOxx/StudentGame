@@ -56,12 +56,12 @@ namespace Perihelion.Models
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            playerObject.Draw(spriteBatch);
-            hud.Draw(spriteBatch);
             rock[0].Draw(spriteBatch);
             rock[1].Draw(spriteBatch);
             rock[2].Draw(spriteBatch);
             rock[3].Draw(spriteBatch);
+            playerObject.Draw(spriteBatch);
+            hud.Draw(spriteBatch);
         }
 
         public void update()
