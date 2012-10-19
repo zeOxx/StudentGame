@@ -14,7 +14,7 @@ namespace Perihelion.Controllers
     {
         
         //************** VARIABLES ******************
-        private Player playerObject;
+        private Player playerObject; 
 
         public Controller()
         {
@@ -49,12 +49,12 @@ namespace Perihelion.Controllers
         //Gameworld as argument is JUST FOR TESTING-PURPOSES
         public void checkInput(GameTime gameTime, InputHandler inputHandler, Gameworld gameWorld)
         {
+            // Controller input
             Vector2 movementVector = inputHandler.getMovementInputFromPlayer();
             Vector2 rightStick = inputHandler.getShootingInputFromPlayer();
             playerObject.update(movementVector, rightStick, gameTime);
 
-
-            //Temp input
+            // Temp Keyboardinput
             inputHandler.updateInput();
 
             if (inputHandler.KeyDown(Keys.X))
