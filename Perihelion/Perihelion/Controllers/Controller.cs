@@ -76,17 +76,19 @@ namespace Perihelion.Controllers
 
             if (inputHandler.KeyDown(Keys.X))
             {
-                gameWorld.getCamera().Zoom += (float)0.01;
+                gameWorld.getCamera().Zoom += 0.01f;
             }
-
             if (inputHandler.KeyDown(Keys.Z))
             {
-                gameWorld.getCamera().Zoom -= (float)0.01;
+                gameWorld.getCamera().Zoom -= 0.01f;
+            }
+            if (inputHandler.KeyDown(Keys.C))
+            {
+                gameWorld.getCamera().Zoom = 1.0f;
             }
             if (inputHandler.KeyDown(Keys.D))
             {
                 playerObject.updatePosition(5, 0);
-
             }
 
             if (inputHandler.KeyDown(Keys.A))

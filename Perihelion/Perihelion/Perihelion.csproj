@@ -115,6 +115,7 @@
     <Compile Include="Controllers\UnitFactory.cs" />
     <Compile Include="HUD.cs" />
     <Compile Include="Controllers\InputHandler.cs" />
+    <Compile Include="Models\Background.cs" />
     <Compile Include="Models\Collidable.cs" />
     <Compile Include="Models\DestructibleProjectile.cs" />
     <Compile Include="Models\Enemy.cs" />
