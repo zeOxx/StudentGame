@@ -152,6 +152,7 @@ namespace Perihelion.Models
 
         public void updateAngle(Vector2 velocity)
         {
+
             if ((velocity.X < 0.0f || velocity.Y < 0.0f) || (velocity.X > 0.0f || velocity.Y > 0.0f))
                 rotationAngle = Math.Atan2((double)velocity.X, (double)velocity.Y);
         }

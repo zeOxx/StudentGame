@@ -24,9 +24,9 @@ namespace Perihelion.Models
 
         // Shooting variables
         private bool isShooting;
-        private int timeBetweenShots = 150;
+        private int timeBetweenShots = 50;
         private int shotTimer = 0;
-        private int bulletSpeed = 7;
+        private int bulletSpeed = 15;
 
         // Create a list with bullets in it
         List<Projectile> bullets;
