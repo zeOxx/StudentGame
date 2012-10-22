@@ -27,8 +27,27 @@ namespace Perihelion
         public Texture2D healthAuxBar;
         public Texture2D special;
 
+        //Sound effects
+        public SoundEffect playerShootingGun;
+        public SoundEffect playerGunWindDown;
+        public SoundEffect pang;
+        public Song soundtrack;
+
         public ContentHolder(ContentManager content)
-        {   
+        {
+            loadTextures(content);
+            loadSounds(content);
+        }
+
+        private void loadSounds(ContentManager content)
+        {
+            playerShootingGun = content.Load<SoundEffect>("SoundEffects\\pang");
+            playerGunWindDown = content.Load<SoundEffect>("SoundEffects\\s_gun_wind_down");
+            pang = content.Load<SoundEffect>("SoundEffects\\pang");
+        }
+
+        private void loadTextures(ContentManager content)
+        {
             // Player
             texturePlayer = content.Load<Texture2D>("PlayerTextures\\ship_bare");
             texturePlayerTurret = content.Load<Texture2D>("PlayerTextures\\ship_turret");

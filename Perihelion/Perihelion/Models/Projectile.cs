@@ -63,9 +63,9 @@ namespace Perihelion.Models
         /************************************************************************/
         public void update(GameTime gameTime)
         {
-            double grader = (Math.Atan2((double)velocity.X, (double)velocity.Y));
-            velocity.X = (float)Math.Sin(grader);
-            velocity.Y = (float)Math.Cos(grader);
+            double degrees = (Math.Atan2((double)velocity.X, (double)velocity.Y));
+            velocity.X = (float)Math.Sin(degrees);
+            velocity.Y = (float)Math.Cos(degrees);
 
             base.update(velocity);
 

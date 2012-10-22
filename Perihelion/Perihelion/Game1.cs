@@ -25,6 +25,7 @@ namespace Perihelion
         Controller gameController;
         ContentHolder contentHolder;
         InputHandler inputHandler;
+        SoundManager soundManager;
 
         private int height = 720;
         private int width = 1280;
@@ -47,8 +48,9 @@ namespace Perihelion
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            gameController = new Controllers.Controller();
             contentHolder = new ContentHolder(this.Content);
+            soundManager = new SoundManager(contentHolder);
+            gameController = new Controllers.Controller(contentHolder, soundManager);
             inputHandler = new InputHandler();
             gameWorld = new Models.Gameworld(contentHolder, GraphicsDevice.Viewport);    //TODO SINGLETON
             base.Initialize();

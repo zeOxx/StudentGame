@@ -14,12 +14,17 @@ namespace Perihelion.Controllers
     {
         
         //************** VARIABLES ******************
-        private Player playerObject; 
+        private Player playerObject;
+        private ContentHolder content;
+        private SoundManager soundManager;
 
-        public Controller()
+
+        public Controller(ContentHolder content, SoundManager soundManager)
         {
             //playerObject = new GameObject[Constants.maxNumberOfObjectsInArray];
+            this.soundManager = soundManager;
             playerObject = null;
+            this.content = content;
         }
 
         //************** FUNCTIONS ******************
@@ -35,6 +40,7 @@ namespace Perihelion.Controllers
             gameWorld.setPlayer(playerObject);
 
             gameWorld.update();
+            playSounds();
 
             return gameWorld;
         }
@@ -45,6 +51,15 @@ namespace Perihelion.Controllers
             playerObject = gameWorld.getPlayer();
         }
 
+
+        public void playSounds()
+        {
+            if (playerObject.BulletMade)
+            {
+                soundManager.playGunSound();
+            }
+        }
+
         // Checks input
         //Gameworld as argument is JUST FOR TESTING-PURPOSES
         public void checkInput(GameTime gameTime, InputHandler inputHandler, Gameworld gameWorld)
@@ -53,6 +68,8 @@ namespace Perihelion.Controllers
             Vector2 movementVector = inputHandler.getMovementInputFromPlayer();
             Vector2 rightStick = inputHandler.getShootingInputFromPlayer();
             playerObject.update(movementVector, rightStick, gameTime);
+
+           
 
             // Temp Keyboardinput
             inputHandler.updateInput();

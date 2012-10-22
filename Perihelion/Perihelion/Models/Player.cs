@@ -27,6 +27,7 @@ namespace Perihelion.Models
         private int timeBetweenShots = 150;
         private int shotTimer = 0;
         private int bulletSpeed = 7;
+        private bool bulletMade = false;
 
         // Create a list with bullets in it
         List<Projectile> bullets;
@@ -120,6 +121,12 @@ namespace Perihelion.Models
             set { this.isShooting = value; }
         }
 
+        public bool BulletMade
+        {
+            get { return this.bulletMade; }
+            set { this.bulletMade = value; }
+        }
+
         /************************************************************************/
         /*  Update functions for Player attributes                              */
         /************************************************************************/
@@ -127,25 +134,31 @@ namespace Perihelion.Models
         {
             updateTurret(rightStick);
 
-            if (isShooting)
+            if (isShooting || bulletMade)
             {
                 shotTimer += gameTime.ElapsedGameTime.Milliseconds;
 
                 if (shotTimer > timeBetweenShots)
                 {
                     // Reset shotTimer
+                    bulletMade = true;
                     shotTimer = 0;
 
                     Projectile tempBullet = new Projectile(
-                        texture_bullet, 
-                        this.position.X, 
-                        this.position.Y, 
-                        rightStick, 
+                        texture_bullet,
+                        this.position.X,
+                        this.position.Y,
+                        rightStick,
                         2000,   // ActiveTime in miliseconds (2 secs)
                         40,     // Damagenumber i pulled out of my ass
                         bulletSpeed);
 
                     bullets.Add(tempBullet);
+                }
+                else
+                {
+                    if (bulletMade)
+                        bulletMade = false;
                 }
             }
 
