@@ -74,6 +74,7 @@ namespace Perihelion.Controllers
             // Temp Keyboardinput
             inputHandler.updateInput();
 
+            // Zooming
             if (inputHandler.KeyDown(Keys.X))
             {
                 gameWorld.getCamera().Zoom += 0.01f;
@@ -86,6 +87,8 @@ namespace Perihelion.Controllers
             {
                 gameWorld.getCamera().Zoom = 1.0f;
             }
+
+            // Movement
             if (inputHandler.KeyDown(Keys.D))
             {
                 playerObject.updatePosition(5, 0);
