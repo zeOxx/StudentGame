@@ -27,8 +27,16 @@ namespace Perihelion
         InputHandler inputHandler;
         SoundManager soundManager;
 
+        // Window properties
         private int height = 720;
         private int width = 1280;
+        private String gameName = "Perihelion";
+
+        // FPS and UPS
+        private int updates;
+        private int frames;
+        private float elapsed;
+        private float totalElapsed;
 
         public Game1()
         {
@@ -37,6 +45,8 @@ namespace Perihelion
 
             graphics.PreferredBackBufferHeight = height;
             graphics.PreferredBackBufferWidth = width;
+
+            Window.Title = gameName;
         }
 
         /// <summary>
@@ -98,9 +108,22 @@ namespace Perihelion
             // Sends gamestate to controller and receives updated state. 
             gameWorld = gameController.updateGameWorld(gameWorld, gameTime, inputHandler);
 
+            // Calculates Frames Per Second and Updates Per Second and puts them in the window title
+            elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            totalElapsed += elapsed;
+
+            if (totalElapsed > 1)
+            {
+                Window.Title = gameName + " | " + frames + "FPS " + updates + "UPS";
+                totalElapsed = 0;
+                updates = 0;
+                frames = 0;
+            }
+
             // TODO: Add your update logic here
 
             base.Update(gameTime);
+            updates++;
         }
 
         /// <summary>
@@ -117,6 +140,8 @@ namespace Perihelion
             spriteBatch.End();
 
             base.Draw(gameTime);
+
+            frames++;
         }
     }
 }
