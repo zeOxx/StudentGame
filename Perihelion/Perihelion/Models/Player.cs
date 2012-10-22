@@ -26,12 +26,8 @@ namespace Perihelion.Models
         private bool isShooting;
         private int timeBetweenShots = 50;
         private int shotTimer = 0;
-<<<<<<< HEAD
-        private int bulletSpeed = 7;
         private bool bulletMade = false;
-=======
         private int bulletSpeed = 15;
->>>>>>> a88decb7a305a0f999b1261e4017024795050264
 
         // Create a list with bullets in it
         List<Projectile> bullets;
