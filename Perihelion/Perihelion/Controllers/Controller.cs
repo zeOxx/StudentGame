@@ -17,6 +17,7 @@ namespace Perihelion.Controllers
         private Player playerObject;
         private ContentHolder content;
         private SoundManager soundManager;
+        private PhysicsEngine physicsEngine;
 
 
         public Controller(ContentHolder content, SoundManager soundManager)
@@ -25,6 +26,7 @@ namespace Perihelion.Controllers
             this.soundManager = soundManager;
             playerObject = null;
             this.content = content;
+            physicsEngine = new PhysicsEngine();
         }
 
         //************** FUNCTIONS ******************
@@ -36,6 +38,8 @@ namespace Perihelion.Controllers
             //Change gamestate
 
             checkInput(gameTime, inputHandler, gameWorld);
+
+            //physicsEngine.collisionDetection(gameWorld);
 
             gameWorld.setPlayer(playerObject);
 
@@ -67,7 +71,9 @@ namespace Perihelion.Controllers
             // Controller input
             Vector2 movementVector = inputHandler.getMovementInputFromPlayer();
             Vector2 rightStick = inputHandler.getShootingInputFromPlayer();
-            playerObject.update(movementVector, rightStick, gameTime);
+            //playerObject.update(movementVector, rightStick, gameTime);
+
+            physicsEngine.collisionDetection(gameWorld, movementVector, rightStick, gameTime);
 
 #if DEBUG
             if (inputHandler.ButtonPressed(Buttons.LeftShoulder) && inputHandler.ButtonPressed(Buttons.RightShoulder))

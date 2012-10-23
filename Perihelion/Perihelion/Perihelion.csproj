@@ -111,6 +111,7 @@
     <Compile Include="Constants.cs" />
     <Compile Include="ContentHolder.cs" />
     <Compile Include="Controllers\Controller.cs" />
+    <Compile Include="Controllers\PhysicsEngine.cs" />
     <Compile Include="Controllers\SoundManager.cs" />
     <Compile Include="Controllers\UnitFactory.cs" />
     <Compile Include="HUD.cs" />
