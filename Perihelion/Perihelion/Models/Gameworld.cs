@@ -52,6 +52,16 @@ namespace Perihelion.Models
             set { this.levelSize = value; }
         }
 
+#if DEBUG
+        public void setDebug()
+        {
+            if (hud.DisplayDebug)
+                hud.DisplayDebug = false;
+            else
+                hud.DisplayDebug = true;
+        }
+#endif
+
         private void initializeGameworld(ContentHolder contentHolder)
         {
             playerObject = new Player(contentHolder.texturePlayer, contentHolder.texturePlayerTurret, contentHolder.texturePlayerBullet, 0, 0, Vector2.Zero, 100, 100);
@@ -95,7 +105,7 @@ namespace Perihelion.Models
             background01.update(playerObject.getPosition());
             background02.update(playerObject.getPosition());
             hud.updateHudPositions(camera);
-            hud.update();
+            hud.update(playerObject);
         }
 
         //Returns camera to draw function

@@ -23,6 +23,19 @@ namespace Perihelion
         Vector2 healthAuxBarPosition;
         Vector2 specialPosition;
 
+#if DEBUG
+        /************************************************************************/
+        /* Debug variables                                                      */
+        /************************************************************************/
+        String playerHealth = "Player health: ";
+        Vector2 playerHealthVector;
+        String playerPosition = "Player position";
+        Vector2 playerPositionVector;
+        String numberOfBullets = "Number of bullets: ";
+        Vector2 numberOfBulletsVector;
+        SpriteFont debugFont;
+        bool displayDebug;
+#endif
 
         private int margin = 10;
         /************************************************************************/
@@ -34,22 +47,51 @@ namespace Perihelion
 
             healthAuxBar = new Models.Interface(contentHolder.healthAuxBar, healthAuxBarPosition.X, healthAuxBarPosition.Y, new Vector2(0, 0));
             special = new Models.Interface(contentHolder.special, specialPosition.X, specialPosition.Y, new Vector2(0, 0));
+        
+#if DEBUG  
+            this.debugFont = contentHolder.debugFont;
+#endif
         }
 
         /************************************************************************/
+        /* Accessors                                                            */
+        /************************************************************************/
+        public bool DisplayDebug
+        {
+            get { return this.displayDebug; }
+            set { this.displayDebug = value; }
+        }
+        
+        /************************************************************************/
         /* Methods                                                              */
         /************************************************************************/
-        public void update()
+        public void update(Models.Player player)
         {
             healthAuxBar.setPosition(healthAuxBarPosition.X, healthAuxBarPosition.Y);
             special.setPosition(specialPosition.X, specialPosition.Y);
             // Calls update to all the objects to check health etc for the player. Yet to be implemented
+        
+#if DEBUG
+            if (displayDebug)
+            {
+                playerPosition = "Player position: " + player.getPosition();
+                numberOfBullets = "Number of bullets: " + player.getNumberOfBullets();
+            }
+#endif
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
             healthAuxBar.Draw(spriteBatch);
             special.Draw(spriteBatch);
+
+#if DEBUG
+            if (displayDebug)
+            {
+                spriteBatch.DrawString(debugFont, playerPosition, playerPositionVector, Color.White);
+                spriteBatch.DrawString(debugFont, numberOfBullets, numberOfBulletsVector, Color.White);
+            }
+#endif
         }
 
         public void updateHudPositions(Camera camera)
@@ -58,6 +100,14 @@ namespace Perihelion
                 camera.Center.Y - (camera.View.Height / 2 - margin));
             specialPosition = new Vector2(camera.Center.X - (camera.View.Width / 2 - margin), 
                 camera.Center.Y + camera.View.Height / 2 - 42);  // 42 = texture.height + margin
+
+#if DEBUG
+            if (displayDebug)
+            {
+                playerPositionVector = new Vector2(camera.Center.X + 350, camera.Center.Y + 300);
+                numberOfBulletsVector = new Vector2(camera.Center.X + 350, camera.Center.Y + 270);
+            }
+#endif
         }
     }
 }

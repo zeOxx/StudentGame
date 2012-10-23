@@ -115,6 +115,11 @@ namespace Perihelion.Models
             return this.auxiliaryPower;
         }
 
+        public int getNumberOfBullets()
+        {
+            return bullets.Count();
+        }
+
         public bool IsShooting
         {
             get { return this.isShooting; }

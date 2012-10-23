@@ -69,6 +69,10 @@ namespace Perihelion.Controllers
             Vector2 rightStick = inputHandler.getShootingInputFromPlayer();
             playerObject.update(movementVector, rightStick, gameTime);
 
+#if DEBUG
+            if (inputHandler.ButtonPressed(Buttons.LeftShoulder) && inputHandler.ButtonPressed(Buttons.RightShoulder))
+                gameWorld.setDebug();
+#endif
            
 
             // Temp Keyboardinput
@@ -111,6 +115,12 @@ namespace Perihelion.Controllers
                 playerObject.updatePosition(0, -5);
 
             }
+
+            // Other keys
+#if DEBUG
+            if (inputHandler.KeyReleased(Keys.F1))
+                gameWorld.setDebug();
+#endif
         }
     }
 }

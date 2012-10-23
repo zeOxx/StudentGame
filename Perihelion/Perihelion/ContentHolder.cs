@@ -37,6 +37,11 @@ namespace Perihelion
         public SoundEffect pang;
         public Song soundtrack;
 
+#if DEBUG
+        // Debug font
+        public SpriteFont debugFont;
+#endif
+
         public ContentHolder(ContentManager content)
         {
             loadTextures(content);
@@ -69,6 +74,11 @@ namespace Perihelion
             // HUD
             healthAuxBar = content.Load<Texture2D>("HUD\\hud_healthAux");
             special = content.Load<Texture2D>("HUD\\hud_special_01");
+
+#if DEBUG
+            // Debug font
+            debugFont = content.Load<SpriteFont>("debugFont");
+#endif
         }
     }
 }
