@@ -63,6 +63,7 @@ namespace Perihelion
             gameController = new Controllers.Controller(contentHolder, soundManager);
             inputHandler = new InputHandler();
             gameWorld = new Models.Gameworld(contentHolder, GraphicsDevice.Viewport, 4096);    //TODO SINGLETON
+
             base.Initialize();
         }
 
