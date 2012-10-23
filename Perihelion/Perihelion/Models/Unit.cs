@@ -13,6 +13,7 @@ namespace Perihelion.Models
         private int maxHealth;
         private float damageMultiplier;
         private float attackMultiplier;
+        private float accelerationMultiplier = 0.02f;
         
         /************************************************************************/
         /*  Constructors for Player object                                      */
@@ -86,6 +87,11 @@ namespace Perihelion.Models
         /************************************************************************/
         /*  Update functions for Unit attributes                                */
         /************************************************************************/
+        public void unitUpdate (Vector2 velocity)
+        {
+            base.update(scaleVelocity(velocity));
+        }
+
         void updateCurrentHealth(int i)
         {
             this.currentHealth += i;
@@ -94,6 +100,43 @@ namespace Perihelion.Models
         void updateMaxHealth(int i)
         {
             this.maxHealth += i;
+        }
+
+        private Vector2 scaleVelocity (Vector2 velocity)
+        {
+            //maxSpeed = 5
+            float oldlength = this.velocity.Length();
+            float newlength = velocity.Length();
+
+            if (newlength > (oldlength + accelerationMultiplier))
+            {
+                speed = maxSpeed * (oldlength + accelerationMultiplier);
+
+                velocity = velocity / velocity.Length() * (oldlength + accelerationMultiplier);
+                Console.Out.WriteLine("too damn high {0}", speed);
+                return velocity;
+            }
+            else if (newlength < (oldlength - accelerationMultiplier))
+            {
+                speed = maxSpeed * (oldlength - accelerationMultiplier);
+                if (velocity.Length() != 0)
+                {
+                    velocity = velocity / velocity.Length() * (oldlength - accelerationMultiplier);
+                    Console.Out.WriteLine("too low but still goin strong {0}", speed);
+                }
+                else
+                {
+                    velocity = this.velocity/ oldlength * (oldlength - accelerationMultiplier);
+                    Console.Out.WriteLine("too low but still goin strong {0}", speed);
+                }
+                return velocity;
+            }
+            else
+            {
+                speed = newlength * maxSpeed;
+                Console.Out.WriteLine("just right {0}", speed);
+                return velocity;
+            }
         }
 
         /************************************************************************/
