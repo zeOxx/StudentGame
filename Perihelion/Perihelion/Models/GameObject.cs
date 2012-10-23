@@ -62,7 +62,7 @@ namespace Perihelion.Models
             this.position = new Vector2(x, y);
         }
 
-        void setVelocity (Vector2 velocity)
+        public void setVelocity (Vector2 velocity)
         {
             this.velocity = velocity;
         }
@@ -94,7 +94,7 @@ namespace Perihelion.Models
             this.maxSpeed = maxSpeed;
         }
 
-        protected float Speed
+        public float Speed
         {
             get { return this.speed; }
             set { this.speed = value; }
