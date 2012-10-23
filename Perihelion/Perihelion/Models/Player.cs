@@ -219,5 +219,10 @@ namespace Perihelion.Models
                 projectiles.Draw(spriteBatch);
             }
         }
+
+        public void stop()
+        {
+            speed = 0;
+        }
     }
 }
