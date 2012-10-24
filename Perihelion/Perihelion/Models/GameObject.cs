@@ -4,12 +4,14 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections;
 
 namespace Perihelion.Models
 {
     class GameObject
     {
         protected Texture2D texture;
+        private ArrayList textureData;
         protected Vector2 origin;
         protected Vector2 position;
         protected Vector2 velocity;
@@ -32,6 +34,8 @@ namespace Perihelion.Models
             setPosition(x, y);
             setVelocity(velocity);
             setOrigin(texture);
+
+            textureData = new ArrayList(texture.Width * texture.Height);
         }
 
         /************************************************************************/
@@ -66,6 +70,12 @@ namespace Perihelion.Models
         {
             this.velocity = velocity;
         }
+
+        public ArrayList getColorData()
+        {
+            return textureData;
+        }
+
         
         // Three different setOrigin methods.
         //  1.setOrigin(Texture2D texture): Sets the origin at the center of the texture
