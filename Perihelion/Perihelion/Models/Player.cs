@@ -53,7 +53,7 @@ namespace Perihelion.Models
             setAuxiliaryPower(100);
 
             // Temp
-            Speed = 5;
+            Speed = 0;
             setMaxSpeed(5);
 
             IsShooting = false;
@@ -176,7 +176,7 @@ namespace Perihelion.Models
                     bullets.RemoveAt(i);
             }
 
-            base.update(velocity);
+            base.unitUpdate(velocity);
         }
 
         public void updateWellMultiplier(float i)
