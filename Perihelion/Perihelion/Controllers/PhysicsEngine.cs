@@ -59,7 +59,7 @@ namespace Perihelion.Controllers
                     //Console.Out.WriteLine((position.X - velocity.X) + " " + (position.Y - velocity.Y));
                 }
             }
-            if (playerObject.BoundingBox.Intersects(gameWorld.LevelBounds))
+            if (!playerObject.BoundingBox.Intersects(gameWorld.LevelBounds))
             {
                 playerObject.setPosition(prePosition.X, prePosition.Y);
                 playerObject.setVelocity(Vector2.Zero);    
