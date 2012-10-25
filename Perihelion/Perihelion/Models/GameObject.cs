@@ -4,16 +4,18 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections;
 
 namespace Perihelion.Models
 {
     class GameObject
     {
         protected Texture2D texture;
+        private ArrayList textureData;
         protected Vector2 origin;
         protected Vector2 position;
         protected Vector2 velocity;
-        private double rotationAngle = 0.0;
+        protected double rotationAngle = 0.0;
         protected float maxSpeed = 0;
         protected float speed = 0;
         
@@ -32,6 +34,8 @@ namespace Perihelion.Models
             setPosition(x, y);
             setVelocity(velocity);
             setOrigin(texture);
+
+            textureData = new ArrayList(texture.Width * texture.Height);
         }
 
         /************************************************************************/
@@ -62,31 +66,48 @@ namespace Perihelion.Models
             this.position = new Vector2(x, y);
         }
 
-        void setVelocity (Vector2 velocity)
+        public void setVelocity (Vector2 velocity)
         {
             this.velocity = velocity;
         }
 
-        void setOrigin(Texture2D texture)
+        public ArrayList getColorData()
         {
-            // Sets the origin to the center of the object
+            return textureData;
+        }
+
+        
+        // Three different setOrigin methods.
+        //  1.setOrigin(Texture2D texture): Sets the origin at the center of the texture
+        //  2.setOrigin(Vector2 newOrigin): Sets the origin to whatever the newOrigin vector is
+        //  3.setOriginZero(): Sets the origin to 0,0.
+        //
+        //  Number 1 is the default method default
+        public void setOrigin(Texture2D texture)
+        {
             this.origin = new Vector2(texture.Width / 2, texture.Height / 2);
+        }
+
+        public void setOrigin(Vector2 newOrigin)
+        {
+            this.origin = newOrigin;
         }
 
         public void setOriginZero()
         {
-            // Sets the origin to 0,0
             this.origin = new Vector2(0, 0);
         }
-
-        protected void setSpeed(float speed)
-        {
-            this.speed = speed;
-        }
+        // ***** END OF ORIGIN METHODS ***** //
 
         protected void setMaxSpeed(float maxSpeed)
         {
             this.maxSpeed = maxSpeed;
+        }
+
+        public float Speed
+        {
+            get { return this.speed; }
+            set { this.speed = value; }
         }
         /************************************************************************/
         /*                                                                      */
@@ -106,25 +127,22 @@ namespace Perihelion.Models
             return texture;
         }
 
-        public float getSpeed()
-        {
-            return this.speed;
-        }
-
         public float getMaxSpeed()
         {
             return this.maxSpeed;
         }
         /************************************************************************/
-        /*                                                                      */
+        /* Other methods                                                        */
         /************************************************************************/
         public virtual void update (Vector2 velocity)
         {
             updatePosition();
+
             updateVelocity(velocity);
             updateAngle(velocity);
         }
 
+        // TEMP KEYBOARD UPDATING
         public void updatePosition(float deltaX, float deltaY)
         {
             position.X = position.X + deltaX;
@@ -144,12 +162,9 @@ namespace Perihelion.Models
 
         public void updateAngle(Vector2 velocity)
         {
-            // Only updates the sprite if there is velocity.
-            if (velocity.X != 0.0f && velocity.Y != 0.0f)
-            {
-                System.Diagnostics.Debug.WriteLine("Boooi");
+
+            if ((velocity.X < 0.0f || velocity.Y < 0.0f) || (velocity.X > 0.0f || velocity.Y > 0.0f))
                 rotationAngle = Math.Atan2((double)velocity.X, (double)velocity.Y);
-            }
         }
 
                
@@ -162,7 +177,6 @@ namespace Perihelion.Models
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            //spriteBatch.Draw(texture, position, Color.White);
             spriteBatch.Draw(texture, position, null, Color.White, (float)rotationAngle,
                     origin, 1.0f, SpriteEffects.None, 0f);
         }

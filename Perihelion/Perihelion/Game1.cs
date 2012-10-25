@@ -25,9 +25,18 @@ namespace Perihelion
         Controller gameController;
         ContentHolder contentHolder;
         InputHandler inputHandler;
+        SoundManager soundManager;
 
+        // Window properties
         private int height = 720;
         private int width = 1280;
+        private String gameName = "Perihelion";
+
+        // FPS and UPS
+        private int updates;
+        private int frames;
+        private float elapsed;
+        private float totalElapsed;
 
         public Game1()
         {
@@ -36,6 +45,8 @@ namespace Perihelion
 
             graphics.PreferredBackBufferHeight = height;
             graphics.PreferredBackBufferWidth = width;
+
+            Window.Title = gameName;
         }
 
         /// <summary>
@@ -47,10 +58,12 @@ namespace Perihelion
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            gameController = new Controllers.Controller();
             contentHolder = new ContentHolder(this.Content);
+            soundManager = new SoundManager(contentHolder);
+            gameController = new Controllers.Controller(contentHolder, soundManager);
             inputHandler = new InputHandler();
-            gameWorld = new Models.Gameworld(contentHolder, GraphicsDevice.Viewport);    //TODO SINGLETON
+            gameWorld = new Models.Gameworld(contentHolder, GraphicsDevice.Viewport, 4096);    //TODO SINGLETON
+
             base.Initialize();
         }
 
@@ -82,8 +95,6 @@ namespace Perihelion
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-
-
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
@@ -98,9 +109,22 @@ namespace Perihelion
             // Sends gamestate to controller and receives updated state. 
             gameWorld = gameController.updateGameWorld(gameWorld, gameTime, inputHandler);
 
+            // Calculates Frames Per Second and Updates Per Second and puts them in the window title
+            elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            totalElapsed += elapsed;
+
+            if (totalElapsed > 1)
+            {
+                Window.Title = gameName + " | " + frames + "FPS " + updates + "UPS";
+                totalElapsed = 0;
+                updates = 0;
+                frames = 0;
+            }
+
             // TODO: Add your update logic here
 
             base.Update(gameTime);
+            updates++;
         }
 
         /// <summary>
@@ -112,11 +136,13 @@ namespace Perihelion
             GraphicsDevice.Clear(Color.Black);
 
             // TODO: Add your drawing code here
-            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, null, null, null, gameWorld.getCamera().Transform);
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, gameWorld.getCamera().Transform);
             gameWorld.Draw(spriteBatch);
             spriteBatch.End();
 
             base.Draw(gameTime);
+
+            frames++;
         }
     }
 }

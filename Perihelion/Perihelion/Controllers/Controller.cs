@@ -15,12 +15,18 @@ namespace Perihelion.Controllers
         
         //************** VARIABLES ******************
         private Player playerObject;
-        //private Projectile bullets;
+        private ContentHolder content;
+        private SoundManager soundManager;
+        private PhysicsEngine physicsEngine;
 
-        public Controller()
+
+        public Controller(ContentHolder content, SoundManager soundManager)
         {
             //playerObject = new GameObject[Constants.maxNumberOfObjectsInArray];
+            this.soundManager = soundManager;
             playerObject = null;
+            this.content = content;
+            physicsEngine = new PhysicsEngine();
         }
 
         //************** FUNCTIONS ******************
@@ -33,9 +39,12 @@ namespace Perihelion.Controllers
 
             checkInput(gameTime, inputHandler, gameWorld);
 
+            //physicsEngine.collisionDetection(gameWorld);
+
             gameWorld.setPlayer(playerObject);
 
             gameWorld.update();
+            playSounds();
 
             return gameWorld;
         }
@@ -46,34 +55,53 @@ namespace Perihelion.Controllers
             playerObject = gameWorld.getPlayer();
         }
 
+
+        public void playSounds()
+        {
+            if (playerObject.BulletMade)
+            {
+                soundManager.playGunSound();
+            }
+        }
+
         // Checks input
         //Gameworld as argument is JUST FOR TESTING-PURPOSES
         public void checkInput(GameTime gameTime, InputHandler inputHandler, Gameworld gameWorld)
         {
-            //playerObject.updateVelocity(inputHandler.getMovementInputFromPlayer());
-            //playerObject.updatePosition();
-
+            // Controller input
             Vector2 movementVector = inputHandler.getMovementInputFromPlayer();
             Vector2 rightStick = inputHandler.getShootingInputFromPlayer();
-            playerObject.update(movementVector, rightStick);
+            //playerObject.update(movementVector, rightStick, gameTime);
 
+            physicsEngine.collisionDetection(gameWorld, movementVector, rightStick, gameTime);
 
-            //Temp input
+#if DEBUG
+            if (inputHandler.ButtonPressed(Buttons.LeftShoulder) && inputHandler.ButtonPressed(Buttons.RightShoulder))
+                gameWorld.setDebug();
+#endif
+           
+
+            // Temp Keyboardinput
             inputHandler.updateInput();
 
+            // Zooming
             if (inputHandler.KeyDown(Keys.X))
             {
-                gameWorld.getCamera().Zoom += (float)0.01;
+                gameWorld.getCamera().Zoom += 0.01f;
             }
-
             if (inputHandler.KeyDown(Keys.Z))
             {
-                gameWorld.getCamera().Zoom -= (float)0.01;
+                gameWorld.getCamera().Zoom -= 0.01f;
             }
+            if (inputHandler.KeyDown(Keys.C))
+            {
+                gameWorld.getCamera().Zoom = 1.0f;
+            }
+
+            // Movement
             if (inputHandler.KeyDown(Keys.D))
             {
                 playerObject.updatePosition(5, 0);
-
             }
 
             if (inputHandler.KeyDown(Keys.A))
@@ -93,11 +121,12 @@ namespace Perihelion.Controllers
                 playerObject.updatePosition(0, -5);
 
             }
-        }
 
-//         public void updateBullets(Vector2 motion)
-//         {
-// 
-//         }
+            // Other keys
+#if DEBUG
+            if (inputHandler.KeyReleased(Keys.F1))
+                gameWorld.setDebug();
+#endif
+        }
     }
 }
