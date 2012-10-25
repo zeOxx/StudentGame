@@ -24,8 +24,8 @@ namespace Perihelion
         public Texture2D textureRock02;
 
         //Background textures
-        public Texture2D bg_01;
-        public Texture2D bg_02;
+        public Texture2D[] bg_variant0 = new Texture2D[2];
+        public Texture2D[] bg_variant1 = new Texture2D[2];
 
         // HUD elements
         public Texture2D healthAuxBar;
@@ -67,9 +67,12 @@ namespace Perihelion
             textureRock01 = content.Load<Texture2D>("Environment\\rock_01");
             textureRock02 = content.Load<Texture2D>("Environment\\rock_02");
 
-            //Backgrounds
-            bg_01 = content.Load<Texture2D>("Backgrounds\\bg_01");
-            bg_02 = content.Load<Texture2D>("Backgrounds\\bg_02");
+            //Background arrays
+            bg_variant0[0] = content.Load<Texture2D>("Backgrounds\\bg_01_0");
+            bg_variant0[1] = content.Load<Texture2D>("Backgrounds\\bg_01_1");
+
+            bg_variant1[0] = content.Load<Texture2D>("Backgrounds\\bg_02_0");
+            bg_variant1[1] = content.Load<Texture2D>("Backgrounds\\bg_02_1");
 
             // HUD
             healthAuxBar = content.Load<Texture2D>("HUD\\hud_healthAux");

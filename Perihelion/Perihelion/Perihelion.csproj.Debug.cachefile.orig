@@ -7,8 +7,11 @@ Content\PlayerTextures\bullet.xnb
 Content\PlayerTextures\ship_bare.xnb
 Content\PlayerTextures\ship_turret.xnb
 Content\PlayerTextures\weapon_special_01.xnb
+<<<<<<< HEAD
+=======
 Content\Environment\rock_01.xnb
 Content\Environment\rock_02.xnb
+>>>>>>> 11edc64d16a7b82c1d7ab32cfd72f9caf7019d9b
 Content\SoundEffects\s_gun_shooting.xnb
 Content\SoundEffects\s_gun_wind_down.xnb
 Content\SoundEffects\pang.xnb
