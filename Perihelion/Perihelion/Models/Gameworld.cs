@@ -53,6 +53,12 @@ namespace Perihelion.Models
             set { this.levelSize = value; }
         }
 
+        public Rectangle LevelBounds
+        {
+            get { return this.levelBounds; }
+            set { this.levelBounds = value; }
+        }
+
         public int getNumberOfCurrentCollidables()
         {
             return numbOfCurrentCollidables;

@@ -24,7 +24,7 @@ namespace Perihelion.Controllers
         {
             rocks = gameWorld.getRock();
             playerObject = gameWorld.getPlayer();
-
+         
             Vector2 prePosition = playerObject.getPosition();
             Vector2 preVelocity = playerObject.getVelocity();
  
@@ -58,10 +58,12 @@ namespace Perihelion.Controllers
 
                     //Console.Out.WriteLine((position.X - velocity.X) + " " + (position.Y - velocity.Y));
                 }
-                
-                
             }
-
+            if (playerObject.BoundingBox.Intersects(gameWorld.LevelBounds))
+            {
+                playerObject.setPosition(prePosition.X, prePosition.Y);
+                playerObject.setVelocity(Vector2.Zero);    
+            }
 
         }
 
