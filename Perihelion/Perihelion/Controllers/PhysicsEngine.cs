@@ -30,39 +30,21 @@ namespace Perihelion.Controllers
  
             playerObject.update(movementVector, rightStick, gameTime);
 
-            Vector2 postPosition = playerObject.getPosition();
-            Vector2 postVelocity = playerObject.getVelocity();
+            //Vector2 postPosition = playerObject.getPosition();
+            //Vector2 postVelocity = playerObject.getVelocity();
  
   
             for (int i = 0; i < rocks.Count(); i++)
             {
                 if (rocks[i].BoundingBox.Intersects(playerObject.BoundingBox))
                 {
-                    //Console.Out.WriteLine("CRAAAAASH!!");
-
                     if (perPixelCollisionDetection(playerObject, rocks[i]))
                     {
                         playerObject.setPosition(prePosition.X, prePosition.Y);
                         playerObject.setVelocity(Vector2.Zero);
-
-                        //playerObject.setPosition(0, 0);
-                        //Console.Out.WriteLine("COOLOOOORR");
-                        //playerObject.setPosition(position.X, position.Y);
                     }
-                   
-
-                    //Vector2 velocity = playerObject.getVelocity();
-                    //playerObject.setPosition(position.X - velocity.X, position.Y - velocity.Y);
-                    //playerObject.setVelocity(Vector2.Zero);
-
-
-                    //Console.Out.WriteLine((position.X - velocity.X) + " " + (position.Y - velocity.Y));
                 }
-                
-                
             }
-
-
         }
 
         public bool perPixelCollisionDetection(Models.Player playerObject, Models.GameObject collidingObject)
@@ -82,6 +64,7 @@ namespace Perihelion.Controllers
 
             playerTexture.GetData(playerTextureData);
             collidableTexture.GetData(collidableTextureData);
+
             Vector2 velocity = playerObject.getVelocity();
 
             for (int y = top; y < bottom; y++)
