@@ -22,7 +22,6 @@ namespace Perihelion.Models
 
         private Player playerObject;
         private List<Collidable> rocks = new List<Collidable>();
-        private Collidable[] rock = new Collidable[numbOfCurrentCollidables];
         private Background background01;
         private Background background02;
         private Camera camera;
@@ -88,11 +87,6 @@ namespace Perihelion.Models
             rocks.Add(new Collidable(contentHolder.textureRock02, -250, -330, Vector2.Zero));
             rocks.Add(new Collidable(contentHolder.textureRock01, 500, 300, Vector2.Zero));
 			rocks.Add(new Collidable(contentHolder.textureRock02, -100, 250, Vector2.Zero));
-
-            rock[0] = new Collidable(contentHolder.textureRock01, 150, 300, Vector2.Zero);
-            rock[1] = new Collidable(contentHolder.textureRock02, -250, -330, Vector2.Zero);
-            rock[2] = new Collidable(contentHolder.textureRock01, 500, 300, Vector2.Zero);
-            rock[3] = new Collidable(contentHolder.textureRock02, -100, 250, Vector2.Zero);
         }
 
         // Creates the bounds for the level
