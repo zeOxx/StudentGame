@@ -18,6 +18,7 @@ namespace Perihelion.Models
         protected double rotationAngle = 0.0;
         protected float maxSpeed = 0;
         protected float speed = 0;
+        private int identifier = 0;
         
         /************************************************************************/
         /*                                                                      */
@@ -112,6 +113,12 @@ namespace Perihelion.Models
         /************************************************************************/
         /*                                                                      */
         /************************************************************************/
+        public int Identifier
+        {
+            get { return this.identifier; }
+            set { this.identifier = value; }
+        }
+        
         public Vector2 getPosition ()
         {
             return position;

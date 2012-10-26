@@ -38,6 +38,8 @@ namespace Perihelion.Controllers
             //Change gamestate
 
             checkInput(gameTime, inputHandler, gameWorld);
+            handleProjectileCollisions();
+            
 
             //physicsEngine.collisionDetection(gameWorld);
 
@@ -47,6 +49,13 @@ namespace Perihelion.Controllers
             playSounds();
 
             return gameWorld;
+        }
+
+        public void handleProjectileCollisions()
+        {
+            List<Models.GameObject> projectileCollisions = physicsEngine.getProjectileCollisions();
+
+
         }
 
         //Copies the entire Gamestate
@@ -73,7 +82,8 @@ namespace Perihelion.Controllers
             Vector2 rightStick = inputHandler.getShootingInputFromPlayer();
             //playerObject.update(movementVector, rightStick, gameTime);
 
-            physicsEngine.collisionDetection(gameWorld, movementVector, rightStick, gameTime);
+            
+            physicsEngine.collisionDetection(ref gameWorld, movementVector, rightStick, gameTime);
 
             
 

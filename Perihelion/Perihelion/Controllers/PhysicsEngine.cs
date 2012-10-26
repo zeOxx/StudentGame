@@ -13,17 +13,21 @@ namespace Perihelion.Controllers
         private List<Models.Collidable> rocks;
         private Models.Player playerObject;
         private ArrayList collisions;
-        private List<Models.GameObject> projectileCollisions;
+        private List<Models.GameObject> projectileCollisionsList;
+        //private List<Models.GameObject> playerCollisions;
 
         public PhysicsEngine()
         {
             rocks = new List<Models.Collidable>();
             collisions = new ArrayList();
+            projectileCollisionsList = new List<Models.GameObject>();
         }
 
-        public void collisionDetection(Models.Gameworld gameWorld, Vector2 movementVector, Vector2 rightStick, GameTime gameTime)
+        public void collisionDetection(ref Models.Gameworld gameWorld, Vector2 movementVector, Vector2 rightStick, GameTime gameTime)
         {
             //playerObject.update(movementVector, rightStick, gameTime);
+            projectileCollisionsList.Clear();
+
             rocks = gameWorld.getRock();
             playerObject = gameWorld.getPlayer();
 
@@ -32,24 +36,32 @@ namespace Perihelion.Controllers
             levelBoundCollision(playerObject, gameWorld);
         }
 
+        public List<Models.GameObject> getProjectileCollisions()
+        {
+            return projectileCollisionsList;
+        }
 
 
         private void projectileCollisions(Models.Player playerObject, Models.Gameworld gameWorld)
         {
             List<Models.Projectile> bullets = playerObject.getBulletList();
 
-            Console.WriteLine("Lengde: " + bullets.Count);
 
-            for (int i = 0; i < bullets.Count; i++)
+            Console.WriteLine("Lengde: " + playerObject.getBulletList().Count);
+
+            for (int i = 0; i < playerObject.getBulletList().Count; i++)
             {
                 for (int j = 0; j < rocks.Count; j++)
                 {
                     if (bullets[i].BoundingBox.Intersects(rocks[j].BoundingBox))
                     {
-                        if (perPixelCollisionDetection(bullets[i], rocks[j]))
+                        if (perPixelCollisionDetection(playerObject.getBulletList()[i], rocks[j]))
                         {
                             Console.WriteLine("HIT!!!!!");
-                            bullets.RemoveAt(i);
+                            //projectileCollisionsList.Add(bullets[i]);
+                            //projectileCollisionsList.Add(rocks[j]);
+                            playerObject.getBulletList().RemoveAt(i);
+
                         }
                     }
                 }
