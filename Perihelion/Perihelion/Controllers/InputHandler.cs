@@ -50,7 +50,7 @@ namespace Perihelion
         {
             currentKeyboardState = Keyboard.GetState();
 
-            currentGamePadState = GamePad.GetState(PlayerIndex.One);
+            currentGamePadState = GamePad.GetState(PlayerIndex.One, GamePadDeadZone.Circular);
         }
 
         public void updateInput()
@@ -61,7 +61,7 @@ namespace Perihelion
 
             // Updates the current and last gamepadstates
             lastGamePadState = currentGamePadState;
-            currentGamePadState = GamePad.GetState(PlayerIndex.One);
+            currentGamePadState = GamePad.GetState(PlayerIndex.One, GamePadDeadZone.Circular);
         }
 
         /************************************************************************/

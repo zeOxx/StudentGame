@@ -104,15 +104,22 @@ namespace Perihelion.Models
 
         private Vector2 scaleVelocity (Vector2 velocity)
         {
-            //maxSpeed = 5
             float oldlength = this.velocity.Length();
             float newlength = velocity.Length();
+            Console.Out.WriteLine("old {0}", oldlength);
+            Console.Out.WriteLine("new {0}", newlength);
 
             if (newlength > (oldlength + accelerationMultiplier))
             {
-                speed = maxSpeed * (oldlength + accelerationMultiplier);
-
-                velocity = velocity / velocity.Length() * (oldlength + accelerationMultiplier);
+                if ((oldlength + accelerationMultiplier) <= 1)
+                {
+                    speed = maxSpeed * (oldlength + accelerationMultiplier);
+                    velocity = velocity / velocity.Length() * (oldlength + accelerationMultiplier);
+                }
+                else
+                {
+                    speed = maxSpeed;
+                }
                 Console.Out.WriteLine("too damn high {0}", speed);
                 return velocity;
             }

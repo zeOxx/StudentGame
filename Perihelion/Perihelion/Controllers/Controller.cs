@@ -75,6 +75,8 @@ namespace Perihelion.Controllers
 
             physicsEngine.collisionDetection(gameWorld, movementVector, rightStick, gameTime);
 
+            
+
 #if DEBUG
             if (inputHandler.ButtonPressed(Buttons.LeftShoulder) && inputHandler.ButtonPressed(Buttons.RightShoulder))
                 gameWorld.setDebug();

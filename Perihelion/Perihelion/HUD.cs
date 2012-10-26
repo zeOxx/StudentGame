@@ -33,6 +33,8 @@ namespace Perihelion
         Vector2 playerPositionVector;
         String numberOfBullets = "Number of bullets: ";
         Vector2 numberOfBulletsVector;
+        String playerSpeed = "Number of bullets: ";
+        Vector2 playerSpeedVector;
         SpriteFont debugFont;
         bool displayDebug;
 #endif
@@ -76,6 +78,7 @@ namespace Perihelion
             {
                 playerPosition = "Player position: " + player.getPosition();
                 numberOfBullets = "Number of bullets: " + player.getNumberOfBullets();
+                playerSpeed = "Player speed: " + player.Speed;
             }
 #endif
         }
@@ -90,6 +93,7 @@ namespace Perihelion
             {
                 spriteBatch.DrawString(debugFont, playerPosition, playerPositionVector, Color.White);
                 spriteBatch.DrawString(debugFont, numberOfBullets, numberOfBulletsVector, Color.White);
+                spriteBatch.DrawString(debugFont, playerSpeed, playerSpeedVector, Color.White);
             }
 #endif
         }
@@ -104,7 +108,8 @@ namespace Perihelion
 #if DEBUG
             if (displayDebug)
             {
-                playerPositionVector = new Vector2(camera.Center.X + 350, camera.Center.Y + 300);
+                playerSpeedVector = new Vector2(camera.Center.X, camera.Center.Y + 330);
+                playerPositionVector = new Vector2(camera.Center.X, camera.Center.Y + 300);
                 numberOfBulletsVector = new Vector2(camera.Center.X + 350, camera.Center.Y + 270);
             }
 #endif
