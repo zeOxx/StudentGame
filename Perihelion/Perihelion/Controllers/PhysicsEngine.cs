@@ -13,6 +13,7 @@ namespace Perihelion.Controllers
         private List<Models.Collidable> rocks;
         private Models.Player playerObject;
         private ArrayList collisions;
+        private List<Models.GameObject> projectileCollisions;
 
         public PhysicsEngine()
         {
@@ -22,18 +23,47 @@ namespace Perihelion.Controllers
 
         public void collisionDetection(Models.Gameworld gameWorld, Vector2 movementVector, Vector2 rightStick, GameTime gameTime)
         {
+            //playerObject.update(movementVector, rightStick, gameTime);
             rocks = gameWorld.getRock();
             playerObject = gameWorld.getPlayer();
-         
+
+            projectileCollisions(playerObject, gameWorld);
+            playerCollisions(playerObject, gameWorld, movementVector, rightStick, gameTime);
+            levelBoundCollision(playerObject, gameWorld);
+        }
+
+
+
+        private void projectileCollisions(Models.Player playerObject, Models.Gameworld gameWorld)
+        {
+            List<Models.Projectile> bullets = playerObject.getBulletList();
+
+            Console.WriteLine("Lengde: " + bullets.Count);
+
+            for (int i = 0; i < bullets.Count; i++)
+            {
+                for (int j = 0; j < rocks.Count; j++)
+                {
+                    if (bullets[i].BoundingBox.Intersects(rocks[j].BoundingBox))
+                    {
+                        if (perPixelCollisionDetection(bullets[i], rocks[j]))
+                        {
+                            Console.WriteLine("HIT!!!!!");
+                            bullets.RemoveAt(i);
+                        }
+                    }
+                }
+            }
+
+        }
+
+        private void playerCollisions(Models.Player playerObject, Models.Gameworld gameWorld, Vector2 movementVector, Vector2 rightStick, GameTime gameTime)
+        {
             Vector2 prePosition = playerObject.getPosition();
-            Vector2 preVelocity = playerObject.getVelocity();
- 
+            
+
             playerObject.update(movementVector, rightStick, gameTime);
 
-            //Vector2 postPosition = playerObject.getPosition();
-            //Vector2 postVelocity = playerObject.getVelocity();
- 
-  
             for (int i = 0; i < rocks.Count(); i++)
             {
                 if (rocks[i].BoundingBox.Intersects(playerObject.BoundingBox))
@@ -45,14 +75,19 @@ namespace Perihelion.Controllers
                     }
                 }
             }
+        }
+
+        private void levelBoundCollision(Models.Player playerObject, Models.Gameworld gameWorld)
+        {
+            Vector2 prePosition = playerObject.getPosition();
             if (!playerObject.BoundingBox.Intersects(gameWorld.LevelBounds))
             {
                 playerObject.setPosition(prePosition.X, prePosition.Y);
-                playerObject.setVelocity(Vector2.Zero);    
+                playerObject.setVelocity(Vector2.Zero);
             }
         }
 
-        public bool perPixelCollisionDetection(Models.Player playerObject, Models.GameObject collidingObject)
+        private bool perPixelCollisionDetection(Models.GameObject playerObject, Models.GameObject collidingObject)
         {
             int top = Math.Max(playerObject.BoundingBox.Top, collidingObject.BoundingBox.Top);
             int bottom = Math.Min(playerObject.BoundingBox.Bottom, collidingObject.BoundingBox.Bottom);
