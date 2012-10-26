@@ -40,7 +40,7 @@ namespace Perihelion.Models
 		/**********************************/
 		/* Constructors                   */
 		/**********************************/
-        public Background(Texture2D[] textures, Vector2 position, Vector2 velocity, Rectangle levelBounds, int width, int height, float increment)
+        public Background(Texture2D[] textures, Vector2 velocity, Rectangle levelBounds, int width, int height, float increment)
 		{
             Offset = (textures[0].Width * 2);
             setRectangle(levelBounds);
