@@ -38,7 +38,7 @@ namespace Perihelion.Controllers
             //Change gamestate
 
             checkInput(gameTime, inputHandler, gameWorld);
-            handleProjectileCollisions();
+            handleProjectileCollisions(gameWorld);
             
 
             //physicsEngine.collisionDetection(gameWorld);
@@ -51,10 +51,24 @@ namespace Perihelion.Controllers
             return gameWorld;
         }
 
-        public void handleProjectileCollisions()
+        public void handleProjectileCollisions(Models.Gameworld gameWorld)
         {
-            List<Models.GameObject> projectileCollisions = physicsEngine.getProjectileCollisions();
+            //List<int> projectileCollisions = physicsEngine.getProjectileCollisions();
 
+            for (int i = 0; i < physicsEngine.getProjectileCollisions().Count; i++)
+            {
+                playerObject.getBulletList().RemoveAt(physicsEngine.getProjectileCollisions()[i]);
+                //projectileCollisions.RemoveAt(i);
+                //Console.WriteLine("Removed!");
+            }
+
+            List<Models.Collidable> rocks = gameWorld.getRock();
+            //for (int i = 0; i < physicsEngine.getRockCollisions().Count; i++)
+            //{
+              //  gameWorld.getRock().RemoveAt(physicsEngine.getRockCollisions()[i]);
+                //projectileCollisions.RemoveAt(i);
+                //Console.WriteLine("Removed!");
+            //}
 
         }
 

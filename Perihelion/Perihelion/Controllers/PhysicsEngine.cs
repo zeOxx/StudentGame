@@ -10,17 +10,25 @@ namespace Perihelion.Controllers
 {
     class PhysicsEngine
     {
-        private List<Models.Collidable> rocks;
-        private Models.Player playerObject;
-        private ArrayList collisions;
-        private List<Models.GameObject> projectileCollisionsList;
+        //private List<Models.Collidable> rocks;
+        //private Models.Player playerObject;
+        //private ArrayList collisions;
+        private List<int> projectileCollisionsList;
+        private List<int> rockCollisionList;
+
+        //private List<int> intList;
         //private List<Models.GameObject> playerCollisions;
+
+        
 
         public PhysicsEngine()
         {
-            rocks = new List<Models.Collidable>();
-            collisions = new ArrayList();
-            projectileCollisionsList = new List<Models.GameObject>();
+            //rocks = new List<Models.Collidable>();
+            //collisions = new ArrayList();
+            //projectileCollisionsList = new List<Models.GameObject>();
+            projectileCollisionsList = new List<int>();
+            rockCollisionList = new List<int>();
+
         }
 
         public void collisionDetection(ref Models.Gameworld gameWorld, Vector2 movementVector, Vector2 rightStick, GameTime gameTime)
@@ -28,40 +36,52 @@ namespace Perihelion.Controllers
             //playerObject.update(movementVector, rightStick, gameTime);
             projectileCollisionsList.Clear();
 
-            rocks = gameWorld.getRock();
-            playerObject = gameWorld.getPlayer();
+            
+            //rocks = gameWorld.getRock();
+            //playerObject = gameWorld.getPlayer();
 
-            projectileCollisions(playerObject, gameWorld);
-            playerCollisions(playerObject, gameWorld, movementVector, rightStick, gameTime);
-            levelBoundCollision(playerObject, gameWorld);
+            projectileCollisions(gameWorld);
+            playerCollisions(gameWorld, movementVector, rightStick, gameTime);
+            levelBoundCollision(gameWorld);
         }
 
-        public List<Models.GameObject> getProjectileCollisions()
+        public List<int> getProjectileCollisions()
         {
             return projectileCollisionsList;
         }
 
-
-        private void projectileCollisions(Models.Player playerObject, Models.Gameworld gameWorld)
+        public List<int> getRockCollisions()
         {
-            List<Models.Projectile> bullets = playerObject.getBulletList();
+            return rockCollisionList;
+        }
 
 
-            Console.WriteLine("Lengde: " + playerObject.getBulletList().Count);
+        private void projectileCollisions(Models.Gameworld gameWorld)
+        {
+            //List<Models.Projectile> bullets = gameWorld.getPlayer().getBulletList();
 
-            for (int i = 0; i < playerObject.getBulletList().Count; i++)
+
+
+            //Console.WriteLine("Lengde: " + playerObject.getBulletList().Count);
+
+            for (int i = 0; i < gameWorld.getPlayer().getBulletList().Count; i++)
+            //foreach (Models.Projectile bullet in gameWorld.getPlayer().getBulletList())
             {
-                for (int j = 0; j < rocks.Count; j++)
+                //Vector2 bulletPrePosition = gameWorld.getPlayer().getBulletList()[i].getPosition();
+                for (int j = 0; j < gameWorld.getRock().Count; j++)
+                //foreach (Models.Collidable rock in gameWorld.getRock())
                 {
-                    if (bullets[i].BoundingBox.Intersects(rocks[j].BoundingBox))
+                    if (gameWorld.getPlayer().getBulletList()[i].BoundingBox.Intersects(gameWorld.getRock()[j].BoundingBox))
                     {
-                        if (perPixelCollisionDetection(playerObject.getBulletList()[i], rocks[j]))
+                        if (perPixelCollisionDetection(gameWorld.getPlayer().getBulletList()[i],
+                                                        gameWorld.getRock()[j]))
                         {
-                            Console.WriteLine("HIT!!!!!");
-                            //projectileCollisionsList.Add(bullets[i]);
-                            //projectileCollisionsList.Add(rocks[j]);
-                            playerObject.getBulletList().RemoveAt(i);
-
+                            //Console.WriteLine("HIT!!!!!");
+                            projectileCollisionsList.Add(i);
+                            rockCollisionList.Add(j);
+                            //projectileCollisionsList.Add(j);
+                            //playerObject.getBulletList().RemoveAt(i);
+                            Console.WriteLine("KABLAAAM!!");
                         }
                     }
                 }
@@ -69,36 +89,40 @@ namespace Perihelion.Controllers
 
         }
 
-        private void playerCollisions(Models.Player playerObject, Models.Gameworld gameWorld, Vector2 movementVector, Vector2 rightStick, GameTime gameTime)
+        private void playerCollisions(Models.Gameworld gameWorld, Vector2 movementVector, Vector2 rightStick, GameTime gameTime)
         {
-            Vector2 prePosition = playerObject.getPosition();
-            
+            Vector2 prePosition = gameWorld.getPlayer().getPosition();
 
-            playerObject.update(movementVector, rightStick, gameTime);
 
-            for (int i = 0; i < rocks.Count(); i++)
+            gameWorld.getPlayer().update(movementVector, rightStick, gameTime);
+
+            //for (int i = 0; i < gameWorld.getRock().Count(); i++)
+            foreach (Models.Collidable rock in gameWorld.getRock())
             {
-                if (rocks[i].BoundingBox.Intersects(playerObject.BoundingBox))
+                if (rock.BoundingBox.Intersects(gameWorld.getPlayer().BoundingBox))
                 {
-                    if (perPixelCollisionDetection(playerObject, rocks[i]))
+                    if (perPixelCollisionDetection(gameWorld.getPlayer(), rock))
                     {
-                        playerObject.setPosition(prePosition.X, prePosition.Y);
-                        playerObject.setVelocity(Vector2.Zero);
+                        gameWorld.getPlayer().setPosition(prePosition.X, prePosition.Y);
+                        gameWorld.getPlayer().setVelocity(Vector2.Zero);
+                        
                     }
                 }
             }
         }
 
-        private void levelBoundCollision(Models.Player playerObject, Models.Gameworld gameWorld)
+        private void levelBoundCollision(Models.Gameworld gameWorld)
         {
-            Vector2 prePosition = playerObject.getPosition();
-            if (!playerObject.BoundingBox.Intersects(gameWorld.LevelBounds))
+            Vector2 prePosition = gameWorld.getPlayer().getPosition();
+            if (!gameWorld.getPlayer().BoundingBox.Intersects(gameWorld.LevelBounds))
             {
-                playerObject.setPosition(prePosition.X, prePosition.Y);
-                playerObject.setVelocity(Vector2.Zero);
+                gameWorld.getPlayer().setPosition(prePosition.X, prePosition.Y);
+                gameWorld.getPlayer().setVelocity(Vector2.Zero);
             }
         }
 
+
+        // Checks for per pixel collision between two objects.
         private bool perPixelCollisionDetection(Models.GameObject playerObject, Models.GameObject collidingObject)
         {
             int top = Math.Max(playerObject.BoundingBox.Top, collidingObject.BoundingBox.Top);
@@ -121,11 +145,11 @@ namespace Perihelion.Controllers
 
             for (int y = top; y < bottom; y++)
             {
-                int rowOffsetPlayer =  (y - playerObject.BoundingBox.Top)    * playerObject.BoundingBox.Width;
+                int rowOffsetPlayer = (y - playerObject.BoundingBox.Top) * playerObject.BoundingBox.Width;
                 int rowOffsetCollide = (y - collidingObject.BoundingBox.Top) * collidingObject.BoundingBox.Width;
                 for (int x = left; x < right; x++)
                 {
-                
+
                     // Get the color of both pixels at this point
                     Color colorA = playerTextureData[rowOffsetPlayer +
                                                (x - playerObject.BoundingBox.Left)
@@ -133,19 +157,16 @@ namespace Perihelion.Controllers
                     Color colorB = collidableTextureData[rowOffsetCollide +
                                                 (x - collidingObject.BoundingBox.Left)
                                          ];
- 
+
                     // If both pixels are not completely transparent,
                     if (colorA.A != 0 && colorB.A != 0)
                     {
                         return true;
                     }
-                    
-                }   
+
+                }
             }
-            
-                    
-             return false;
-                    
+            return false;
         }
     }
 }
