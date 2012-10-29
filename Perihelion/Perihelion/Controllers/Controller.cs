@@ -19,7 +19,6 @@ namespace Perihelion.Controllers
         private SoundManager soundManager;
         private PhysicsEngine physicsEngine;
 
-
         public Controller(ContentHolder content, SoundManager soundManager)
         {
             //playerObject = new GameObject[Constants.maxNumberOfObjectsInArray];
@@ -45,7 +44,7 @@ namespace Perihelion.Controllers
 
             gameWorld.setPlayer(playerObject);
 
-            gameWorld.update();
+            gameWorld.update(gameTime, content);
             playSounds();
 
             return gameWorld;
