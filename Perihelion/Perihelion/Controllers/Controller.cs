@@ -19,7 +19,6 @@ namespace Perihelion.Controllers
         private SoundManager soundManager;
         private PhysicsEngine physicsEngine;
 
-
         public Controller(ContentHolder content, SoundManager soundManager)
         {
             //playerObject = new GameObject[Constants.maxNumberOfObjectsInArray];
@@ -38,15 +37,38 @@ namespace Perihelion.Controllers
             //Change gamestate
 
             checkInput(gameTime, inputHandler, gameWorld);
+            handleProjectileCollisions(gameWorld);
+            
 
             //physicsEngine.collisionDetection(gameWorld);
 
             gameWorld.setPlayer(playerObject);
 
-            gameWorld.update();
+            gameWorld.update(gameTime, content);
             playSounds();
 
             return gameWorld;
+        }
+
+        public void handleProjectileCollisions(Models.Gameworld gameWorld)
+        {
+            //List<int> projectileCollisions = physicsEngine.getProjectileCollisions();
+
+            for (int i = 0; i < physicsEngine.getProjectileCollisions().Count; i++)
+            {
+                playerObject.getBulletList().RemoveAt(physicsEngine.getProjectileCollisions()[i]);
+                //projectileCollisions.RemoveAt(i);
+                //Console.WriteLine("Removed!");
+            }
+
+            List<Models.Collidable> rocks = gameWorld.getRock();
+            //for (int i = 0; i < physicsEngine.getRockCollisions().Count; i++)
+            //{
+              //  gameWorld.getRock().RemoveAt(physicsEngine.getRockCollisions()[i]);
+                //projectileCollisions.RemoveAt(i);
+                //Console.WriteLine("Removed!");
+            //}
+
         }
 
         //Copies the entire Gamestate
@@ -73,7 +95,10 @@ namespace Perihelion.Controllers
             Vector2 rightStick = inputHandler.getShootingInputFromPlayer();
             //playerObject.update(movementVector, rightStick, gameTime);
 
-            physicsEngine.collisionDetection(gameWorld, movementVector, rightStick, gameTime);
+            
+            physicsEngine.collisionDetection(ref gameWorld, movementVector, rightStick, gameTime);
+
+            
 
 #if DEBUG
             if (inputHandler.ButtonPressed(Buttons.LeftShoulder) && inputHandler.ButtonPressed(Buttons.RightShoulder))

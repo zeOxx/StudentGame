@@ -37,17 +37,14 @@ namespace Perihelion.Models
         };
         private fRectangle backgroundRect;
 
-
-
 		/**********************************/
 		/* Constructors                   */
 		/**********************************/
-		public Background(Texture2D[] textures, Vector2 position, Vector2 velocity, Rectangle levelBounds, float increment)
+        public Background(Texture2D[] textures, Vector2 velocity, Rectangle levelBounds, int width, int height, float increment)
 		{
-            Offset = textures[0].Width;
+            Offset = (textures[0].Width * 2);
             setRectangle(levelBounds);
-            setTextures(textures);
-			//createBackground(levelBounds, position);
+            setTextures(textures, width, height);
 			PrevPlayerPos = prevPlayerPos;
 			Increment = increment;
             ParallaxingObject = false;
@@ -108,12 +105,22 @@ namespace Perihelion.Models
 		}
 
         // Sets textures correctly.
-        private void setTextures(Texture2D[] textures)
+        private void setTextures(Texture2D[] textures, int width, int height)
         {
-            TilesWidth = backgroundRect.width / textures[0].Width;
-            TilesHeight = backgroundRect.height / textures[0].Height;
+            if (width == 0)
+            {
+                TilesWidth = backgroundRect.width / textures[0].Width;
+                TilesHeight = backgroundRect.height / textures[0].Height;
+            }
+            else
+            {
+                TilesWidth = width;
+                TilesHeight = height;
+            }
 
-            Textures = new Texture2D[TilesWidth * TilesHeight];
+            numOfTiles = TilesWidth * TilesHeight;
+
+            Textures = new Texture2D[numOfTiles];
             int randomNumber;
 
             for (int i = 0; i < Textures.Length; i++) 

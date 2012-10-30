@@ -28,6 +28,7 @@ namespace Perihelion.Models
         private int shotTimer = 0;
         private bool bulletMade = false;
         private int bulletSpeed = 15;
+        private int bulletCounter = 0;
 
         // Create a list with bullets in it
         List<Projectile> bullets;
@@ -115,6 +116,11 @@ namespace Perihelion.Models
             return this.auxiliaryPower;
         }
 
+        public List<Projectile> getBulletList()
+        {
+            return bullets;
+        }
+
         public int getNumberOfBullets()
         {
             return bullets.Count();
@@ -158,7 +164,11 @@ namespace Perihelion.Models
                         40,     // Damagenumber i pulled out of my ass
                         bulletSpeed);
 
+                    tempBullet.Identifier = bulletCounter++;
+
                     bullets.Add(tempBullet);
+
+                    
                 }
                 else
                 {

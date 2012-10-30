@@ -23,9 +23,12 @@ namespace Perihelion
         public Texture2D textureRock01;
         public Texture2D textureRock02;
 
-        //Background textures
+        // Background textures
         public Texture2D[] bg_variant0 = new Texture2D[2];
         public Texture2D[] bg_variant1 = new Texture2D[2];
+
+        // Particles
+        public Texture2D particle_test;
 
         // HUD elements
         public Texture2D healthAuxBar;
@@ -46,6 +49,7 @@ namespace Perihelion
         {
             loadTextures(content);
             loadSounds(content);
+            loadParticles(content);
         }
 
         private void loadSounds(ContentManager content)
@@ -82,6 +86,11 @@ namespace Perihelion
             // Debug font
             debugFont = content.Load<SpriteFont>("debugFont");
 #endif
+        }
+
+        private void loadParticles(ContentManager content)
+        {
+            particle_test = content.Load<Texture2D>("Particles\\particle_test");
         }
     }
 }

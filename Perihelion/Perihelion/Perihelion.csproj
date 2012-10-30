@@ -111,6 +111,7 @@
     <Compile Include="Constants.cs" />
     <Compile Include="ContentHolder.cs" />
     <Compile Include="Controllers\Controller.cs" />
+    <Compile Include="Controllers\ParticleSystem.cs" />
     <Compile Include="Controllers\PhysicsEngine.cs" />
     <Compile Include="Controllers\SoundManager.cs" />
     <Compile Include="Controllers\UnitFactory.cs" />
@@ -123,6 +124,9 @@
     <Compile Include="Models\GameObject.cs" />
     <Compile Include="Models\Gameworld.cs" />
     <Compile Include="Models\Interface.cs" />
+    <Compile Include="Models\Particle.cs" />
+    <Compile Include="Models\ParticleEmitter.cs" />
+    <Compile Include="Models\ParticleSpawner.cs" />
     <Compile Include="Models\Player.cs" />
     <Compile Include="Models\Projectile.cs" />
     <Compile Include="Models\Unit.cs" />

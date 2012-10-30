@@ -12,6 +12,7 @@ namespace Perihelion.Models
         private int activeTime;
         private int totalActiveTime;
         private int damage;
+        
 
         /************************************************************************/
         /* Constructor                                                          */
@@ -38,7 +39,7 @@ namespace Perihelion.Models
         }
          
         /************************************************************************/
-        /* Setters and getters                                                  */
+        /* Accessors                                                            */
         /************************************************************************/
         public int ActiveTime
         {
@@ -57,6 +58,8 @@ namespace Perihelion.Models
             get { return this.totalActiveTime; }
             set { this.totalActiveTime = value; }
         }
+
+        
 
         /************************************************************************/
         /* Other methods                                                        */

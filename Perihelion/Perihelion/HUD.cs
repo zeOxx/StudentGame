@@ -33,7 +33,7 @@ namespace Perihelion
         Vector2 playerPositionVector;
         String numberOfBullets = "Number of bullets: ";
         Vector2 numberOfBulletsVector;
-        String playerSpeed = "Number of bullets: ";
+        String playerSpeed = "Player speed: ";
         Vector2 playerSpeedVector;
         SpriteFont debugFont;
         bool displayDebug;
@@ -110,7 +110,7 @@ namespace Perihelion
             {
                 playerSpeedVector = new Vector2(camera.Center.X, camera.Center.Y + 330);
                 playerPositionVector = new Vector2(camera.Center.X, camera.Center.Y + 300);
-                numberOfBulletsVector = new Vector2(camera.Center.X + 350, camera.Center.Y + 270);
+                numberOfBulletsVector = new Vector2(camera.Center.X, camera.Center.Y + 270);
             }
 #endif
         }
