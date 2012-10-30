@@ -111,8 +111,6 @@ namespace Perihelion.Controllers
             }
             
             //If player reaches end of screen - velocity set to 0 -
-=======
->>>>>>> cf2dbe7f88947e9c0473f29f48cb38a8291dba6d
         }
 
         private void levelBoundCollision(Models.Gameworld gameWorld)
