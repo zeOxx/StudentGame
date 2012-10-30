@@ -9,12 +9,26 @@ namespace Perihelion.Models
 {
     class Enemy : Unit
     {
-        bool projectiles;
-        bool destructibleProjectiles;
-        bool cloak;
-        bool cloaked;
-        int cloakCountdown;
-        static int cloakCooldown = 100;
+        // Texture variables
+        //protected Texture2D texture_turret;
+        //protected Texture2D texture_bullet;
+        //protected double turretRotationAngle = 0.0;
+
+        // Cloak variables
+        private bool cloak;
+        private bool cloaked;
+        private int cloakCountdown = 0;
+        private static int cloakCooldown = 100;
+
+        // Shoting variables
+        private bool hasProjectiles;                // Does enemy have regular projectiles?
+        private bool hasDestructibleProjectiles;    // Does enemy have destructible projectiles?
+        private bool isShooting;
+        private int timeBetweenShots = 50;
+        private int shotTimer = 0;
+        private bool bulletMade = false;
+        private int bulletSpeed = 15;
+        private int bulletCounter = 0;
 
         /************************************************************************/
         /*  Constructors for Enemy object                                       */
@@ -22,111 +36,88 @@ namespace Perihelion.Models
         public Enemy()
             : base()
         {
-            setProjectiles(true, true);
-            this.cloak = false;
-            setCloakcountdown(0);
-            setCloaked(false);
+            Projectiles = true;
+            DestructibleProjectiles = true;
+            Cloak = false;
+            Cloaked = false;
         }
 
         public Enemy(Texture2D texture, float x, float y, Vector2 velocity, int currentHealth, int maxHealth) //WIP
             : base(texture, x, y, velocity, currentHealth, maxHealth)
         {
-            setProjectiles(true, true);
-            this.cloak = false;
-            setCloakcountdown(0);
-            setCloaked(false);
+            Projectiles = true;
+            DestructibleProjectiles = true;
+            Cloak = false;
+            Cloaked = false;
         }
 
         public Enemy(Texture2D texture, float x, float y, Vector2 velocity, int currentHealth, int maxHealth, float damageMultiplier, float attackMultiplier, bool projectiles, bool destructibleProjectiles, bool cloak)
             : base(texture, x, y, velocity, currentHealth, maxHealth, damageMultiplier, attackMultiplier)
         {
-            setProjectiles(projectiles, destructibleProjectiles);
-            this.cloak = cloak;
-            setCloakcountdown(0);
-            if (this.cloak)
+            Projectiles = projectiles;
+            DestructibleProjectiles = destructibleProjectiles;
+            Cloak = cloak;
+            if (Cloak)
             {
-                setCloaked(true);
+                Cloaked = true;
             }
             else
             {
-                setCloaked(false);
+                Cloaked = false;
             }
         }
         /************************************************************************/
-        /*  Set functions for Enemy attributes                                  */
+        /*  Get/Set functions for Enemy attributes                              */
         /************************************************************************/
-        void setProjectiles(bool projectiles, bool destructibleProjectiles)
-        {
-            this.projectiles = projectiles;
-            this.destructibleProjectiles = destructibleProjectiles;
-        }
-
         void setCloaked(bool cloaked)
         {
-            if (!cloaked && getCloaked())
+            if (!Cloaked && Cloak)
             {
                 this.cloakCountdown = cloakCooldown;
-                this.cloaked = cloaked;
+                Cloaked = cloaked;
             }
-            else if (cloakCountdown > 0 && cloaked)
+            else if (cloakCountdown > 0 && Cloaked)
             {
-                this.cloaked = cloaked;
+                Cloaked = cloaked;
             }
         }
 
-        /************************************************************************/
-        /*  Get functions for Enemy attributes                                  */
-        /************************************************************************/
-        bool getProjectiles()
+        bool Projectiles
         {
-            return this.projectiles;
+            get { return this.hasProjectiles; }
+            set { this.hasProjectiles = value; }
         }
 
-        bool getDestructibleProjectiles()
+        bool DestructibleProjectiles
         {
-            return this.destructibleProjectiles;
+            get { return this.hasDestructibleProjectiles; }
+            set { this.hasDestructibleProjectiles = value; }
         }
 
-        bool getCloak()
+        public bool Cloak
         {
-            return this.cloak;
+            get { return this.cloak; }
+            set { this.cloak = value; }
         }
 
-        bool getCloaked()
+        public bool Cloaked
         {
-            return this.cloaked;
+            get { return this.cloaked; }
+            set { this.cloaked = value; }
         }
 
-        void setCloakcountdown(int i)
+        private int CloakCountdown
         {
-            this.cloakCountdown = i;
+            get { return this.cloakCountdown; }
+            set { this.cloakCountdown = value; }
         }
 
         /************************************************************************/
         /*  Update functions for Enemy attributes                               */
         /************************************************************************/
-        void updateCloakcountdown(int i)
+        private void updateCloakcountdown(int i)
         {
             this.cloakCountdown -= i;
-        }
-
-        /************************************************************************/
-        /*  Constructor functions for Enemy attributes                          */
-        /************************************************************************/
-        void constructEnemy(Texture2D texture, float x, float y, Vector2 velocity, int currentHealth, int maxHealth, float damageMultiplier, float attackMultiplier, bool projectiles, bool destructibleProjectiles, bool cloak)
-        {
-            base.constructUnit(texture, x, y, velocity, currentHealth, maxHealth, damageMultiplier, attackMultiplier);
-            setProjectiles(projectiles, destructibleProjectiles);
-            this.cloak = cloak;
-            setCloakcountdown(0);
-            if (this.cloak)
-            {
-                setCloaked(true);
-            }
-            else
-            {
-                setCloaked(false);
-            }
         }
     }
 }
