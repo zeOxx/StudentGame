@@ -136,10 +136,10 @@ namespace Perihelion.Models
         /************************************************************************/
         public virtual void update (Vector2 velocity)
         {
-            updatePosition();
 
             updateVelocity(velocity);
             updateAngle(velocity);
+            updatePosition();
         }
 
         // TEMP KEYBOARD UPDATING

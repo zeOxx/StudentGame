@@ -59,8 +59,11 @@ namespace Perihelion.Controllers
                     //Console.Out.WriteLine((position.X - velocity.X) + " " + (position.Y - velocity.Y));
                 }
             }
+<<<<<<< HEAD
             
             //If player reaches end of screen - velocity set to 0 -
+=======
+>>>>>>> cf2dbe7f88947e9c0473f29f48cb38a8291dba6d
             if (!playerObject.BoundingBox.Intersects(gameWorld.LevelBounds))
             {
                 playerObject.setPosition(prePosition.X, prePosition.Y);
