@@ -17,7 +17,7 @@ namespace Perihelion.Controllers
         private List<int> rockCollisionList;
 
         //private List<int> intList;
-        //private List<Models.GameObject> playerCollisions;
+        static private List<Models.GameObject> collisions;
 
         
 
@@ -28,6 +28,7 @@ namespace Perihelion.Controllers
             //projectileCollisionsList = new List<Models.GameObject>();
             projectileCollisionsList = new List<int>();
             rockCollisionList = new List<int>();
+            collisions = new List<Models.GameObject>();
 
         }
 
@@ -71,16 +72,23 @@ namespace Perihelion.Controllers
                 for (int j = 0; j < gameWorld.getRock().Count; j++)
                 //foreach (Models.Collidable rock in gameWorld.getRock())
                 {
-                    if (gameWorld.getPlayer().getBulletList()[i].BoundingBox.Intersects(gameWorld.getRock()[j].BoundingBox))
+                    if(gameWorld.getRock()[j].BoundingBox.Intersects(gameWorld.getPlayer().getBulletList()[i].BoundingBox))
+                    //if (gameWorld.getPlayer().getBulletList()[i].BoundingBox.Intersects(gameWorld.getRock()[j].BoundingBox))
                     {
                         if (perPixelCollisionDetection(gameWorld.getPlayer().getBulletList()[i],
                                                         gameWorld.getRock()[j]))
                         {
                             //Console.WriteLine("HIT!!!!!");
-                            projectileCollisionsList.Add(i);
-                            rockCollisionList.Add(j);
+                            //projectileCollisionsList.Add(i);
+                            //rockCollisionList.Add(j);
                             //projectileCollisionsList.Add(j);
                             //playerObject.getBulletList().RemoveAt(i);
+                            collisions.Add(gameWorld.getPlayer().getBulletList()[i]);
+                            collisions.Add(gameWorld.getRock()[j]);
+
+                            
+
+
                             Console.WriteLine("KABLAAAM!!");
                         }
                     }
