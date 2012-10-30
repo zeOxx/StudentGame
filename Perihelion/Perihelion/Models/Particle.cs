@@ -18,6 +18,11 @@ namespace Perihelion.Models
         private int totalLife;              // Time that has elapsed in the particles lifetime
         private float rotation;
         private float speed;
+        private int startFading;                    // Tells the class when to start fading. this is set further down to half of a particles life.
+
+        // Fade values
+        private int fadeIncrement = 22;
+        private int fadeAmount = 255;
 
         /************************************************************************/
         /* Constructor                                                          */
@@ -30,6 +35,8 @@ namespace Perihelion.Models
             Life = life;
             Rotation = rotation;
             Speed = speed;
+
+            setStartFading();
 
             Origin = new Vector2(Texture.Width / 2, Texture.Height / 2);
         }
@@ -85,6 +92,25 @@ namespace Perihelion.Models
             private set { this.speed = value; }
         }
 
+        public int StartFading
+        {
+            get { return this.startFading; }
+            private set { this.startFading = value; }
+        }
+
+        /************************************************************************/
+        /* XNA Methods                                                          */
+        /************************************************************************/
+        private void setStartFading()
+        {
+            startFading = Life / 2;
+        }
+
+        public void fade()
+        {
+            fadeAmount -= fadeIncrement;
+        }
+
         /************************************************************************/
         /* XNA Methods                                                          */
         /************************************************************************/
@@ -96,13 +122,10 @@ namespace Perihelion.Models
             position.Y = Position.Y - (Velocity.Y * Speed);
         } 
 
-        public void Draw(SpriteBatch spriteBatch, int fade)
+        public void Draw(SpriteBatch spriteBatch)
         {
-            //if (fade == 255)
-            //{
-            //    spriteBatch.Draw(Texture, Position, null, Color.White, Rotation, origin, 1.0f, SpriteEffects.None, 0f);
-            //}
-             spriteBatch.Draw(Texture, Position, null, new Color(255, 255, 255, (byte)MathHelper.Clamp(fade, 0, 255)), Rotation, origin, 1.0f, SpriteEffects.None, 0f);
+             //spriteBatch.Draw(Texture, Position, null, new Color(255, 255, 255, (byte)MathHelper.Clamp(fadeAmount, 0, 255)), Rotation, origin, 1.0f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(Texture, Position, null, Color.Lerp(Color.White, Color.Transparent, fadeAmount), Rotation, origin, 1.0f, SpriteEffects.None, 0f);
         }
     }
 }

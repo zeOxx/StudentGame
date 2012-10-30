@@ -22,11 +22,6 @@ namespace Perihelion.Models
         private int timeBetweenParticles;           // Stores the ideal time between particles spawning.
         private int timeBetweenUpdates;             // Stores the time that has passed between updates.
         private bool isActive;                      // Does a check to see if the emitter is active or not
-        private int startFading;                    // Tells the class when to start fading. this is set further down to half of a particles life.
-
-        // Fade values
-        private int fadeIncrement = 22;
-        private int fadeAmount = 255;
 
         List<Particle> particles;                   // List of particles to be emitted.
 
@@ -44,8 +39,6 @@ namespace Perihelion.Models
             Velocity = velocity;
             Lifespan = lifespan;
             Life = life;
-
-            setStartFading();
 
             IsActive = true;
 
@@ -111,16 +104,6 @@ namespace Perihelion.Models
         /************************************************************************/
         /* Methods                                                              */
         /************************************************************************/
-        private void setStartFading()
-        {
-            startFading = Life / 2;
-        }
-
-        private void fade()
-        {
-            fadeAmount -= fadeIncrement;
-        }
-
         // This method is copied from the following website: 
         //  http://stackoverflow.com/questions/3365337/best-way-to-generate-a-random-float-in-c-sharp
         //  and has been slightly altered to fit in. 
@@ -178,12 +161,12 @@ namespace Perihelion.Models
         {
             for (int i = 0; i < particles.Count(); i++)
             {
-                if (particles[i].TotalLife > startFading)
+                if (particles[i].TotalLife > particles[i].StartFading)
                 {
-                    fade();
+                    particles[i].fade();
                 }
                 
-                particles[i].Draw(spriteBatch, fadeAmount);
+                particles[i].Draw(spriteBatch);
             }
         }
     }
