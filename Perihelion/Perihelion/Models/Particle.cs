@@ -96,10 +96,13 @@ namespace Perihelion.Models
             position.Y = Position.Y - (Velocity.Y * Speed);
         } 
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch, int fade)
         {
-            spriteBatch.Draw(Texture, Position, null, Color.White, Rotation, origin, 1.0f, SpriteEffects.None, 0f);
-            // spriteBatch.Draw(Texture, Position, null, new Color(255, 255, 255, (byte)MathHelper.Clamp(alphaValue, 0, 255)), Rotation, origin, 1.0f, SpriteEffects.None, 0f);
+            //if (fade == 255)
+            //{
+            //    spriteBatch.Draw(Texture, Position, null, Color.White, Rotation, origin, 1.0f, SpriteEffects.None, 0f);
+            //}
+             spriteBatch.Draw(Texture, Position, null, new Color(255, 255, 255, (byte)MathHelper.Clamp(fade, 0, 255)), Rotation, origin, 1.0f, SpriteEffects.None, 0f);
         }
     }
 }

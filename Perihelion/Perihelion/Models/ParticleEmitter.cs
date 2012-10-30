@@ -14,13 +14,19 @@ namespace Perihelion.Models
         private Vector2 position;
         private Vector2 velocity;
         private int life;
-        private bool isActive;
+
         private Random random;
 
         private int lifespan;                       // Stores the lifespan of the emitter (in ms).
         private int lifeTimer;                      // Stores the time that has passed.
         private int timeBetweenParticles;           // Stores the ideal time between particles spawning.
         private int timeBetweenUpdates;             // Stores the time that has passed between updates.
+        private bool isActive;                      // Does a check to see if the emitter is active or not
+        private int startFading;                    // Tells the class when to start fading. this is set further down to half of a particles life.
+
+        // Fade values
+        private int fadeIncrement = 22;
+        private int fadeAmount = 255;
 
         List<Particle> particles;                   // List of particles to be emitted.
 
@@ -38,6 +44,8 @@ namespace Perihelion.Models
             Velocity = velocity;
             Lifespan = lifespan;
             Life = life;
+
+            setStartFading();
 
             IsActive = true;
 
@@ -103,9 +111,14 @@ namespace Perihelion.Models
         /************************************************************************/
         /* Methods                                                              */
         /************************************************************************/
+        private void setStartFading()
+        {
+            startFading = Life / 2;
+        }
+
         private void fade()
         {
-
+            fadeAmount -= fadeIncrement;
         }
 
         // This method is copied from the following website: 
@@ -114,7 +127,7 @@ namespace Perihelion.Models
         static float NextFloat(Random random)
         {
             double mantissa = (random.NextDouble() * 2.0) - 1.0;
-            double exponent = Math.Pow(2.0, random.Next(-3, 3));
+            double exponent = Math.Pow(2.0, random.Next(-2, 2));
             return (float)(mantissa * exponent);
         }
 
@@ -164,7 +177,14 @@ namespace Perihelion.Models
         public void Draw(SpriteBatch spriteBatch)
         {
             for (int i = 0; i < particles.Count(); i++)
-                particles[i].Draw(spriteBatch);
+            {
+                if (particles[i].TotalLife > startFading)
+                {
+                    fade();
+                }
+                
+                particles[i].Draw(spriteBatch, fadeAmount);
+            }
         }
     }
 }
