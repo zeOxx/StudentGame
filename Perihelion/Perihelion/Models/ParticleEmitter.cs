@@ -14,6 +14,7 @@ namespace Perihelion.Models
         private Vector2 position;
         private Vector2 velocity;
         private int life;
+        private bool isActive;
         private Random random;
 
         private int lifespan;                       // Stores the lifespan of the emitter (in ms).
@@ -37,6 +38,8 @@ namespace Perihelion.Models
             Velocity = velocity;
             Lifespan = lifespan;
             Life = life;
+
+            IsActive = true;
 
             TimeBetweenParticles = 100;
         }
@@ -74,6 +77,12 @@ namespace Perihelion.Models
             private set { this.life = value; }
         }
 
+        public bool IsActive
+        {
+            get { return this.isActive; }
+            private set { this.isActive = value; }
+        }
+
         public int LifeTimer
         {
             get { return this.lifeTimer; }
@@ -94,14 +103,6 @@ namespace Perihelion.Models
         /************************************************************************/
         /* Methods                                                              */
         /************************************************************************/
-        public bool stillActive()
-        {
-            if (LifeTimer < Lifespan)
-                return true;
-            else
-                return false;
-        }
-
         private void fade()
         {
 
@@ -127,20 +128,23 @@ namespace Perihelion.Models
 
             float randomNumberX;
             float randomNumberY;
-
-            if (TimeBetweenUpdates > TimeBetweenParticles)
+            
+            if (lifespan > LifeTimer)
             {
-                randomNumberX = NextFloat(random);
-                randomNumberY = NextFloat(random);
+                if (TimeBetweenUpdates > TimeBetweenParticles)
+                {
+                    randomNumberX = NextFloat(random);
+                    randomNumberY = NextFloat(random);
 
-                velocity.X = randomNumberX;
-                velocity.Y = randomNumberY;
+                    velocity.X = randomNumberX;
+                    velocity.Y = randomNumberY;
 
-                Particle tempParticle = new Particle(Texture, Position, Velocity, Life, 0.0f, 1.0f);
+                    Particle tempParticle = new Particle(Texture, Position, Velocity, Life, 0.0f, 1.0f);
 
-                particles.Add(tempParticle);
+                    particles.Add(tempParticle);
 
-                TimeBetweenUpdates = 0;
+                    TimeBetweenUpdates = 0;
+                }
             }
 
             for (int i = 0; i < particles.Count(); i++)
@@ -149,6 +153,11 @@ namespace Perihelion.Models
 
                 if (particles[i].TotalLife > particles[i].Life)
                     particles.RemoveAt(i);
+            }
+
+            if (particles == null)
+            {
+                IsActive = false;
             }
         }
 

@@ -52,7 +52,7 @@ namespace Perihelion.Controllers
             {
                 for (int i = 0; i < emitterList.Count(); i++)
                 {
-                    if (emitterList[i].stillActive())
+                    if (emitterList[i].IsActive)
                         emitterList[i].update(gameTime, content);
                     else
                         emitterList.RemoveAt(i);
