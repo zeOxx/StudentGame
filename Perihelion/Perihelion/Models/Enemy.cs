@@ -11,7 +11,7 @@ namespace Perihelion.Models
     {
         // Texture variables
         //protected Texture2D texture_turret;
-        //protected Texture2D texture_bullet;
+        protected Texture2D texture_bullet;
         //protected double turretRotationAngle = 0.0;
 
         // Cloak variables
@@ -21,14 +21,24 @@ namespace Perihelion.Models
         private static int cloakCooldown = 100;
 
         // Shoting variables
-        private bool hasProjectiles;                // Does enemy have regular projectiles?
-        private bool hasDestructibleProjectiles;    // Does enemy have destructible projectiles?
-        private bool isShooting;
-        private int timeBetweenShots = 50;
-        private int shotTimer = 0;
+        private bool hasBullets;                // Does enemy have regular projectiles?
+        private bool hasRockets;                // Does enemy have destructible projectiles?
+        private bool shootingBullets;           // 
+        private bool shootingRockets;           //
+        private int timeBetweenBullets = 50;
+        private int timeBetweenRockets = 300;
+        private int bulletTimer = 0;
+        private int rocketTimer = 0;
         private bool bulletMade = false;
-        private int bulletSpeed = 15;
+        private bool rocketMade = false;
+        private int bulletSpeed = 25;
+        private int rocketSpeed = 15;
         private int bulletCounter = 0;
+        private int rocketCounter = 0;
+
+        // Create a lists with bullets/rockets in them
+        List<Projectile> bullets;
+        List<DestructibleProjectile> rockets;
 
         /************************************************************************/
         /*  Constructors for Enemy object                                       */
@@ -36,8 +46,8 @@ namespace Perihelion.Models
         public Enemy()
             : base()
         {
-            Projectiles = true;
-            DestructibleProjectiles = true;
+            Bullets = true;
+            Rockets = false;
             Cloak = false;
             Cloaked = false;
         }
@@ -45,17 +55,22 @@ namespace Perihelion.Models
         public Enemy(Texture2D texture, float x, float y, Vector2 velocity, int currentHealth, int maxHealth) //WIP
             : base(texture, x, y, velocity, currentHealth, maxHealth)
         {
-            Projectiles = true;
-            DestructibleProjectiles = true;
+            Bullets = true;
+            Rockets = false;
             Cloak = false;
             Cloaked = false;
+            ShootingBullets = false;
+            ShootingRockets = false;
+
+            bullets = new List<Projectile>();
+            rockets = new List<DestructibleProjectile>();
         }
 
         public Enemy(Texture2D texture, float x, float y, Vector2 velocity, int currentHealth, int maxHealth, float damageMultiplier, float attackMultiplier, bool projectiles, bool destructibleProjectiles, bool cloak)
             : base(texture, x, y, velocity, currentHealth, maxHealth, damageMultiplier, attackMultiplier)
         {
-            Projectiles = projectiles;
-            DestructibleProjectiles = destructibleProjectiles;
+            Bullets = projectiles;
+            Rockets = destructibleProjectiles;
             Cloak = cloak;
             if (Cloak)
             {
@@ -69,7 +84,7 @@ namespace Perihelion.Models
         /************************************************************************/
         /*  Get/Set functions for Enemy attributes                              */
         /************************************************************************/
-        void setCloaked(bool cloaked)
+        private void setCloaked(bool cloaked)
         {
             if (!Cloaked && Cloak)
             {
@@ -82,16 +97,60 @@ namespace Perihelion.Models
             }
         }
 
-        bool Projectiles
+        private bool Bullets
         {
-            get { return this.hasProjectiles; }
-            set { this.hasProjectiles = value; }
+            get { return this.hasBullets; }
+            set { this.hasBullets = value; }
         }
 
-        bool DestructibleProjectiles
+        private bool ShootingBullets
         {
-            get { return this.hasDestructibleProjectiles; }
-            set { this.hasDestructibleProjectiles = value; }
+            get { return this.shootingBullets; }
+            set { this.shootingBullets = value; }
+        }
+
+        public int BulletNumber
+        {
+            get { return bullets.Count(); }
+        }
+
+        public bool BulletMade
+        {
+            get { return this.bulletMade; }
+            set { this.bulletMade = value; }
+        }
+
+        public int BulletTimeBetween
+        {
+            get { return this.timeBetweenBullets; }
+            set { this.timeBetweenBullets = value; }
+        }
+
+        public List<Projectile> BulletList
+        {
+            get { return bullets; }
+        }
+
+        Texture2D BulletTexture
+        {
+            set { this.texture_bullet = value; }
+        }
+
+        private bool Rockets
+        {
+            get { return this.hasRockets; }
+            set { this.hasRockets = value; }
+        }
+
+        private bool ShootingRockets
+        {
+            get { return this.shootingRockets; }
+            set { this.shootingRockets = value; }
+        }
+
+        public List<DestructibleProjectile> RocketList
+        {
+            get { return rockets; }
         }
 
         public bool Cloak
@@ -115,9 +174,83 @@ namespace Perihelion.Models
         /************************************************************************/
         /*  Update functions for Enemy attributes                               */
         /************************************************************************/
+        public void update(GameTime gameTime, Vector2 velocity, Vector2 bulletDirection, bool rocket)
+        {
+            if (Bullets)
+            {
+                updateBullets(gameTime, bulletDirection);
+            }
+            if (Rockets)
+            {
+                updateRockets(gameTime);
+            }
+
+            base.unitUpdate(velocity);
+        }
+
+        private void updateBullets(GameTime gameTime, Vector2 bulletDirection)
+        {
+            if (ShootingBullets || BulletMade)
+            {
+                bulletTimer += gameTime.ElapsedGameTime.Milliseconds;
+
+                if (bulletTimer > timeBetweenBullets)
+                {
+                    // Reset bulletTimer
+                    bulletMade = true;
+                    bulletTimer = 0;
+
+                    Projectile tempBullet = new Projectile(
+                        texture_bullet,
+                        this.position.X,
+                        this.position.Y,
+                        bulletDirection,
+                        2000,   // ActiveTime in miliseconds (2 secs)
+                        40,     // Damage amount Inge pulled out of his ass
+                        bulletSpeed);
+
+                    tempBullet.Identifier = bulletCounter++;
+
+                    bullets.Add(tempBullet);
+                }
+                else
+                {
+                    if (bulletMade)
+                        bulletMade = false;
+                }
+            }
+
+            // Updates the bullets and removes them if they go over their activeTime
+            for (int i = 0; i < bullets.Count(); i++)
+            {
+                bullets[i].update(gameTime);
+
+                if (bullets[i].TotalActiveTime > bullets[i].ActiveTime)
+                    bullets.RemoveAt(i);
+            }
+        }
+
+        private void updateRockets(GameTime gameTime)
+        {
+            // TODO
+        }
+
         private void updateCloakcountdown(int i)
         {
             this.cloakCountdown -= i;
+        }
+
+        /************************************************************************/
+        /*  Draw functions for Enemy attributes                                 */
+        /************************************************************************/
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            base.Draw(spriteBatch);
+            
+            foreach (Models.Projectile projectiles in bullets)
+            {
+                projectiles.Draw(spriteBatch);
+            }
         }
     }
 }
