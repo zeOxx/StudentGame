@@ -20,7 +20,6 @@ namespace Perihelion
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        
         Gameworld gameWorld;
         Controller gameController;
         ContentHolder contentHolder;
@@ -93,6 +92,7 @@ namespace Perihelion
         /// checking for collisions, gathering input, and playing audio.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
+
         protected override void Update(GameTime gameTime)
         {
             // Allows the game to exit
@@ -127,6 +127,7 @@ namespace Perihelion
             updates++;
         }
 
+
         /// <summary>
         /// This is called when the game should draw itself.
         /// </summary>
@@ -139,7 +140,6 @@ namespace Perihelion
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, gameWorld.getCamera().Transform);
             gameWorld.Draw(spriteBatch);
             spriteBatch.End();
-
             base.Draw(gameTime);
 
             frames++;

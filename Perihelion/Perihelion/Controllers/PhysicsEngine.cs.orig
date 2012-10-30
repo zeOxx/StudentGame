@@ -109,16 +109,21 @@ namespace Perihelion.Controllers
                     }
                 }
             }
+<<<<<<< HEAD
+<<<<<<< HEAD
             
             //If player reaches end of screen - velocity set to 0 -
 =======
 >>>>>>> cf2dbe7f88947e9c0473f29f48cb38a8291dba6d
+            if (!playerObject.BoundingBox.Intersects(gameWorld.LevelBounds))
+=======
         }
 
         private void levelBoundCollision(Models.Gameworld gameWorld)
         {
             Vector2 prePosition = gameWorld.getPlayer().getPosition();
             if (!gameWorld.getPlayer().BoundingBox.Intersects(gameWorld.LevelBounds))
+>>>>>>> ab7a517bf980a28c205374d409391d49207ccdbd
             {
                 gameWorld.getPlayer().setPosition(prePosition.X, prePosition.Y);
                 gameWorld.getPlayer().setVelocity(Vector2.Zero);
