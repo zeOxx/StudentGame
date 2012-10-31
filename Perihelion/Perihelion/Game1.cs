@@ -26,6 +26,12 @@ namespace Perihelion
         InputHandler inputHandler;
         SoundManager soundManager;
 
+
+        private List<spawnEnemies> enemies = new List<spawnEnemies>();
+
+        float spawn = 0.0f;
+        Random random = new Random();
+
         // Window properties
         private int height = 720;
         private int width = 1280;
@@ -95,6 +101,11 @@ namespace Perihelion
 
         protected override void Update(GameTime gameTime)
         {
+            spawn += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            foreach (spawnEnemies enemy in enemies)
+                enemy.update(graphics.GraphicsDevice);
+
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
@@ -123,8 +134,31 @@ namespace Perihelion
 
             // TODO: Add your update logic here
 
+            loadEnemies();
             base.Update(gameTime);
             updates++;
+        }
+
+        public void loadEnemies()
+        {
+            int randY = random.Next(100, 400);
+
+            if (spawn >= 1)
+            {
+                spawn = 0.0f;
+                if (enemies.Count() < 4)
+                    enemies.Add(new spawnEnemies(Content.Load<Texture2D>("texturePlayer"), new Vector2(1100, randY)));
+
+            }
+
+            for (int i = 0; i < enemies.Count(); i++)
+            {
+                if (!enemies[i].isVisible)
+                {
+                    enemies.RemoveAt(i);
+                    i--;
+                }
+            }
         }
 
 
@@ -132,6 +166,8 @@ namespace Perihelion
         /// This is called when the game should draw itself.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        /// 
+
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
@@ -139,6 +175,8 @@ namespace Perihelion
             // TODO: Add your drawing code here
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, gameWorld.getCamera().Transform);
             gameWorld.Draw(spriteBatch);
+            foreach (spawnEnemies enemy in enemies)
+                enemy.draw(spriteBatch);
             spriteBatch.End();
             base.Draw(gameTime);
 

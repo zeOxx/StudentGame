@@ -14,7 +14,6 @@ namespace Perihelion
         private Vector2 velocity;
 
         public bool isVisible = true;
-
         Random random = new Random();
         int randX, randY;
 
@@ -62,6 +61,11 @@ namespace Perihelion
                 this.velocity.Y -= this.velocity.Y;
             if (this.position.X < 0 - this.texture.Width)
                 this.isVisible = false;
+        }
+       
+        public void draw(SpriteBatch spritebatch)
+        {
+            spritebatch.Draw(texture, position, Color.White);
         }
     }
 }

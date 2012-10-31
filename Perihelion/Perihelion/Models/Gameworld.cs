@@ -25,6 +25,7 @@ namespace Perihelion.Models
         private Background background01;
         private Background background02;
         private Camera camera;
+        private spawnEnemies enemy;
         private HUD hud;
         private Rectangle levelBounds;
         private Controllers.ParticleSystem particleSystem;
@@ -125,6 +126,7 @@ namespace Perihelion.Models
             hud.updateHudPositions(camera);
             hud.update(playerObject);
             particleSystem.update(gameTime, contentHolder);
+            
         }
 
         //Returns camera to draw function
@@ -132,7 +134,6 @@ namespace Perihelion.Models
         {
             return camera;
         }
-    
 
         public List<Collidable> getRock()
         {
