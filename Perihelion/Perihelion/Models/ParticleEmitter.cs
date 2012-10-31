@@ -22,18 +22,14 @@ namespace Perihelion.Models
         private int timeBetweenParticles;           // Stores the ideal time between particles spawning.
         private int timeBetweenUpdates;             // Stores the time that has passed between updates.
         private bool isActive;                      // Does a check to see if the emitter is active or not
-        private int startFading;                    // Tells the class when to start fading. this is set further down to half of a particles life.
-
-        // Fade values
-        private int fadeIncrement = 22;
-        private int fadeAmount = 255;
+        private bool randomDirections;
 
         List<Particle> particles;                   // List of particles to be emitted.
 
         /************************************************************************/
         /* Constructor                                                          */
         /************************************************************************/
-        public ParticleEmitter(Texture2D texture, Vector2 position, int lifespan, int life)
+        public ParticleEmitter(Texture2D texture, Vector2 position, int lifespan, int life, int timeBetweenParticles, bool randomDirections, Vector2 direction)
         {
             particles = new List<Particle>();
 
@@ -41,11 +37,11 @@ namespace Perihelion.Models
 
             Texture = texture;
             Position = position;
-            Velocity = velocity;
+            Velocity = direction;
             Lifespan = lifespan;
             Life = life;
-
-            setStartFading();
+            TimeBetweenParticles = timeBetweenParticles;
+            RandomDirections = randomDirections;
 
             IsActive = true;
 
@@ -91,6 +87,12 @@ namespace Perihelion.Models
             private set { this.isActive = value; }
         }
 
+        public bool RandomDirections
+        {
+            get { return this.randomDirections; }
+            private set { this.randomDirections = value; }
+        }
+
         public int LifeTimer
         {
             get { return this.lifeTimer; }
@@ -111,16 +113,6 @@ namespace Perihelion.Models
         /************************************************************************/
         /* Methods                                                              */
         /************************************************************************/
-        private void setStartFading()
-        {
-            startFading = Life / 2;
-        }
-
-        private void fade()
-        {
-            fadeAmount -= fadeIncrement;
-        }
-
         // This method is copied from the following website: 
         //  http://stackoverflow.com/questions/3365337/best-way-to-generate-a-random-float-in-c-sharp
         //  and has been slightly altered to fit in. 
@@ -146,11 +138,14 @@ namespace Perihelion.Models
             {
                 if (TimeBetweenUpdates > TimeBetweenParticles)
                 {
-                    randomNumberX = NextFloat(random);
-                    randomNumberY = NextFloat(random);
+                    if (RandomDirections)
+                    {
+                        randomNumberX = NextFloat(random);
+                        randomNumberY = NextFloat(random);
 
-                    velocity.X = randomNumberX;
-                    velocity.Y = randomNumberY;
+                        velocity.X = randomNumberX;
+                        velocity.Y = randomNumberY;
+                    }
 
                     Particle tempParticle = new Particle(Texture, Position, Velocity, Life, 0.0f, 1.0f);
 
@@ -178,12 +173,12 @@ namespace Perihelion.Models
         {
             for (int i = 0; i < particles.Count(); i++)
             {
-                if (particles[i].TotalLife > startFading)
+                if (particles[i].TotalLife > particles[i].StartFading)
                 {
-                    fade();
+                    particles[i].fade();
                 }
                 
-                particles[i].Draw(spriteBatch, fadeAmount);
+                particles[i].Draw(spriteBatch);
             }
         }
     }
