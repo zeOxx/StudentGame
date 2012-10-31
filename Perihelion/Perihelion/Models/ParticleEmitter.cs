@@ -22,13 +22,14 @@ namespace Perihelion.Models
         private int timeBetweenParticles;           // Stores the ideal time between particles spawning.
         private int timeBetweenUpdates;             // Stores the time that has passed between updates.
         private bool isActive;                      // Does a check to see if the emitter is active or not
+        private bool randomDirections;
 
         List<Particle> particles;                   // List of particles to be emitted.
 
         /************************************************************************/
         /* Constructor                                                          */
         /************************************************************************/
-        public ParticleEmitter(Texture2D texture, Vector2 position, int lifespan, int life)
+        public ParticleEmitter(Texture2D texture, Vector2 position, int lifespan, int life, int timeBetweenParticles, bool randomDirections, Vector2 direction)
         {
             particles = new List<Particle>();
 
@@ -36,9 +37,11 @@ namespace Perihelion.Models
 
             Texture = texture;
             Position = position;
-            Velocity = velocity;
+            Velocity = direction;
             Lifespan = lifespan;
             Life = life;
+            TimeBetweenParticles = timeBetweenParticles;
+            RandomDirections = randomDirections;
 
             IsActive = true;
 
@@ -82,6 +85,12 @@ namespace Perihelion.Models
         {
             get { return this.isActive; }
             private set { this.isActive = value; }
+        }
+
+        public bool RandomDirections
+        {
+            get { return this.randomDirections; }
+            private set { this.randomDirections = value; }
         }
 
         public int LifeTimer
@@ -129,11 +138,14 @@ namespace Perihelion.Models
             {
                 if (TimeBetweenUpdates > TimeBetweenParticles)
                 {
-                    randomNumberX = NextFloat(random);
-                    randomNumberY = NextFloat(random);
+                    if (RandomDirections)
+                    {
+                        randomNumberX = NextFloat(random);
+                        randomNumberY = NextFloat(random);
 
-                    velocity.X = randomNumberX;
-                    velocity.Y = randomNumberY;
+                        velocity.X = randomNumberX;
+                        velocity.Y = randomNumberY;
+                    }
 
                     Particle tempParticle = new Particle(Texture, Position, Velocity, Life, 0.0f, 1.0f);
 

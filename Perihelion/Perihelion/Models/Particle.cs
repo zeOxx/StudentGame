@@ -124,7 +124,6 @@ namespace Perihelion.Models
 
         public void Draw(SpriteBatch spriteBatch)
         {
-             //spriteBatch.Draw(Texture, Position, null, new Color(255, 255, 255, (byte)MathHelper.Clamp(fadeAmount, 0, 255)), Rotation, origin, 1.0f, SpriteEffects.None, 0f);
             spriteBatch.Draw(Texture, Position, null, Color.White * fadeAmount, Rotation, origin, 1.0f, SpriteEffects.None, 0f);
         }
     }
