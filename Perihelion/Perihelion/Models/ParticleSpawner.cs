@@ -135,6 +135,8 @@ namespace Perihelion.Models
             {
                 if (TimeBetweenUpdates > TimeBetweenParticles)
                 {
+                    Vector2 prevVelocity = Velocity;
+
                     if (RandomDirection)
                     {
                         randomNumberX = NextFloat(random);
@@ -142,6 +144,26 @@ namespace Perihelion.Models
 
                         velocity.X = randomNumberX;
                         velocity.Y = randomNumberY;
+                    }
+                    else
+                    {
+                        if (Velocity.X != 0)
+                        {
+                            randomNumberX = random.Next(1, 3);
+                            if (randomNumberX == 1)
+                                velocity.X += 0.2f;
+                            else if (randomNumberX == 2)
+                                velocity.X -= 0.2f;
+                        }
+
+                        if (Velocity.Y != 0)
+                        {
+                            randomNumberY = random.Next(1, 3);
+                            if (randomNumberY == 1)
+                                velocity.Y += 0.2f;
+                            else if (randomNumberY == 2)
+                                velocity.Y -= 0.2f;
+                        }
                     }
 
                     Particle tempParticle = new Particle(Texture, Position, Velocity, Life, 0.0f, 1.0f);
@@ -151,6 +173,8 @@ namespace Perihelion.Models
                     CurrentNumberOfParticles++;
 
                     TimeBetweenUpdates++;
+
+                    Velocity = prevVelocity;
                 }
             }
 
