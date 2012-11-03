@@ -17,7 +17,7 @@ namespace Perihelion.Models
 
         private Random random;
 
-        private int lifespan;                       // Stores the lifespan of the emitter (in ms).
+        private int lifespan;                       // Stores the lifespan of the emitter (in ms). A lifespan of 0 makes the particleeffect last forever, and means it's attached to an object
         private int lifeTimer;                      // Stores the time that has passed.
         private int timeBetweenParticles;           // Stores the ideal time between particles spawning.
         private int timeBetweenUpdates;             // Stores the time that has passed between updates.
@@ -126,15 +126,18 @@ namespace Perihelion.Models
         /************************************************************************/
         /* XNA Methods                                                          */
         /************************************************************************/
-        public void update(GameTime gameTime, ContentHolder content)
+        public void update(GameTime gameTime, ContentHolder content, Vector2 position, Vector2 velocity)
         {
             LifeTimer += gameTime.ElapsedGameTime.Milliseconds;
             TimeBetweenUpdates += gameTime.ElapsedGameTime.Milliseconds;
 
+            if (lifespan == 0)
+                Position = position;
+
             float randomNumberX;
             float randomNumberY;
             
-            if (lifespan > LifeTimer)
+            if (lifespan > LifeTimer || lifespan == 0)
             {
                 if (TimeBetweenUpdates > TimeBetweenParticles)
                 {
