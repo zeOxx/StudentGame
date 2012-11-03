@@ -131,8 +131,12 @@ namespace Perihelion.Models
             LifeTimer += gameTime.ElapsedGameTime.Milliseconds;
             TimeBetweenUpdates += gameTime.ElapsedGameTime.Milliseconds;
 
+            // Only uses the velocity passed in from the call if the lifespan is 0, eg if the emitter is attached to an object.
+            //  This is not final behavior, but it works for now
             if (lifespan == 0)
-                Position = position;
+                Velocity = velocity;
+
+            Position = position;
 
             float randomNumberX;
             float randomNumberY;
