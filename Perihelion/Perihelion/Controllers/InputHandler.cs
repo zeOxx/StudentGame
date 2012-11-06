@@ -108,14 +108,14 @@ namespace Perihelion
         }
 
         // TEMP STICK HANDLING
-        public Vector2 getMovementInputFromPlayer()
+        public Vector2 getLeftStickMovement()
         {
             Vector2 movementInput = new Vector2(currentGamePadState.ThumbSticks.Left.X,
                                                 currentGamePadState.ThumbSticks.Left.Y);
             return movementInput;
         }
 
-        public Vector2 getShootingInputFromPlayer()
+        public Vector2 getRightStickMovement()
         {
             Vector2 movementInput = new Vector2(currentGamePadState.ThumbSticks.Right.X,
                                                 currentGamePadState.ThumbSticks.Right.Y);

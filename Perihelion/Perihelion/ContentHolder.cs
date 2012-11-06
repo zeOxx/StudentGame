@@ -40,6 +40,9 @@ namespace Perihelion
         public SoundEffect pang;
         public Song soundtrack;
 
+        // Fonts
+        public SpriteFont menuFont;
+
 #if DEBUG
         // Debug font
         public SpriteFont debugFont;
@@ -50,6 +53,7 @@ namespace Perihelion
             loadTextures(content);
             loadSounds(content);
             loadParticles(content);
+            loadFonts(content);
         }
 
         private void loadSounds(ContentManager content)
@@ -81,16 +85,21 @@ namespace Perihelion
             // HUD
             healthAuxBar = content.Load<Texture2D>("HUD\\hud_healthAux");
             special = content.Load<Texture2D>("HUD\\hud_special_01");
-
-#if DEBUG
-            // Debug font
-            debugFont = content.Load<SpriteFont>("debugFont");
-#endif
         }
 
         private void loadParticles(ContentManager content)
         {
             particle_test = content.Load<Texture2D>("Particles\\particle_test");
+        }
+
+        private void loadFonts(ContentManager content)
+        {
+            menuFont = content.Load<SpriteFont>("menuFont");
+
+#if DEBUG
+            // Debug font
+            debugFont = content.Load<SpriteFont>("debugFont");
+#endif
         }
     }
 }

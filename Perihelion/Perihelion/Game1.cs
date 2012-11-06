@@ -35,7 +35,6 @@ namespace Perihelion
 
         public static GameStates gamestate;
 
-
         private List<spawnEnemies> enemies = new List<spawnEnemies>();
 
         float spawn = 0.0f;
@@ -73,7 +72,6 @@ namespace Perihelion
         {
             // TODO: Add your initialization logic here
             gamestate = GameStates.Menu;
-
             contentHolder = new ContentHolder(this.Content);
             soundManager = new SoundManager(contentHolder);
             gameController = new Controllers.Controller(contentHolder, soundManager);

@@ -18,6 +18,7 @@ namespace Perihelion.Controllers
         private ContentHolder content;
         private SoundManager soundManager;
         private PhysicsEngine physicsEngine;
+        private Menu menu;
 
         public Controller(ContentHolder content, SoundManager soundManager)
         {
@@ -48,6 +49,17 @@ namespace Perihelion.Controllers
             playSounds();
 
             return gameWorld;
+        }
+
+        public void updateMenu(InputHandler inputHandler, GameTime gameTime)
+        {
+            Vector2 leftStick = inputHandler.getLeftStickMovement();
+            bool aButton = false;                       // flagged if A button is pressed
+
+            if (inputHandler.ButtonReleased(Buttons.A))
+                aButton = true;
+
+            menu.update(leftStick, aButton, gameTime);
         }
 
         public void handleProjectileCollisions(Models.Gameworld gameWorld)
@@ -86,13 +98,13 @@ namespace Perihelion.Controllers
             }
         }
 
-        // Checks input
+        // Checks input during gameplay
         //Gameworld as argument is JUST FOR TESTING-PURPOSES
         public void checkInput(GameTime gameTime, InputHandler inputHandler, Gameworld gameWorld)
         {
             // Controller input
-            Vector2 movementVector = inputHandler.getMovementInputFromPlayer();
-            Vector2 rightStick = inputHandler.getShootingInputFromPlayer();
+            Vector2 movementVector = inputHandler.getLeftStickMovement();
+            Vector2 rightStick = inputHandler.getRightStickMovement();
             //playerObject.update(movementVector, rightStick, gameTime);
 
             
