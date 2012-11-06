@@ -13,8 +13,8 @@ namespace Perihelion.Controllers
         //private List<Models.Collidable> rocks;
         //private Models.Player playerObject;
         //private ArrayList collisions;
-        private List<int> projectileCollisionsList;
-        private List<int> rockCollisionList;
+        private List<int> projectileCollisionsIndex;
+        private List<int> rockCollisionIndex;
 
         //private List<int> intList;
         static private List<Models.GameObject> collisions;
@@ -26,8 +26,8 @@ namespace Perihelion.Controllers
             //rocks = new List<Models.Collidable>();
             //collisions = new ArrayList();
             //projectileCollisionsList = new List<Models.GameObject>();
-            projectileCollisionsList = new List<int>();
-            rockCollisionList = new List<int>();
+            projectileCollisionsIndex = new List<int>();
+            rockCollisionIndex = new List<int>();
             collisions = new List<Models.GameObject>();
 
         }
@@ -35,8 +35,10 @@ namespace Perihelion.Controllers
         public void collisionDetection(ref Models.Gameworld gameWorld, Vector2 movementVector, Vector2 rightStick, GameTime gameTime)
         {
             //playerObject.update(movementVector, rightStick, gameTime);
-            projectileCollisionsList.Clear();
 
+            rockCollisionIndex.Clear();
+            projectileCollisionsIndex.Clear();
+            collisions.Clear();
             
             //rocks = gameWorld.getRock();
             //playerObject = gameWorld.getPlayer();
@@ -46,14 +48,14 @@ namespace Perihelion.Controllers
             levelBoundCollision(gameWorld);
         }
 
-        public List<int> getProjectileCollisions()
+        public List<Models.GameObject> getCollisions()
         {
-            return projectileCollisionsList;
+            return collisions;
         }
 
         public List<int> getRockCollisions()
         {
-            return rockCollisionList;
+            return rockCollisionIndex;
         }
 
 
@@ -61,12 +63,13 @@ namespace Perihelion.Controllers
         {
             //List<Models.Projectile> bullets = gameWorld.getPlayer().getBulletList();
 
+            List<int> collidedProjectileIndexes = new List<int>();
+
 
 
             //Console.WriteLine("Lengde: " + playerObject.getBulletList().Count);
 
             for (int i = 0; i < gameWorld.getPlayer().getBulletList().Count; i++)
-            //foreach (Models.Projectile bullet in gameWorld.getPlayer().getBulletList())
             {
                 //Vector2 bulletPrePosition = gameWorld.getPlayer().getBulletList()[i].getPosition();
                 for (int j = 0; j < gameWorld.getRock().Count; j++)
@@ -78,21 +81,22 @@ namespace Perihelion.Controllers
                         if (perPixelCollisionDetection(gameWorld.getPlayer().getBulletList()[i],
                                                         gameWorld.getRock()[j]))
                         {
-                            //Console.WriteLine("HIT!!!!!");
-                            //projectileCollisionsList.Add(i);
-                            //rockCollisionList.Add(j);
-                            //projectileCollisionsList.Add(j);
-                            //playerObject.getBulletList().RemoveAt(i);
+                            collidedProjectileIndexes.Add(i);
+                            rockCollisionIndex.Add(j);
+
                             collisions.Add(gameWorld.getPlayer().getBulletList()[i]);
                             collisions.Add(gameWorld.getRock()[j]);
 
-                            
-
-
-                            Console.WriteLine("KABLAAAM!!");
+                            //Console.WriteLine("KABLAAAM!!");
                         }
                     }
                 }
+            }
+
+            //Remove collided projectiles. 
+            for (int i = 0; i < collidedProjectileIndexes.Count; i++)
+            {
+                gameWorld.getPlayer().getBulletList().RemoveAt(collidedProjectileIndexes[i]);
             }
 
         }

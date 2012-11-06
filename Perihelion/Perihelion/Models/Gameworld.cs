@@ -91,10 +91,10 @@ namespace Perihelion.Models
             particleSystem.newEmitter(contentHolder.particle_test, getPlayer().getPosition(), 0, 200, 12, false, getPlayer().getVelocity());
             particleSystem.newSpawner(contentHolder.particle_test, new Vector2(-100, -100), 1000, 500, 3, true, new Vector2(0, 0));
 
-            rocks.Add(new Collidable(contentHolder.textureRock01, 150, 300, Vector2.Zero));
-            rocks.Add(new Collidable(contentHolder.textureRock02, -250, -330, Vector2.Zero));
-            rocks.Add(new Collidable(contentHolder.textureRock01, 500, 300, Vector2.Zero));
-			rocks.Add(new Collidable(contentHolder.textureRock02, -100, 250, Vector2.Zero));
+            rocks.Add(new Collidable(contentHolder.textureRock01, 150, 300, Vector2.Zero, 400));
+            rocks.Add(new Collidable(contentHolder.textureRock02, -250, -330, Vector2.Zero, 40));
+            rocks.Add(new Collidable(contentHolder.textureRock01, 500, 300, Vector2.Zero, 70));
+			rocks.Add(new Collidable(contentHolder.textureRock02, -100, 250, Vector2.Zero, 200));
         }
 
         // Creates the bounds for the level

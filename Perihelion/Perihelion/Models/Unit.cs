@@ -27,7 +27,7 @@ namespace Perihelion.Models
         }
 
         public Unit(Texture2D texture, float x, float y, Vector2 velocity, int currentHealth, int maxHealth)
-            : base(texture, x, y, velocity)
+            : base(texture, x, y, velocity, currentHealth)
         {
             setHealth(currentHealth, maxHealth);
             setDamageMultiplier(1);
@@ -35,7 +35,7 @@ namespace Perihelion.Models
         }
 
         public Unit(Texture2D texture, float x, float y, Vector2 velocity, int currentHealth, int maxHealth, float damageMultiplier, float attackMultiplier)
-            : base(texture, x, y, velocity)
+            : base(texture, x, y, velocity, currentHealth)
         {
             setHealth(currentHealth, maxHealth);
             setDamageMultiplier(damageMultiplier);
