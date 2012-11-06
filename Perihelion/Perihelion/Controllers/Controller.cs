@@ -64,21 +64,17 @@ namespace Perihelion.Controllers
 
         public void handleProjectileCollisions(Models.Gameworld gameWorld)
         {
-            //List<int> projectileCollisions = physicsEngine.getProjectileCollisions();
+            List<int> rockCollisionsIndex = physicsEngine.getRockCollisions();
+            List<Models.GameObject> collisions = physicsEngine.getCollisions();
 
-            for (int i = 0; i < physicsEngine.getProjectileCollisions().Count; i++)
+            for(int i = 0; i < rockCollisionsIndex.Count; i++)
             {
-                playerObject.getBulletList().RemoveAt(physicsEngine.getProjectileCollisions()[i]);
-                //projectileCollisions.RemoveAt(i);
-                //Console.WriteLine("Removed!");
+                gameWorld.getRock().RemoveAt(rockCollisionsIndex[i]);
             }
 
-            List<Models.Collidable> rocks = gameWorld.getRock();
-            //for (int i = 0; i < physicsEngine.getRockCollisions().Count; i++)
+            //for (int i = 0; i < collisions.Count; i++)
             //{
-              //  gameWorld.getRock().RemoveAt(physicsEngine.getRockCollisions()[i]);
-                //projectileCollisions.RemoveAt(i);
-                //Console.WriteLine("Removed!");
+            //    for(int j = 0; j < gameWorld.getRock()
             //}
 
         }
