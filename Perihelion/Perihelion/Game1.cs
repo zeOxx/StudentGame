@@ -26,6 +26,15 @@ namespace Perihelion
         InputHandler inputHandler;
         SoundManager soundManager;
 
+        // Handling gamestates
+        public enum GameStates
+        {
+            Menu,
+            Running
+        }
+
+        public static GameStates gamestate;
+
 
         private List<spawnEnemies> enemies = new List<spawnEnemies>();
 
@@ -63,6 +72,8 @@ namespace Perihelion
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            gamestate = GameStates.Menu;
+
             contentHolder = new ContentHolder(this.Content);
             soundManager = new SoundManager(contentHolder);
             gameController = new Controllers.Controller(contentHolder, soundManager);
