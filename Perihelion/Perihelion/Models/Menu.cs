@@ -13,17 +13,20 @@ namespace Perihelion.Models
         private List<string> menuItems;
         private int iterator;
         public string infoText;
-        public string title;
         private int position;
-        SpriteFont font;
+        Texture2D title;
+        public bool running;
+
+        private int inputAllowed = 500;            // Time that should elapse between input is read.
+        private int elapsedSinceLastInput = 0;      // Time that has elapsed since last input.
 
         /************************************************************************/
         /* Constructor                                                          */
         /************************************************************************/
-        public Menu(string title, SpriteFont font)
+        public Menu(string derp, Texture2D title)
         {
             Title = title;
-            Font = font;
+            //Font = font;
 
             MenuItems = new List<string>();
             MenuItems.Add("Start game");
@@ -32,12 +35,13 @@ namespace Perihelion.Models
             Iterator = 0;
             Position = 0;
             infoText = string.Empty;
+            Running = false;
         }
 
         /************************************************************************/
         /* Accessors                                                            */
         /************************************************************************/
-        public string Title
+        public Texture2D Title
         {
             get { return this.title; }
             private set { this.title = value; }
@@ -70,10 +74,10 @@ namespace Perihelion.Models
             private set { this.position = value; }
         }
 
-        public SpriteFont Font
+        public bool Running
         {
-            get { return this.font; }
-            private set { this.font = value; }
+            get { return this.running; }
+            private set { this.running = value; }
         }
 
         /************************************************************************/
@@ -94,21 +98,44 @@ namespace Perihelion.Models
         /************************************************************************/
         public void update(Vector2 movement, bool aButton, GameTime gameTime)
         {
+            elapsedSinceLastInput = gameTime.ElapsedGameTime.Milliseconds;
 
+            if (elapsedSinceLastInput > inputAllowed)
+            {
+                // A series of if checks to make sure position is valid.
+                if (movement.Y < 0)
+                    Position++;
+                else if (movement.Y > 0)
+                    Position--;
+
+                if (Position < 0)
+                    Position = 0;
+                if (Position > MenuItems.Count - 1)
+                    Position = MenuItems.Count - 1;
+
+                elapsedSinceLastInput = 0;
+            }
+
+            if (aButton)
+                running = false;
         }
 
-        public void Draw(SpriteBatch spriteBatch, int screenWidth, int screenHeight, SpriteFont arial)
+        public void Draw(SpriteBatch spriteBatch, int screenWidth, int screenHeight)
         {
-            Vector2 firstPosition = new Vector2(screenWidth / 2, screenHeight / 2);
-            Vector2 nextPosition = firstPosition;
+            Vector2 titlePosition = new Vector2(screenWidth / 2, screenHeight / 2);
+            Vector2 itemPosition = new Vector2(titlePosition.X, titlePosition.Y + 200);
 
-            spriteBatch.DrawString(Font, Title, firstPosition, Color.White);
+            spriteBatch.Draw(Title, titlePosition, Color.White);
 
-            for (int i = 0; i < getNumberOfItems(); i++)
+            /*for (int i = 0; i < getNumberOfItems(); i++)
             {
-                nextPosition.Y += 100;
-                spriteBatch.DrawString(Font, MenuItems[i], nextPosition, Color.White);
-            }
+                if (i  == Position)
+                    spriteBatch.DrawString(Font, MenuItems[i], itemPosition, Color.Green);
+                else
+                    spriteBatch.DrawString(Font, MenuItems[i], itemPosition, Color.White);
+
+                itemPosition.Y += 100;
+            }*/
         }
     }
 }

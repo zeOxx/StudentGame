@@ -18,9 +18,8 @@ namespace Perihelion.Controllers
         private ContentHolder content;
         private SoundManager soundManager;
         private PhysicsEngine physicsEngine;
-        private Menu menu;
 
-        public Controller(ContentHolder content, SoundManager soundManager)
+        public Controller(ContentHolder content, SoundManager soundManager, string title)
         {
             //playerObject = new GameObject[Constants.maxNumberOfObjectsInArray];
             this.soundManager = soundManager;
@@ -51,7 +50,7 @@ namespace Perihelion.Controllers
             return gameWorld;
         }
 
-        public void updateMenu(InputHandler inputHandler, GameTime gameTime)
+        public Menu updateMenu(Menu menu, InputHandler inputHandler, GameTime gameTime)
         {
             Vector2 leftStick = inputHandler.getLeftStickMovement();
             bool aButton = false;                       // flagged if A button is pressed
@@ -60,6 +59,8 @@ namespace Perihelion.Controllers
                 aButton = true;
 
             menu.update(leftStick, aButton, gameTime);
+
+            return menu;
         }
 
         public void handleProjectileCollisions(Models.Gameworld gameWorld)

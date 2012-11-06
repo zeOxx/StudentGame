@@ -25,6 +25,7 @@ namespace Perihelion
         ContentHolder contentHolder;
         InputHandler inputHandler;
         SoundManager soundManager;
+        Menu menu;
 
         // Handling gamestates
         public enum GameStates
@@ -43,7 +44,7 @@ namespace Perihelion
         // Window properties
         private int height = 720;
         private int width = 1280;
-        private String gameName = "Perihelion";
+        private string gameName = "Perihelion";
 
         // FPS and UPS
         private int updates;
@@ -74,9 +75,10 @@ namespace Perihelion
             gamestate = GameStates.Menu;
             contentHolder = new ContentHolder(this.Content);
             soundManager = new SoundManager(contentHolder);
-            gameController = new Controllers.Controller(contentHolder, soundManager);
+            gameController = new Controllers.Controller(contentHolder, soundManager, gameName);
             inputHandler = new InputHandler();
             gameWorld = new Models.Gameworld(contentHolder, GraphicsDevice.Viewport, 4096);    //TODO SINGLETON
+            menu = new Menu(gameName, contentHolder.title);
 
             base.Initialize();
         }
@@ -125,9 +127,18 @@ namespace Perihelion
             // Exits the game when ESC is pressed
             if (keyboard.IsKeyDown(Keys.Escape))
                 Exit();
-
-            // Sends gamestate to controller and receives updated state. 
-            gameWorld = gameController.updateGameWorld(gameWorld, gameTime, inputHandler);
+            
+            // Checks to see what should be updated, menu or gameworld
+            if (gamestate == GameStates.Menu)
+            {
+                menu = gameController.updateMenu(menu, inputHandler, gameTime);
+            }
+            else if (gamestate == GameStates.Running)
+            {
+                // Sends gamestate to controller and receives updated state. 
+                gameWorld = gameController.updateGameWorld(gameWorld, gameTime, inputHandler);
+                loadEnemies();
+            }
 
             // Calculates Frames Per Second and Updates Per Second and puts them in the window title
             elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -142,10 +153,18 @@ namespace Perihelion
             }
 
             // TODO: Add your update logic here
-
-            loadEnemies();
             base.Update(gameTime);
             updates++;
+
+            if (menu.Running)
+            {
+                if (gamestate != GameStates.Menu)
+                    gamestate = GameStates.Menu;
+            }
+            else
+            {
+                gamestate = GameStates.Running;
+            }
         }
 
         public void loadEnemies()
@@ -183,9 +202,17 @@ namespace Perihelion
 
             // TODO: Add your drawing code here
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, gameWorld.getCamera().Transform);
-            gameWorld.Draw(spriteBatch);
-            foreach (spawnEnemies enemy in enemies)
+
+            if (gamestate == GameStates.Menu)
+            {
+                menu.Draw(spriteBatch, width, height);
+            }
+            else if (gamestate == GameStates.Running)
+            {
+                gameWorld.Draw(spriteBatch);
+                foreach (spawnEnemies enemy in enemies)
                 enemy.draw(spriteBatch);
+            } 
             spriteBatch.End();
             base.Draw(gameTime);
 
