@@ -78,7 +78,7 @@ namespace Perihelion
             gameController = new Controllers.Controller(contentHolder, soundManager, gameName);
             inputHandler = new InputHandler();
             gameWorld = new Models.Gameworld(contentHolder, GraphicsDevice.Viewport, 4096);    //TODO SINGLETON
-            menu = new Menu(gameName, contentHolder.title);
+            menu = new Menu(contentHolder);
 
             base.Initialize();
         }
@@ -125,7 +125,7 @@ namespace Perihelion
             KeyboardState keyboard = Keyboard.GetState();
 
             // Exits the game when ESC is pressed
-            if (keyboard.IsKeyDown(Keys.Escape))
+            if (keyboard.IsKeyDown(Keys.Escape) || menu.Exiting)
                 Exit();
             
             // Checks to see what should be updated, menu or gameworld
@@ -201,14 +201,14 @@ namespace Perihelion
             GraphicsDevice.Clear(Color.Black);
 
             // TODO: Add your drawing code here
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, gameWorld.getCamera().Transform);
-
             if (gamestate == GameStates.Menu)
             {
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
                 menu.Draw(spriteBatch, width, height);
             }
             else if (gamestate == GameStates.Running)
             {
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, gameWorld.getCamera().Transform);
                 gameWorld.Draw(spriteBatch);
                 foreach (spawnEnemies enemy in enemies)
                 enemy.draw(spriteBatch);

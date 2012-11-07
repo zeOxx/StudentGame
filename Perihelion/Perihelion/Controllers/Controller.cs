@@ -52,13 +52,25 @@ namespace Perihelion.Controllers
 
         public Menu updateMenu(Menu menu, InputHandler inputHandler, GameTime gameTime)
         {
-            Vector2 leftStick = inputHandler.getLeftStickMovement();
-            bool aButton = false;                       // flagged if A button is pressed
+            inputHandler.updateInput();
 
-            if (inputHandler.ButtonReleased(Buttons.A))
+            Vector2 movementVector = inputHandler.getLeftStickMovement();
+
+            bool aButton = false;                       // flagged if A button, or Enter, is pressed
+
+            int movement = 0;                           // Tells the menu where to move next (-1 is up, 1 is down)
+
+            if (inputHandler.ButtonPressed(Buttons.DPadDown) || movementVector.Y < 0 || inputHandler.KeyDown(Keys.Down))
+                movement = 1;
+            if (inputHandler.ButtonPressed(Buttons.DPadUp) || movementVector.Y > 0 || inputHandler.KeyDown(Keys.Up))
+            {
+                movement = -1;
+            }
+
+            if (inputHandler.ButtonPressed(Buttons.A) || inputHandler.KeyDown(Keys.Enter))
                 aButton = true;
 
-            menu.update(leftStick, aButton, gameTime);
+            menu.update(movement, aButton, gameTime);
 
             return menu;
         }
