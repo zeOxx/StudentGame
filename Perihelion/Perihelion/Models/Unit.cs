@@ -13,9 +13,7 @@ namespace Perihelion.Models
         protected Texture2D texture_turret;
         protected Texture2D texture_bullet;
         protected Texture2D texture_rocket;
-
-        private int currentHealth;
-        private int maxHealth;
+        
         private float damageMultiplier;
         private float attackMultiplier;
         private float accelerationMultiplier = 0.02f;
@@ -47,45 +45,29 @@ namespace Perihelion.Models
         public Unit()
             : base()
         {
-            CurrentHealth = 100;
-            MaxHealth = 100;
             DamageMultiplier = 1;
             AttackMultiplier = 1;
         }
 
         public Unit(Texture2D texture, float x, float y, Vector2 velocity, int currentHealth, int maxHealth)
-            : base(texture, x, y, velocity, currentHealth)
+            : base(texture, x, y, velocity, currentHealth, maxHealth)
         {
-            CurrentHealth = currentHealth;
-            MaxHealth = maxHealth;
             DamageMultiplier = 1;
             AttackMultiplier = 1;
         }
 
         public Unit(Texture2D texture, float x, float y, Vector2 velocity, int currentHealth, int maxHealth, float damageMultiplier, float attackMultiplier)
-            : base(texture, x, y, velocity, currentHealth)
+            : base(texture, x, y, velocity, currentHealth, maxHealth)
         {
-            CurrentHealth = currentHealth;
-            MaxHealth = maxHealth;
             DamageMultiplier = damageMultiplier;
             AttackMultiplier = attackMultiplier;
         }
 
-        /************************************************************************/
-        /*  Set functions for Unit attributes                                   */
-        /************************************************************************/
-        public int CurrentHealth
-        {
-            get { return this.currentHealth; }
-            set { this.currentHealth = value; }
-        }
+        
 
-        public int MaxHealth
-        {
-            get { return this.maxHealth; }
-            private set { this.maxHealth = value; }
-        }
-
+        /************************************************************************/
+        /*  Getter/setter functions for Unit attributes                         */
+        /************************************************************************/
         protected float DamageMultiplier
         {
             get { return this.damageMultiplier; }
@@ -97,10 +79,7 @@ namespace Perihelion.Models
             get { return this.attackMultiplier; }
             set { this.attackMultiplier = value; }
         }
-
-        /************************************************************************/
-        /*  Getter/setter functions for Unit attributes                         */
-        /************************************************************************/
+        
         protected bool Bullets
         {
             get { return this.hasBullets; }
@@ -180,12 +159,12 @@ namespace Perihelion.Models
 
         void updateCurrentHealth(int i)
         {
-            this.currentHealth += i;
+            CurrentHealth += i;
         }
 
         void updateMaxHealth(int i)
         {
-            this.maxHealth += i;
+            MaxHealth += i;
         }
 
         private Vector2 scaleVelocity (Vector2 velocity)
@@ -224,6 +203,53 @@ namespace Perihelion.Models
                 speed = newlength * maxSpeed;
                 return velocity;
             }
+        }
+
+        protected void updateBullets(GameTime gameTime, Vector2 bulletDirection)
+        {
+            if (ShootingBullets || BulletMade)
+            {
+                bulletTimer += gameTime.ElapsedGameTime.Milliseconds;
+
+                if (bulletTimer > timeBetweenBullets)
+                {
+                    // Reset bulletTimer
+                    bulletMade = true;
+                    bulletTimer = 0;
+
+                    Projectile tempBullet = new Projectile(
+                        texture_bullet,
+                        this.position.X,
+                        this.position.Y,
+                        bulletDirection,
+                        2000,   // ActiveTime in miliseconds (2 secs)
+                        40,     // Damage amount Inge pulled out of his ass
+                        bulletSpeed);
+
+                    tempBullet.Identifier = bulletCounter++;
+
+                    bullets.Add(tempBullet);
+                }
+                else
+                {
+                    if (bulletMade)
+                        bulletMade = false;
+                }
+            }
+
+            // Updates the bullets and removes them if they go over their activeTime
+            for (int i = 0; i < bullets.Count(); i++)
+            {
+                bullets[i].update(gameTime);
+
+                if (bullets[i].TotalActiveTime > bullets[i].ActiveTime)
+                    bullets.RemoveAt(i);
+            }
+        }
+
+        protected void updateRockets(GameTime gameTime)
+        {
+            // TODO
         }
 
         /************************************************************************/

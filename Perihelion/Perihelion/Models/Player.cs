@@ -84,46 +84,7 @@ namespace Perihelion.Models
         {
             updateTurret(rightStick);
 
-            if (ShootingBullets || bulletMade)
-            {
-                bulletTimer += gameTime.ElapsedGameTime.Milliseconds;
-
-                if (bulletTimer > timeBetweenBullets)
-                {
-                    // Reset shotTimer
-                    bulletMade = true;
-                    bulletTimer = 0;
-
-                    Projectile tempBullet = new Projectile(
-                        texture_bullet,
-                        this.position.X,
-                        this.position.Y,
-                        rightStick,
-                        2000,   // ActiveTime in miliseconds (2 secs)
-                        40,     // Damagenumber i pulled out of my ass
-                        bulletSpeed);
-
-                    tempBullet.Identifier = bulletCounter++;
-
-                    bullets.Add(tempBullet);
-
-                    
-                }
-                else
-                {
-                    if (bulletMade)
-                        bulletMade = false;
-                }
-            }
-
-            // Updates the bullets and removes them if they go over their activeTime
-            for (int i = 0; i < bullets.Count(); i++)
-            {
-                bullets[i].update(gameTime);
-
-                if (bullets[i].TotalActiveTime > bullets[i].ActiveTime)
-                    bullets.RemoveAt(i);
-            }
+            base.updateBullets(gameTime, rightStick);
 
             base.unitUpdate(velocity);
         }

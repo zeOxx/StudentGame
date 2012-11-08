@@ -13,61 +13,32 @@ namespace Perihelion.Models
 
         // These variables are only used if isDestructable is true. 
         //  If isDestructable is false, the class just generates a normal GameObject
-        int maxHealth;
-        int currentHealth;
+        //int maxHealth;
+        //int currentHealth;
 
         /************************************************************************/
         /* Constructor                                                          */
         /************************************************************************/
         public Collidable(Texture2D texture, float x, float y, Vector2 velocity, int health)
-            : base(texture, x, y, velocity, health)
+            : base(texture, x, y, velocity, health, health)
         {
             // CREATES A GAMEOBJECT
         }
         
         // This constructor is used if the object is destructable ONLY.
-        public Collidable(Texture2D texture, float x, float y, Vector2 velocity, bool isDestructable, int maxHealth, int currentHealth, int health) 
-            : base(texture, x, y, velocity, health)
+        public Collidable(Texture2D texture, float x, float y, Vector2 velocity, bool isDestructable, int maxHealth, int currentHealth, int health)
+            : base(texture, x, y, velocity, currentHealth, maxHealth)
         {
-            setDestructable(isDestructable);
-            setMaxHealth(maxHealth);
-            setCurrentHealth(currentHealth);
+            Destructable = isDestructable;
         }
 
         /************************************************************************/
         /* Setters                                                              */
         /************************************************************************/
-        private void setDestructable(bool isDestructable)
+        public bool Destructable
         {
-            this.isDestructable = isDestructable;
-        }
-
-        private void setMaxHealth(int maxHealth)
-        {
-            this.maxHealth = maxHealth;
-        }
-
-        private void setCurrentHealth(int currentHealth)
-        {
-            this.currentHealth = currentHealth;
-        }
-
-        /************************************************************************/
-        /* Getters                                                              */
-        /************************************************************************/
-        public bool getDestructable()
-        {
-            return isDestructable;
-        }
-
-        public int getMaxHealth()
-        {
-            return maxHealth;
-        }
-
-        public int getCurrentHealth()
-        {
-            return currentHealth;
+            get { return this.isDestructable; }
+            private set { this.isDestructable = value; }
         }
 
         /************************************************************************/
@@ -76,9 +47,9 @@ namespace Perihelion.Models
         public void updateCurrentHealth(int healthChange)
         {
             if (healthChange < 0)
-                currentHealth -= healthChange;
+                CurrentHealth -= healthChange;
             else
-                currentHealth += healthChange;
+                CurrentHealth += healthChange;
         }
     }
 }

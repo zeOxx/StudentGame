@@ -104,64 +104,25 @@ namespace Perihelion.Models
         /************************************************************************/
         public void update(Vector2 direction, GameTime gameTime, bool rocket)
         {
-            //Console.Out.WriteLine(direction);
-            if (Bullets)
+            if (base.Bullets)
             {
-                updateBullets(gameTime, direction);
+                base.updateBullets(gameTime, direction);
             }
-            if (Rockets)
+            if (base.Rockets)
             {
-                updateRockets(gameTime);
+                base.updateRockets(gameTime);
             }
+
+            //direction = correctCourse(direction);
 
             base.unitUpdate(direction);
         }
 
-        private void updateBullets(GameTime gameTime, Vector2 bulletDirection)
+        private Vector2 correctCourse(Vector2 direction)
         {
-            if (ShootingBullets || BulletMade)
-            {
-                bulletTimer += gameTime.ElapsedGameTime.Milliseconds;
+            Vector2 corrected = Vector2.Zero;
 
-                if (bulletTimer > timeBetweenBullets)
-                {
-                    // Reset bulletTimer
-                    bulletMade = true;
-                    bulletTimer = 0;
-
-                    Projectile tempBullet = new Projectile(
-                        texture_bullet,
-                        this.position.X,
-                        this.position.Y,
-                        bulletDirection,
-                        2000,   // ActiveTime in miliseconds (2 secs)
-                        40,     // Damage amount Inge pulled out of his ass
-                        bulletSpeed);
-
-                    tempBullet.Identifier = bulletCounter++;
-
-                    bullets.Add(tempBullet);
-                }
-                else
-                {
-                    if (bulletMade)
-                        bulletMade = false;
-                }
-            }
-
-            // Updates the bullets and removes them if they go over their activeTime
-            for (int i = 0; i < bullets.Count(); i++)
-            {
-                bullets[i].update(gameTime);
-
-                if (bullets[i].TotalActiveTime > bullets[i].ActiveTime)
-                    bullets.RemoveAt(i);
-            }
-        }
-
-        private void updateRockets(GameTime gameTime)
-        {
-            // TODO
+            return corrected;
         }
 
         private void updateCloakcountdown(int i)

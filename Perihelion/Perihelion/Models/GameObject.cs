@@ -20,23 +20,30 @@ namespace Perihelion.Models
         protected float speed = 0;
         private int identifier = 0;
         private int health;
+        private int currentHealth;
+        private int maxHealth;
         
         /************************************************************************/
         /*                                                                      */
         /************************************************************************/
         public GameObject()
         {
+            CurrentHealth = 100;
+            MaxHealth = 100;
             Position = new Vector2(0, 0);
             Velocity = new Vector2(0, 0);
         }
         
-        public GameObject (Texture2D texture, float x, float y, Vector2 velocity, int health)
+        public GameObject (Texture2D texture, float x, float y, Vector2 velocity, int currentHealth, int maxHealth)
         {
             Texture = texture;
             Position = new Vector2(x, y);
             Velocity = velocity;
             setOrigin(texture);
-            this.health = health;
+            this.health = currentHealth;
+
+            CurrentHealth = currentHealth;
+            MaxHealth = maxHealth;
 
             textureData = new ArrayList(texture.Width * texture.Height);
         }
@@ -59,6 +66,17 @@ namespace Perihelion.Models
         /************************************************************************/
         /* Getters/setters for GameObject                                       */
         /************************************************************************/
+        public int CurrentHealth
+        {
+            get { return this.currentHealth; }
+            protected set { this.currentHealth = value; }
+        }
+
+        public int MaxHealth
+        {
+            get { return this.maxHealth; }
+            protected set { this.maxHealth = value; }
+        }
 
         public Texture2D Texture
         {
