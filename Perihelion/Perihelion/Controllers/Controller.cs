@@ -60,9 +60,9 @@ namespace Perihelion.Controllers
 
             int movement = 0;                           // Tells the menu where to move next (-1 is up, 1 is down)
 
-            if (inputHandler.ButtonPressed(Buttons.DPadDown) || movementVector.Y < 0 || inputHandler.KeyDown(Keys.Down))
+            if (inputHandler.ButtonPressed(Buttons.DPadDown) || movementVector.Y < 0 || inputHandler.KeyReleased(Keys.Down))
                 movement = 1;
-            if (inputHandler.ButtonPressed(Buttons.DPadUp) || movementVector.Y > 0 || inputHandler.KeyDown(Keys.Up))
+            if (inputHandler.ButtonPressed(Buttons.DPadUp) || movementVector.Y > 0 || inputHandler.KeyReleased(Keys.Up))
                 movement = -1;
 
             if (inputHandler.ButtonPressed(Buttons.A) || inputHandler.KeyDown(Keys.Enter))

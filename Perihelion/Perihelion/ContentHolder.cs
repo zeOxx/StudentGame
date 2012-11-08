@@ -23,9 +23,6 @@ namespace Perihelion
         public Texture2D textureRock01;
         public Texture2D textureRock02;
 
-        // Menu textures
-        public Texture2D title;
-
         // Background textures
         public Texture2D[] bg_variant0 = new Texture2D[2];
         public Texture2D[] bg_variant1 = new Texture2D[2];
@@ -45,6 +42,9 @@ namespace Perihelion
 
         // Fonts
         public SpriteFont menuFont;
+
+        // Menu textures
+        public Texture2D title;
 
 #if DEBUG
         // Debug font

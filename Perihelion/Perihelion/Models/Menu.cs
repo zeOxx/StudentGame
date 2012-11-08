@@ -10,36 +10,55 @@ namespace Perihelion.Models
 {
     class Menu
     {
-        private List<string> menuItems;
+        private List<string> optionsMenuItems;
+        private List<string> creditsMenuItems;
         public string infoText;
-        private int position;
         public bool running;
-        public bool moved;
         public bool exiting;
         Texture2D title;
         SpriteFont font;
 
-        private int inputAllowed = 100;            // Time that should elapse between input is read.
-        private int elapsedSinceLastInput = 100;      // Time that has elapsed since last input.
+        public enum MenuStates
+        {
+            Main,
+            Options,
+            Credits
+        }
+
+        public MenuStates menuState;
+
+        private int inputAllowed = 50;            // Time that should elapse between input is read.
+        private int elapsedSinceLastInput = 0;      // Time that has elapsed since last input.
+
+        MainMenu mainMenu;
 
         /************************************************************************/
         /* Constructor                                                          */
         /************************************************************************/
         public Menu(ContentHolder contentHolder)
         {
+            menuState = MenuStates.Main;
+
             Title = contentHolder.title;
             Font = contentHolder.menuFont;
 
-            MenuItems = new List<string>();
-            MenuItems.Add("Start game");
-            MenuItems.Add("Options");
-            MenuItems.Add("Credits");
-            MenuItems.Add("Quit game");
+            mainMenu = new MainMenu(Font);
 
-            Position = 0;
-            infoText = string.Empty;
+            // Options menu items
+            OptionsMenuItems = new List<string>();
+            OptionsMenuItems.Add("Music");
+            OptionsMenuItems.Add("Sound");
+            OptionsMenuItems.Add("Hints");
+
+            // Credits
+            CreditsMenuItems = new List<string>();
+            CreditsMenuItems.Add("Everything");
+            CreditsMenuItems.Add("Inge Dalby");
+            CreditsMenuItems.Add("Simen Løkken");
+            CreditsMenuItems.Add("Snorre Brecheisen");
+            CreditsMenuItems.Add("Thomas Nilsen");
+
             Running = true;
-            Exiting = false;
         }
 
         /************************************************************************/
@@ -57,16 +76,16 @@ namespace Perihelion.Models
             private set { this.font = value; }
         }
 
-        public List<string> MenuItems
+        public List<string> OptionsMenuItems
         {
-            get { return this.menuItems; }
-            private set { this.menuItems = value; }
+            get { return this.optionsMenuItems; }
+            private set { this.optionsMenuItems = value; }
         }
 
-        public int Position
+        public List<string> CreditsMenuItems
         {
-            get { return this.position; }
-            private set { this.position = value; }
+            get { return this.creditsMenuItems; }
+            private set { this.creditsMenuItems = value; }
         }
 
         public bool Running
@@ -75,29 +94,10 @@ namespace Perihelion.Models
             private set { this.running = value; }
         }
 
-        public bool Moved
-        {
-            get { return this.moved; }
-            private set { this.moved = value; }
-        }
-
         public bool Exiting
         {
             get { return this.exiting; }
             private set { this.exiting = value; }
-        }
-
-        /************************************************************************/
-        /* Methods                                                              */
-        /************************************************************************/
-        public int getNumberOfItems()
-        {
-            return MenuItems.Count;
-        }
-
-        public string getItem(int index)
-        {
-            return MenuItems[index];
         }
 
         /************************************************************************/
@@ -110,34 +110,19 @@ namespace Perihelion.Models
             // This gate is here to prevent unwanted movement
             if (elapsedSinceLastInput > inputAllowed)
             {
-                // A series of if checks to make sure position is valid.
-                if (movement < 0)
+                // Runs only if the player is in the main menu
+                if (menuState == MenuStates.Main)
                 {
-                    Position--;
-                    Moved = true;
+                    mainMenu.update(movement, aButton);
+                    
+                    if (mainMenu.PlayHit)
+                        Running = false;
+                    if (mainMenu.Exiting)
+                        Exiting = true;
                 }
-                else if (movement > 0)
-                {
-                    Position++;
-                    Moved = true;
-                }
-                else
-                    Moved = false;
 
-                if (Position < 0)
-                    Position = 0;
-                if (Position > MenuItems.Count - 1)
-                    Position = MenuItems.Count - 1;
-
-                if (Moved)
-                    elapsedSinceLastInput = 0;
+                elapsedSinceLastInput = 0;
             }
-
-            if (aButton && Position == 0)
-                running = false;
-
-            if (aButton && Position == (MenuItems.Count - 1))
-                Exiting = true;
         }
 
         public void Draw(SpriteBatch spriteBatch, int screenWidth, int screenHeight)
@@ -146,18 +131,10 @@ namespace Perihelion.Models
             int iterator = (int)titlePosition.Y + 50;
             spriteBatch.Draw(Title, titlePosition, Color.White);
 
-            for (int i = 0; i < getNumberOfItems(); i++)
+
+            if (menuState == MenuStates.Main)
             {
-                Vector2 centerText = Font.MeasureString(MenuItems[i]);
-
-                Vector2 itemPosition = new Vector2((screenWidth / 2 - centerText.X / 2), titlePosition.Y + iterator);
-
-                if (i  == Position)
-                    spriteBatch.DrawString(Font, MenuItems[i], itemPosition, Color.Green);
-                else
-                    spriteBatch.DrawString(Font, MenuItems[i], itemPosition, Color.White);
-
-                iterator += 75;
+                mainMenu.Draw(spriteBatch, screenWidth, screenHeight, iterator, titlePosition);
             }
         }
     }

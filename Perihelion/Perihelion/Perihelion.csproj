@@ -124,6 +124,7 @@
     <Compile Include="Models\GameObject.cs" />
     <Compile Include="Models\Gameworld.cs" />
     <Compile Include="Models\Interface.cs" />
+    <Compile Include="Models\MainMenu.cs" />
     <Compile Include="Models\Menu.cs" />
     <Compile Include="Models\Particle.cs" />
     <Compile Include="Models\ParticleEmitter.cs" />
