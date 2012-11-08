@@ -38,6 +38,7 @@ namespace Perihelion.Controllers
             //Change gamestate
 
             checkInput(gameTime, inputHandler, gameWorld);
+            gameWorld.updateEnemies(gameTime);
             handleProjectileCollisions(gameWorld);
             
 

@@ -12,6 +12,7 @@ namespace Perihelion.Models
         // Texture variables
         //protected Texture2D texture_turret;
         protected Texture2D texture_bullet;
+        protected Texture2D texture_rocket;
         //protected double turretRotationAngle = 0.0;
 
         // Cloak variables
@@ -133,6 +134,7 @@ namespace Perihelion.Models
 
         Texture2D BulletTexture
         {
+            get { return this.texture_bullet; }
             set { this.texture_bullet = value; }
         }
 
@@ -151,6 +153,12 @@ namespace Perihelion.Models
         public List<DestructibleProjectile> RocketList
         {
             get { return rockets; }
+        }
+
+        Texture2D RocketTexture
+        {
+            get { return this.texture_rocket; }
+            set { this.texture_rocket = value; }
         }
 
         public bool Cloak
@@ -174,18 +182,19 @@ namespace Perihelion.Models
         /************************************************************************/
         /*  Update functions for Enemy attributes                               */
         /************************************************************************/
-        public void update(GameTime gameTime, Vector2 velocity, Vector2 bulletDirection, bool rocket)
+        public void update(Vector2 direction, GameTime gameTime, bool rocket)
         {
+            //Console.Out.WriteLine(direction);
             if (Bullets)
             {
-                updateBullets(gameTime, bulletDirection);
+                updateBullets(gameTime, direction);
             }
             if (Rockets)
             {
                 updateRockets(gameTime);
             }
 
-            base.unitUpdate(velocity);
+            base.unitUpdate(direction);
         }
 
         private void updateBullets(GameTime gameTime, Vector2 bulletDirection)
@@ -248,6 +257,10 @@ namespace Perihelion.Models
             base.Draw(spriteBatch);
             
             foreach (Models.Projectile projectiles in bullets)
+            {
+                projectiles.Draw(spriteBatch);
+            }
+            foreach (Models.DestructibleProjectile projectiles in rockets)
             {
                 projectiles.Draw(spriteBatch);
             }

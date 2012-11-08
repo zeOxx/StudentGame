@@ -29,6 +29,8 @@ namespace Perihelion.Models
         private HUD hud;
         private Rectangle levelBounds;
         private Controllers.ParticleSystem particleSystem;
+        private List<Enemy> enemies = new List<Enemy>();
+        private Controllers.UnitHandler unithandler = new Controllers.UnitHandler(); //WIP - mostly empty
 
         public Gameworld(ContentHolder contentHolder, Viewport view, int levelSize)
         {
@@ -47,6 +49,12 @@ namespace Perihelion.Models
         public void setPlayer(Player updatedPlayerObject)
         {
             playerObject = updatedPlayerObject;
+        }
+
+        public Player PlayerObject
+        {
+            get { return playerObject; }
+            set { this.playerObject = value; }
         }
 
         public int LevelSize
@@ -95,6 +103,8 @@ namespace Perihelion.Models
             rocks.Add(new Collidable(contentHolder.textureRock02, -250, -330, Vector2.Zero));
             rocks.Add(new Collidable(contentHolder.textureRock01, 500, 300, Vector2.Zero));
 			rocks.Add(new Collidable(contentHolder.textureRock02, -100, 250, Vector2.Zero));
+
+            enemies.Add(new Enemy(contentHolder.texturePlayer, 200, 200, Vector2.Zero, 100, 100));
         }
 
         // Creates the bounds for the level
@@ -114,6 +124,11 @@ namespace Perihelion.Models
             for (int i = 0; i < rocks.Count; i++)
             {
                 rocks[i].Draw(spriteBatch);
+            }
+
+            foreach (Enemy enemy in enemies)
+            {
+                enemy.Draw(spriteBatch);
             }
 
             playerObject.Draw(spriteBatch);
@@ -142,6 +157,16 @@ namespace Perihelion.Models
         public List<Collidable> getRock()
         {
             return rocks;
+        }
+
+        public void updateEnemies(GameTime gameTime)
+        {
+            foreach (Enemy enemy in enemies)
+            {
+                Vector2 stick = unithandler.getEnemyStickVector(PlayerObject, enemy);
+                bool rocket = unithandler.getEnemyTarget(PlayerObject, enemy);
+                enemy.update(stick, gameTime, rocket);
+            }
         }
     }
 
