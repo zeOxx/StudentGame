@@ -41,7 +41,7 @@ namespace Perihelion.Models
 
             // Temp
             Speed = 0;
-            setMaxSpeed(5);
+            MaxSpeed = 5;
 
             ShootingBullets = false;
 

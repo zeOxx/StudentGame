@@ -69,14 +69,14 @@ namespace Perihelion
         /************************************************************************/
         public void update(Models.Player player)
         {
-            healthAuxBar.setPosition(healthAuxBarPosition.X, healthAuxBarPosition.Y);
-            special.setPosition(specialPosition.X, specialPosition.Y);
+            healthAuxBar.Position = new Vector2(healthAuxBarPosition.X, healthAuxBarPosition.Y);
+            special.Position = new Vector2(specialPosition.X, specialPosition.Y);
             // Calls update to all the objects to check health etc for the player. Yet to be implemented
         
 #if DEBUG
             if (displayDebug)
             {
-                playerPosition = "Player position: " + player.getPosition();
+                playerPosition = "Player position: " + player.Position;
                 numberOfBullets = "Number of bullets: " + player.BulletList.Count;
                 playerSpeed = "Player speed: " + player.Speed;
             }

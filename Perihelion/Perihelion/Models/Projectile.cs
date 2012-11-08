@@ -35,7 +35,7 @@ namespace Perihelion.Models
 
             TotalActiveTime = 0;
 
-            setOrigin(new Vector2((getTexture().Width/2), getTexture().Height));
+            setOrigin(new Vector2((Texture.Width/2), Texture.Height));
         }
          
         /************************************************************************/

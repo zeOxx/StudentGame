@@ -10,7 +10,7 @@ namespace Perihelion.Controllers
     {
         private Models.Gameworld gameworld;
 
-        private static int enemyBufferDistance;
+        private static int enemyBufferDistance = 100;
 
         public UnitHandler()
         {
@@ -19,8 +19,8 @@ namespace Perihelion.Controllers
 
         public Vector2 getEnemyStickVector(Models.Player player, Models.Enemy enemy)
         {
-            Vector2 enemyvector = enemy.getPosition();
-            Vector2 playervector = player.getPosition();
+            Vector2 enemyvector = enemy.Position;
+            Vector2 playervector = player.Position;
 
             Vector2 direction = enemyvector - playervector;
             
@@ -31,8 +31,8 @@ namespace Perihelion.Controllers
 
         public bool getEnemyTarget(Models.Player player, Models.Enemy enemy)
         {
-            Vector2 enemyvector = enemy.getVelocity();
-            Vector2 playervector = player.getPosition();
+            Vector2 enemyvector = enemy.Velocity;
+            Vector2 playervector = player.Position;
 
             return false;
         }

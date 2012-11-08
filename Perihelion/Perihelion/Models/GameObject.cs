@@ -26,15 +26,15 @@ namespace Perihelion.Models
         /************************************************************************/
         public GameObject()
         {
-            setPosition(0, 0);
-            setVelocity(new Vector2(0, 0));
+            Position = new Vector2(0, 0);
+            Velocity = new Vector2(0, 0);
         }
         
         public GameObject (Texture2D texture, float x, float y, Vector2 velocity, int health)
         {
-            setTexture(texture);
-            setPosition(x, y);
-            setVelocity(velocity);
+            Texture = texture;
+            Position = new Vector2(x, y);
+            Velocity = velocity;
             setOrigin(texture);
             this.health = health;
 
@@ -57,26 +57,30 @@ namespace Perihelion.Models
         }
 
         /************************************************************************/
-        /*                                                                      */
+        /* Getters/setters for GameObject                                       */
         /************************************************************************/
-        void setTexture (Texture2D texture)
+
+        public Texture2D Texture
         {
-            this.texture = texture;
+            get { return this.texture; }
+            protected set { this.texture = value; }
         }
 
-        public void setPosition (float x, float y)
+        public Vector2 Position
         {
-            this.position = new Vector2(x, y);
+            get { return this.position; }
+            set { this.position = value; }
         }
 
-        public void setVelocity (Vector2 velocity)
+        public Vector2 Velocity
         {
-            this.velocity = velocity;
+            get { return this.velocity; }
+            set { this.velocity = value; }
         }
 
-        public ArrayList getColorData()
+        public ArrayList TextureData
         {
-            return textureData;
+            get { return textureData; }
         }
 
         
@@ -102,9 +106,10 @@ namespace Perihelion.Models
         }
         // ***** END OF ORIGIN METHODS ***** //
 
-        protected void setMaxSpeed(float maxSpeed)
+        public float MaxSpeed
         {
-            this.maxSpeed = maxSpeed;
+            get { return this.maxSpeed; }
+            set { this.maxSpeed = value; }
         }
 
         public float Speed
@@ -112,33 +117,11 @@ namespace Perihelion.Models
             get { return this.speed; }
             set { this.speed = value; }
         }
-        /************************************************************************/
-        /*                                                                      */
-        /************************************************************************/
+        
         public int Identifier
         {
             get { return this.identifier; }
             set { this.identifier = value; }
-        }
-        
-        public Vector2 getPosition ()
-        {
-            return position;
-        }
-
-        public Vector2 getVelocity()
-        {
-            return this.velocity;
-        }
-
-        public Texture2D getTexture()
-        {
-            return texture;
-        }
-
-        public float getMaxSpeed()
-        {
-            return this.maxSpeed;
         }
         /************************************************************************/
         /* Other methods                                                        */
@@ -193,9 +176,9 @@ namespace Perihelion.Models
 
         protected void constructGameObject(Texture2D texture, float x, float y, Vector2 velocity)
         {
-            setTexture(texture);
-            setPosition(x, y);
-            setVelocity(velocity);
+            Texture = texture;
+            Position = new Vector2(x, y);
+            Velocity = velocity;
         }
     }
 }

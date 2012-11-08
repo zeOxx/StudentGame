@@ -42,7 +42,7 @@ namespace Perihelion.Models
 
             // Temp
             Speed = 0;
-            setMaxSpeed(4);
+            MaxSpeed = 4;
 
             bullets = new List<Projectile>();
             rockets = new List<DestructibleProjectile>();

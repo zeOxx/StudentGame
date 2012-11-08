@@ -103,7 +103,7 @@ namespace Perihelion.Controllers
 
         private void playerCollisions(Models.Gameworld gameWorld, Vector2 movementVector, Vector2 rightStick, GameTime gameTime)
         {
-            Vector2 prePosition = gameWorld.getPlayer().getPosition();
+            Vector2 prePosition = gameWorld.getPlayer().Position;
 
 
             gameWorld.getPlayer().update(movementVector, rightStick, gameTime);
@@ -115,8 +115,8 @@ namespace Perihelion.Controllers
                 {
                     if (perPixelCollisionDetection(gameWorld.getPlayer(), rock))
                     {
-                        gameWorld.getPlayer().setPosition(prePosition.X, prePosition.Y);
-                        gameWorld.getPlayer().setVelocity(Vector2.Zero);
+                        gameWorld.getPlayer().Position = new Vector2(prePosition.X, prePosition.Y);
+                        gameWorld.getPlayer().Velocity = (Vector2.Zero);
                         
                     }
                 }
@@ -127,11 +127,11 @@ namespace Perihelion.Controllers
 
         private void levelBoundCollision(Models.Gameworld gameWorld)
         {
-            Vector2 prePosition = gameWorld.getPlayer().getPosition();
+            Vector2 prePosition = gameWorld.getPlayer().Position;
             if (!gameWorld.getPlayer().BoundingBox.Intersects(gameWorld.LevelBounds))
             {
-                gameWorld.getPlayer().setPosition(prePosition.X, prePosition.Y);
-                gameWorld.getPlayer().setVelocity(Vector2.Zero);
+                gameWorld.getPlayer().Position = new Vector2(prePosition.X, prePosition.Y);
+                gameWorld.getPlayer().Velocity = Vector2.Zero;
             }
         }
 
@@ -144,10 +144,10 @@ namespace Perihelion.Controllers
             int left = Math.Max(playerObject.BoundingBox.Left, collidingObject.BoundingBox.Left);
             int right = Math.Min(playerObject.BoundingBox.Right, collidingObject.BoundingBox.Right);
 
-            Vector2 position = playerObject.getPosition();
+            Vector2 position = playerObject.Position;
 
-            Texture2D playerTexture = playerObject.getTexture();
-            Texture2D collidableTexture = collidingObject.getTexture();
+            Texture2D playerTexture = playerObject.Texture;
+            Texture2D collidableTexture = collidingObject.Texture;
 
             Color[] playerTextureData = new Color[playerTexture.Width * playerTexture.Height];
             Color[] collidableTextureData = new Color[collidableTexture.Width * collidableTexture.Height];
@@ -155,7 +155,7 @@ namespace Perihelion.Controllers
             playerTexture.GetData(playerTextureData);
             collidableTexture.GetData(collidableTextureData);
 
-            Vector2 velocity = playerObject.getVelocity();
+            Vector2 velocity = playerObject.Velocity;
 
             for (int y = top; y < bottom; y++)
             {

@@ -192,8 +192,6 @@ namespace Perihelion.Models
         {
             float oldlength = this.velocity.Length();
             float newlength = velocity.Length();
-            Console.Out.WriteLine("old {0}", oldlength);
-            Console.Out.WriteLine("new {0}", newlength);
 
             if (newlength > (oldlength + accelerationMultiplier))
             {
