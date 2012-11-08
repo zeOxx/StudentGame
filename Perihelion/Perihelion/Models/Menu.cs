@@ -11,51 +11,50 @@ namespace Perihelion.Models
     class Menu
     {
         private List<string> menuItems;
-        private int iterator;
         public string infoText;
-        public string title;
         private int position;
+        public bool running;
+        public bool moved;
+        public bool exiting;
+        Texture2D title;
         SpriteFont font;
+
+        private int inputAllowed = 100;            // Time that should elapse between input is read.
+        private int elapsedSinceLastInput = 100;      // Time that has elapsed since last input.
 
         /************************************************************************/
         /* Constructor                                                          */
         /************************************************************************/
-        public Menu(string title, SpriteFont font)
+        public Menu(ContentHolder contentHolder)
         {
-            Title = title;
-            Font = font;
+            Title = contentHolder.title;
+            Font = contentHolder.menuFont;
 
             MenuItems = new List<string>();
             MenuItems.Add("Start game");
+            MenuItems.Add("Options");
+            MenuItems.Add("Credits");
             MenuItems.Add("Quit game");
 
-            Iterator = 0;
             Position = 0;
             infoText = string.Empty;
+            Running = true;
+            Exiting = false;
         }
 
         /************************************************************************/
         /* Accessors                                                            */
         /************************************************************************/
-        public string Title
+        public Texture2D Title
         {
             get { return this.title; }
             private set { this.title = value; }
         }
 
-        public int Iterator
+        public SpriteFont Font
         {
-            get { return this.iterator; }
-            private set 
-            { 
-                this.iterator = value; 
-                
-                // If tests are there to make sure the iterator can only be set to a valid value
-                if (Iterator > MenuItems.Count - 1)
-                    iterator = MenuItems.Count - 1;
-                if (Iterator < 0)
-                    iterator = 0;
-            }
+            get { return this.font; }
+            private set { this.font = value; }
         }
 
         public List<string> MenuItems
@@ -70,10 +69,22 @@ namespace Perihelion.Models
             private set { this.position = value; }
         }
 
-        public SpriteFont Font
+        public bool Running
         {
-            get { return this.font; }
-            private set { this.font = value; }
+            get { return this.running; }
+            private set { this.running = value; }
+        }
+
+        public bool Moved
+        {
+            get { return this.moved; }
+            private set { this.moved = value; }
+        }
+
+        public bool Exiting
+        {
+            get { return this.exiting; }
+            private set { this.exiting = value; }
         }
 
         /************************************************************************/
@@ -92,22 +103,61 @@ namespace Perihelion.Models
         /************************************************************************/
         /* XNA Methods                                                          */
         /************************************************************************/
-        public void update(Vector2 movement, bool aButton, GameTime gameTime)
+        public void update(int movement, bool aButton, GameTime gameTime)
         {
+            elapsedSinceLastInput += gameTime.ElapsedGameTime.Milliseconds;
 
+            // This gate is here to prevent unwanted movement
+            if (elapsedSinceLastInput > inputAllowed)
+            {
+                // A series of if checks to make sure position is valid.
+                if (movement < 0)
+                {
+                    Position--;
+                    Moved = true;
+                }
+                else if (movement > 0)
+                {
+                    Position++;
+                    Moved = true;
+                }
+                else
+                    Moved = false;
+
+                if (Position < 0)
+                    Position = 0;
+                if (Position > MenuItems.Count - 1)
+                    Position = MenuItems.Count - 1;
+
+                if (Moved)
+                    elapsedSinceLastInput = 0;
+            }
+
+            if (aButton && Position == 0)
+                running = false;
+
+            if (aButton && Position == (MenuItems.Count - 1))
+                Exiting = true;
         }
 
-        public void Draw(SpriteBatch spriteBatch, int screenWidth, int screenHeight, SpriteFont arial)
+        public void Draw(SpriteBatch spriteBatch, int screenWidth, int screenHeight)
         {
-            Vector2 firstPosition = new Vector2(screenWidth / 2, screenHeight / 2);
-            Vector2 nextPosition = firstPosition;
-
-            spriteBatch.DrawString(Font, Title, firstPosition, Color.White);
+            Vector2 titlePosition = new Vector2(((screenWidth / 2) - (title.Width / 2)), (150 - (title.Height / 2)));
+            int iterator = (int)titlePosition.Y + 50;
+            spriteBatch.Draw(Title, titlePosition, Color.White);
 
             for (int i = 0; i < getNumberOfItems(); i++)
             {
-                nextPosition.Y += 100;
-                spriteBatch.DrawString(Font, MenuItems[i], nextPosition, Color.White);
+                Vector2 centerText = Font.MeasureString(MenuItems[i]);
+
+                Vector2 itemPosition = new Vector2((screenWidth / 2 - centerText.X / 2), titlePosition.Y + iterator);
+
+                if (i  == Position)
+                    spriteBatch.DrawString(Font, MenuItems[i], itemPosition, Color.Green);
+                else
+                    spriteBatch.DrawString(Font, MenuItems[i], itemPosition, Color.White);
+
+                iterator += 75;
             }
         }
     }

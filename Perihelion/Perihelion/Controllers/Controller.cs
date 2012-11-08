@@ -18,9 +18,8 @@ namespace Perihelion.Controllers
         private ContentHolder content;
         private SoundManager soundManager;
         private PhysicsEngine physicsEngine;
-        private Menu menu;
 
-        public Controller(ContentHolder content, SoundManager soundManager)
+        public Controller(ContentHolder content, SoundManager soundManager, string title)
         {
             //playerObject = new GameObject[Constants.maxNumberOfObjectsInArray];
             this.soundManager = soundManager;
@@ -52,34 +51,42 @@ namespace Perihelion.Controllers
             return gameWorld;
         }
 
-        public void updateMenu(InputHandler inputHandler, GameTime gameTime)
+        public Menu updateMenu(Menu menu, InputHandler inputHandler, GameTime gameTime)
         {
-            Vector2 leftStick = inputHandler.getLeftStickMovement();
-            bool aButton = false;                       // flagged if A button is pressed
+            inputHandler.updateInput();
 
-            if (inputHandler.ButtonReleased(Buttons.A))
+            Vector2 movementVector = inputHandler.getLeftStickMovement();
+
+            bool aButton = false;                       // flagged if A button, or Enter, is pressed
+
+            int movement = 0;                           // Tells the menu where to move next (-1 is up, 1 is down)
+
+            if (inputHandler.ButtonPressed(Buttons.DPadDown) || movementVector.Y < 0 || inputHandler.KeyDown(Keys.Down))
+                movement = 1;
+            if (inputHandler.ButtonPressed(Buttons.DPadUp) || movementVector.Y > 0 || inputHandler.KeyDown(Keys.Up))
+                movement = -1;
+
+            if (inputHandler.ButtonPressed(Buttons.A) || inputHandler.KeyDown(Keys.Enter))
                 aButton = true;
 
-            menu.update(leftStick, aButton, gameTime);
+            menu.update(movement, aButton, gameTime);
+
+            return menu;
         }
 
         public void handleProjectileCollisions(Models.Gameworld gameWorld)
         {
-            //List<int> projectileCollisions = physicsEngine.getProjectileCollisions();
+            List<int> rockCollisionsIndex = physicsEngine.getRockCollisions();
+            List<Models.GameObject> collisions = physicsEngine.getCollisions();
 
-            for (int i = 0; i < physicsEngine.getProjectileCollisions().Count; i++)
+            for(int i = 0; i < rockCollisionsIndex.Count; i++)
             {
-                playerObject.getBulletList().RemoveAt(physicsEngine.getProjectileCollisions()[i]);
-                //projectileCollisions.RemoveAt(i);
-                //Console.WriteLine("Removed!");
+                gameWorld.getRock().RemoveAt(rockCollisionsIndex[i]);
             }
 
-            List<Models.Collidable> rocks = gameWorld.getRock();
-            //for (int i = 0; i < physicsEngine.getRockCollisions().Count; i++)
+            //for (int i = 0; i < collisions.Count; i++)
             //{
-              //  gameWorld.getRock().RemoveAt(physicsEngine.getRockCollisions()[i]);
-                //projectileCollisions.RemoveAt(i);
-                //Console.WriteLine("Removed!");
+            //    for(int j = 0; j < gameWorld.getRock()
             //}
 
         }

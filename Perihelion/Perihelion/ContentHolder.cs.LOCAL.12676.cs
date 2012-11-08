@@ -78,9 +78,6 @@ namespace Perihelion
             textureRock01 = content.Load<Texture2D>("Environment\\rock_01");
             textureRock02 = content.Load<Texture2D>("Environment\\rock_02");
 
-            // Menu
-            title = content.Load<Texture2D>("Menu\\Title");
-
             //Background arrays
             bg_variant0[0] = content.Load<Texture2D>("Backgrounds\\bg_01_0");
             bg_variant0[1] = content.Load<Texture2D>("Backgrounds\\bg_01_1");

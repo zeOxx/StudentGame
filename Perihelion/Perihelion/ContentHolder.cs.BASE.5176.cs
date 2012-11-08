@@ -23,9 +23,6 @@ namespace Perihelion
         public Texture2D textureRock01;
         public Texture2D textureRock02;
 
-        // Enemy textures
-        public Texture2D textureEnemy;
-
         // Background textures
         public Texture2D[] bg_variant0 = new Texture2D[2];
         public Texture2D[] bg_variant1 = new Texture2D[2];
@@ -77,9 +74,6 @@ namespace Perihelion
             // Objects
             textureRock01 = content.Load<Texture2D>("Environment\\rock_01");
             textureRock02 = content.Load<Texture2D>("Environment\\rock_02");
-
-            // Menu
-            title = content.Load<Texture2D>("Menu\\Title");
 
             //Background arrays
             bg_variant0[0] = content.Load<Texture2D>("Backgrounds\\bg_01_0");
