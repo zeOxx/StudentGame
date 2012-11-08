@@ -63,9 +63,7 @@ namespace Perihelion.Controllers
             if (inputHandler.ButtonPressed(Buttons.DPadDown) || movementVector.Y < 0 || inputHandler.KeyDown(Keys.Down))
                 movement = 1;
             if (inputHandler.ButtonPressed(Buttons.DPadUp) || movementVector.Y > 0 || inputHandler.KeyDown(Keys.Up))
-            {
                 movement = -1;
-            }
 
             if (inputHandler.ButtonPressed(Buttons.A) || inputHandler.KeyDown(Keys.Enter))
                 aButton = true;
