@@ -46,9 +46,6 @@ namespace Perihelion
         // Fonts
         public SpriteFont menuFont;
 
-        // Menu textures
-        public Texture2D title;
-
 #if DEBUG
         // Debug font
         public SpriteFont debugFont;
@@ -80,9 +77,6 @@ namespace Perihelion
             // Objects
             textureRock01 = content.Load<Texture2D>("Environment\\rock_01");
             textureRock02 = content.Load<Texture2D>("Environment\\rock_02");
-
-            // Menu
-            title = content.Load<Texture2D>("Menu\\Title");
 
             //Background arrays
             bg_variant0[0] = content.Load<Texture2D>("Backgrounds\\bg_01_0");

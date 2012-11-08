@@ -23,9 +23,12 @@ namespace Perihelion
         public Texture2D textureRock01;
         public Texture2D textureRock02;
 
+<<<<<<< HEAD
+=======
         // Enemy textures
         public Texture2D textureEnemy;
 
+>>>>>>> a496ef591db5a11b70c30cf2a95f4f0bc883e16c
         // Background textures
         public Texture2D[] bg_variant0 = new Texture2D[2];
         public Texture2D[] bg_variant1 = new Texture2D[2];
