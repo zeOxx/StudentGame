@@ -45,6 +45,8 @@ namespace Perihelion
 
         // Fonts
         public SpriteFont menuFont;
+        public SpriteFont creditsFont;
+        public SpriteFont creditsHeaderFont;
 
         // Menu textures
         public Texture2D title;
@@ -103,11 +105,13 @@ namespace Perihelion
 
         private void loadFonts(ContentManager content)
         {
-            menuFont = content.Load<SpriteFont>("menuFont");
+            menuFont = content.Load<SpriteFont>("Fonts\\menuFont");
+            creditsFont = content.Load<SpriteFont>("Fonts\\creditsFont");
+            creditsHeaderFont = content.Load<SpriteFont>("Fonts\\creditsHeaderFont");
 
 #if DEBUG
             // Debug font
-            debugFont = content.Load<SpriteFont>("debugFont");
+            debugFont = content.Load<SpriteFont>("Fonts\\debugFont");
 #endif
         }
     }

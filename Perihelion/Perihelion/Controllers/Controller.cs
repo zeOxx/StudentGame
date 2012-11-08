@@ -58,6 +58,7 @@ namespace Perihelion.Controllers
             Vector2 movementVector = inputHandler.getLeftStickMovement();
 
             bool aButton = false;                       // flagged if A button, or Enter, is pressed
+            bool bButton = false;                       // flagged if B button, or backspace, is pressed
 
             int movement = 0;                           // Tells the menu where to move next (-1 is up, 1 is down)
 
@@ -68,8 +69,10 @@ namespace Perihelion.Controllers
 
             if (inputHandler.ButtonPressed(Buttons.A) || inputHandler.KeyDown(Keys.Enter))
                 aButton = true;
+            if (inputHandler.ButtonPressed(Buttons.B) || inputHandler.KeyDown(Keys.Back))
+                bButton = true;
 
-            menu.update(movement, aButton, gameTime);
+            menu.update(movement, aButton, bButton, gameTime);
 
             return menu;
         }

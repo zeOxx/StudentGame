@@ -78,7 +78,7 @@ namespace Perihelion
             gameController = new Controllers.Controller(contentHolder, soundManager, gameName);
             inputHandler = new InputHandler();
             gameWorld = new Models.Gameworld(contentHolder, GraphicsDevice.Viewport, 4096);    //TODO SINGLETON
-            menu = new Menu(contentHolder);
+            menu = new Menu(contentHolder, width, height);
 
             base.Initialize();
         }

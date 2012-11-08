@@ -27,15 +27,13 @@ namespace Perihelion.Models
 
         public MenuStates menuState;
 
-        private int inputAllowed = 50;            // Time that should elapse between input is read.
-        private int elapsedSinceLastInput = 0;      // Time that has elapsed since last input.
-
         MainMenu mainMenu;
+        Credits credits;
 
         /************************************************************************/
         /* Constructor                                                          */
         /************************************************************************/
-        public Menu(ContentHolder contentHolder)
+        public Menu(ContentHolder contentHolder, int screenWidth, int screenHeight)
         {
             menuState = MenuStates.Main;
 
@@ -43,20 +41,13 @@ namespace Perihelion.Models
             Font = contentHolder.menuFont;
 
             mainMenu = new MainMenu(Font);
+            credits = new Credits(contentHolder.creditsFont, contentHolder.creditsHeaderFont, screenWidth, screenHeight);
 
             // Options menu items
             OptionsMenuItems = new List<string>();
             OptionsMenuItems.Add("Music");
             OptionsMenuItems.Add("Sound");
             OptionsMenuItems.Add("Hints");
-
-            // Credits
-            CreditsMenuItems = new List<string>();
-            CreditsMenuItems.Add("Everything");
-            CreditsMenuItems.Add("Inge Dalby");
-            CreditsMenuItems.Add("Simen Løkken");
-            CreditsMenuItems.Add("Snorre Brecheisen");
-            CreditsMenuItems.Add("Thomas Nilsen");
 
             Running = true;
         }
@@ -103,25 +94,35 @@ namespace Perihelion.Models
         /************************************************************************/
         /* XNA Methods                                                          */
         /************************************************************************/
-        public void update(int movement, bool aButton, GameTime gameTime)
+        public void update(int movement, bool aButton, bool bButton, GameTime gameTime)
         {
-            elapsedSinceLastInput += gameTime.ElapsedGameTime.Milliseconds;
-
-            // This gate is here to prevent unwanted movement
-            if (elapsedSinceLastInput > inputAllowed)
+            // Runs only if the player is in the main menu
+            if (menuState == MenuStates.Main)
             {
-                // Runs only if the player is in the main menu
-                if (menuState == MenuStates.Main)
-                {
-                    mainMenu.update(movement, aButton);
-                    
-                    if (mainMenu.PlayHit)
-                        Running = false;
-                    if (mainMenu.Exiting)
-                        Exiting = true;
-                }
+                mainMenu.update(movement, aButton, gameTime);
 
-                elapsedSinceLastInput = 0;
+                if (mainMenu.PlayHit)
+                {
+                    Running = false;
+                    mainMenu.PlayHit = false;
+                }
+                if (mainMenu.Exiting)
+                    Exiting = true;
+                if (mainMenu.RollCredits)
+                    menuState = MenuStates.Credits;
+            }
+            else if (menuState == MenuStates.Credits)
+            {
+                credits.Active = true;
+
+                credits.update(bButton);
+
+                if (!credits.Active)
+                {
+                    menuState = MenuStates.Main;
+                    mainMenu.RollCredits = false;
+                }
+                    
             }
         }
 
@@ -131,10 +132,14 @@ namespace Perihelion.Models
             int iterator = (int)titlePosition.Y + 50;
             spriteBatch.Draw(Title, titlePosition, Color.White);
 
-
             if (menuState == MenuStates.Main)
             {
                 mainMenu.Draw(spriteBatch, screenWidth, screenHeight, iterator, titlePosition);
+            }
+
+            if (menuState == MenuStates.Credits)
+            {
+                credits.Draw(spriteBatch, screenWidth, screenHeight);
             }
         }
     }

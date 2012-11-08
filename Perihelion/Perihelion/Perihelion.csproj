@@ -120,6 +120,7 @@
     <Compile Include="Controllers\InputHandler.cs" />
     <Compile Include="Models\Background.cs" />
     <Compile Include="Models\Collidable.cs" />
+    <Compile Include="Models\Credits.cs" />
     <Compile Include="Models\DestructibleProjectile.cs" />
     <Compile Include="Models\Enemy.cs" />
     <Compile Include="Models\GameObject.cs" />

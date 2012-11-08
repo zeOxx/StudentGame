@@ -14,7 +14,11 @@ namespace Perihelion.Models
         public bool moved;
         public bool exiting;
         public bool playHit;
+        public bool rollCredits;
         SpriteFont font;
+
+        private int inputAllowed = 100;            // Time that should elapse between input is read.
+        private int elapsedSinceLastInput = 0;      // Time that has elapsed since last input.
 
         /************************************************************************/
         /* Constructor                                                          */
@@ -32,6 +36,7 @@ namespace Perihelion.Models
 
             Exiting = false;
             PlayHit = false;
+            Moved = false;
         }
 
         /************************************************************************/
@@ -64,7 +69,13 @@ namespace Perihelion.Models
         public bool PlayHit
         {
             get { return this.playHit; }
-            private set { this.playHit = value; }
+            set { this.playHit = value; }
+        }
+
+        public bool RollCredits
+        {
+            get { return this.rollCredits; }
+            set { this.rollCredits = value; }
         }
 
         public SpriteFont Font
@@ -76,8 +87,10 @@ namespace Perihelion.Models
         /************************************************************************/
         /* XNA Methods                                                          */
         /************************************************************************/
-        public void update(int movement, bool aButton)
+        public void update(int movement, bool aButton, GameTime gameTime)
         {
+            elapsedSinceLastInput += gameTime.ElapsedGameTime.Milliseconds;
+
             // A series of if checks to make sure position is valid.
             if (movement < 0)
             {
@@ -92,18 +105,28 @@ namespace Perihelion.Models
             else
                 Moved = false;
 
-            if (Position < 0)
-                Position = 0;
-            if (Position > MainMenuItems.Count - 1)
-                Position = MainMenuItems.Count - 1;
-            if (Position > MainMenuItems.Count - 1)
-                Position = MainMenuItems.Count - 1;
+            // This gate is here to prevent unwanted movement
+            if (elapsedSinceLastInput > inputAllowed)
+            {
+                if (Position < 0)
+                    Position = 0;
+                if (Position > MainMenuItems.Count - 1)
+                    Position = MainMenuItems.Count - 1;
+                if (Position > MainMenuItems.Count - 1)
+                    Position = MainMenuItems.Count - 1;
 
-            if (aButton && Position == 0)
-                PlayHit = true;
+                if (aButton && Position == 0)
+                    PlayHit = true;
 
-            if (aButton && Position == (MainMenuItems.Count - 1))
-                Exiting = true;
+                if (aButton && Position == 2)
+                    RollCredits = true;
+
+                if (aButton && Position == (MainMenuItems.Count - 1))
+                    Exiting = true;
+            }
+
+            if (moved)
+                elapsedSinceLastInput = 0;
         }
 
         public void Draw(SpriteBatch spriteBatch, int screenWidth, int screenHeight, int iterator, Vector2 titlePosition)
