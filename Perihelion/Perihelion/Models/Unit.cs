@@ -9,79 +9,165 @@ namespace Perihelion.Models
 {
     class Unit : GameObject
     {
+        // Texture variables
+        protected Texture2D texture_turret;
+        protected Texture2D texture_bullet;
+        protected Texture2D texture_rocket;
+
         private int currentHealth;
         private int maxHealth;
         private float damageMultiplier;
         private float attackMultiplier;
         private float accelerationMultiplier = 0.02f;
-        
+
+        // Shoting variables
+        protected bool hasBullets;                // Does enemy have regular projectiles?
+        protected bool hasRockets;                // Does enemy have destructible projectiles?
+        protected bool shootingBullets;           // 
+        protected bool shootingRockets;           //
+        protected int timeBetweenBullets = 50;
+        protected int timeBetweenRockets = 300;
+        protected int bulletTimer = 0;
+        protected int rocketTimer = 0;
+        protected bool bulletMade = false;
+        protected bool rocketMade = false;
+        protected int bulletSpeed = 25;
+        protected int rocketSpeed = 15;
+        protected int bulletCounter = 0;
+        protected int rocketCounter = 0;
+        protected double turretRotationAngle = 0.0;
+
+        // Create a lists with bullets/rockets in them
+        protected List<Projectile> bullets;
+        protected List<DestructibleProjectile> rockets;
+
         /************************************************************************/
         /*  Constructors for Player object                                      */
         /************************************************************************/
         public Unit()
             : base()
         {
-            setHealth(100, 100);
-            setDamageMultiplier(1);
-            setAttackMultiplier(1);
+            CurrentHealth = 100;
+            MaxHealth = 100;
+            DamageMultiplier = 1;
+            AttackMultiplier = 1;
         }
 
         public Unit(Texture2D texture, float x, float y, Vector2 velocity, int currentHealth, int maxHealth)
             : base(texture, x, y, velocity, currentHealth)
         {
-            setHealth(currentHealth, maxHealth);
-            setDamageMultiplier(1);
-            setAttackMultiplier(1);
+            CurrentHealth = currentHealth;
+            MaxHealth = maxHealth;
+            DamageMultiplier = 1;
+            AttackMultiplier = 1;
         }
 
         public Unit(Texture2D texture, float x, float y, Vector2 velocity, int currentHealth, int maxHealth, float damageMultiplier, float attackMultiplier)
             : base(texture, x, y, velocity, currentHealth)
         {
-            setHealth(currentHealth, maxHealth);
-            setDamageMultiplier(damageMultiplier);
-            setAttackMultiplier(attackMultiplier);
+            CurrentHealth = currentHealth;
+            MaxHealth = maxHealth;
+            DamageMultiplier = damageMultiplier;
+            AttackMultiplier = attackMultiplier;
         }
 
         /************************************************************************/
-        /*  Set functions for Player attributes                                 */
+        /*  Set functions for Unit attributes                                   */
         /************************************************************************/
-        void setHealth(int currentHealth, int maxHealth)
+        public int CurrentHealth
         {
-            this.currentHealth = currentHealth;
-            this.maxHealth = maxHealth;
+            get { return this.currentHealth; }
+            set { this.currentHealth = value; }
         }
 
-        void setDamageMultiplier(float damageMultiplier)
+        public int MaxHealth
         {
-            this.damageMultiplier = damageMultiplier;
+            get { return this.maxHealth; }
+            private set { this.maxHealth = value; }
         }
 
-        void setAttackMultiplier(float attackMultiplier)
+        protected float DamageMultiplier
         {
-            this.attackMultiplier = attackMultiplier;
+            get { return this.damageMultiplier; }
+            set { this.damageMultiplier = value; }
+        }
+
+        protected float AttackMultiplier
+        {
+            get { return this.attackMultiplier; }
+            set { this.attackMultiplier = value; }
         }
 
         /************************************************************************/
-        /*  Get functions for Player attributes                                 */
+        /*  Getter/setter functions for Unit attributes                         */
         /************************************************************************/
-        int getCurrentHealth()
+        protected bool Bullets
         {
-            return this.currentHealth;
+            get { return this.hasBullets; }
+            set { this.hasBullets = value; }
         }
 
-        int getMaxHealth()
+        protected bool ShootingBullets
         {
-            return this.maxHealth;
+            get { return this.shootingBullets; }
+            set { this.shootingBullets = value; }
         }
 
-        float getDamageMultiplier()
+        public int BulletNumber
         {
-            return this.damageMultiplier;
+            get { return bullets.Count(); }
         }
 
-        float getAttackMultiplier()
+        public bool BulletMade
         {
-            return this.attackMultiplier;
+            get { return this.bulletMade; }
+            set { this.bulletMade = value; }
+        }
+
+        public int BulletTimeBetween
+        {
+            get { return this.timeBetweenBullets; }
+            set { this.timeBetweenBullets = value; }
+        }
+
+        public List<Projectile> BulletList
+        {
+            get { return bullets; }
+        }
+
+        protected Texture2D BulletTexture
+        {
+            get { return this.texture_bullet; }
+            set { this.texture_bullet = value; }
+        }
+
+        protected bool Rockets
+        {
+            get { return this.hasRockets; }
+            set { this.hasRockets = value; }
+        }
+
+        protected bool ShootingRockets
+        {
+            get { return this.shootingRockets; }
+            set { this.shootingRockets = value; }
+        }
+
+        public List<DestructibleProjectile> RocketList
+        {
+            get { return rockets; }
+        }
+
+        protected Texture2D RocketTexture
+        {
+            get { return this.texture_rocket; }
+            set { this.texture_rocket = value; }
+        }
+
+        protected Texture2D TurretTexture
+        {
+            get { return this.texture_turret; }
+            set { this.texture_turret = value; }
         }
 
         /************************************************************************/
@@ -120,7 +206,6 @@ namespace Perihelion.Models
                 {
                     speed = maxSpeed;
                 }
-                Console.Out.WriteLine("too damn high {0}", speed);
                 return velocity;
             }
             else if (newlength < (oldlength - accelerationMultiplier))
@@ -129,19 +214,16 @@ namespace Perihelion.Models
                 if (velocity.Length() != 0)
                 {
                     velocity = velocity / velocity.Length() * (oldlength - accelerationMultiplier);
-                    Console.Out.WriteLine("too low but still goin strong {0}", speed);
                 }
                 else
                 {
                     velocity = this.velocity/ oldlength * (oldlength - accelerationMultiplier);
-                    Console.Out.WriteLine("too low but still goin strong {0}", speed);
                 }
                 return velocity;
             }
             else
             {
                 speed = newlength * maxSpeed;
-                Console.Out.WriteLine("just right {0}", speed);
                 return velocity;
             }
         }
@@ -152,9 +234,10 @@ namespace Perihelion.Models
         protected void constructUnit(Texture2D texture, float x, float y, Vector2 velocity, int currentHealth, int maxHealth, float damageMultiplier, float attackMultiplier)
         {
             base.constructGameObject(texture, x, y, velocity);
-            setHealth(currentHealth, maxHealth);
-            setDamageMultiplier(damageMultiplier);
-            setAttackMultiplier(attackMultiplier);
+            CurrentHealth = currentHealth;
+            MaxHealth = maxHealth;
+            DamageMultiplier = damageMultiplier;
+            AttackMultiplier = attackMultiplier;
         }
     }
 }

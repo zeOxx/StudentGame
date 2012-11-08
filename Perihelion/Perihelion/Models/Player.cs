@@ -13,25 +13,11 @@ namespace Perihelion.Models
 {
     class Player : Unit
     {
-        protected Texture2D texture_turret;
-        protected Texture2D texture_bullet;
-        protected double turretRotationAngle = 0.0;
         
         // Powers and stuff
         private float wellMultiplier;
         private int wellStatus;
         private int auxiliaryPower;
-
-        // Shooting variables
-        private bool isShooting;
-        private int timeBetweenShots = 50;
-        private int shotTimer = 0;
-        private bool bulletMade = false;
-        private int bulletSpeed = 15;
-        private int bulletCounter = 0;
-
-        // Create a list with bullets in it
-        List<Projectile> bullets;
 
         /************************************************************************/
         /*  Constructors for Player object                                      */
@@ -39,25 +25,25 @@ namespace Perihelion.Models
         public Player()
             : base()
         {
-            setWellMultiplier(1);
-            setWellStatus(0);
-            setAuxiliaryPower(100);
+            WellMultiplier = 1;
+            WellStatus = 0;
+            AuxPower = 100;
         }
 
         public Player(Texture2D texture_ship, Texture2D texture_turret, Texture2D texture_bullet, float x, float y, Vector2 velocity, int currentHealth, int maxHealth)
             : base(texture_ship, x, y, velocity, currentHealth, maxHealth)
         {
-            setTurretTexture(texture_turret);
-            setBulletTexture(texture_bullet);
-            setWellMultiplier(1);
-            setWellStatus(0);
-            setAuxiliaryPower(100);
+            TurretTexture = texture_turret;
+            BulletTexture = texture_bullet;
+            WellMultiplier = 1;
+            WellStatus = 0;
+            AuxPower = 100;
 
             // Temp
             Speed = 0;
             setMaxSpeed(5);
 
-            IsShooting = false;
+            ShootingBullets = false;
 
             bullets = new List<Projectile>();
         }
@@ -65,77 +51,30 @@ namespace Perihelion.Models
         public Player(Texture2D texture, Texture2D texture_turret, Texture2D texture_bullet, float x, float y, Vector2 velocity, int currentHealth, int maxHealth, float damageMultiplier, float attackMultiplier, float wellMultiplier, int wellStatus, int auxiliaryPower)
             : base(texture, x, y, velocity, currentHealth, maxHealth, damageMultiplier, attackMultiplier)
         {
-            setTurretTexture(texture_turret);
-            setWellMultiplier(wellMultiplier);
-            setWellStatus(wellStatus);
-            setAuxiliaryPower(auxiliaryPower);
+            TurretTexture = texture_turret;
+            WellMultiplier = wellMultiplier;
+            WellStatus = wellStatus;
+            AuxPower = auxiliaryPower;
         }
         /************************************************************************/
-        /*  Set functions for Player attributes                                 */
+        /*  Get/set functions for Player attributes                             */
         /************************************************************************/
-        void setTurretTexture(Texture2D texture_turret)
+        protected float WellMultiplier
         {
-            this.texture_turret = texture_turret;
+            get { return this.wellMultiplier; }
+            set { this.wellMultiplier = value; }
         }
 
-        void setBulletTexture(Texture2D texture_bullet)
+        protected int WellStatus
         {
-            this.texture_bullet = texture_bullet;
-        }
-        
-        void setWellMultiplier(float wellModifier)
-        {
-            this.wellMultiplier = wellModifier;
+            get { return this.wellStatus; }
+            set { this.wellStatus = value; }
         }
 
-        void setWellStatus(int wellStatus)
+        protected int AuxPower
         {
-            this.wellStatus = wellStatus;
-        }
-
-        void setAuxiliaryPower(int auxiliaryPower)
-        {
-            this.auxiliaryPower = auxiliaryPower;
-        }
-
-        /************************************************************************/
-        /*  Get functions for Player attributes                                 */
-        /************************************************************************/
-        float getWellMultiplier()
-        {
-            return this.wellMultiplier;
-        }
-
-        int getWellStatus()
-        {
-            return this.wellStatus;
-        }
-
-        int getAuxiliaryPower()
-        {
-            return this.auxiliaryPower;
-        }
-
-        public List<Projectile> getBulletList()
-        {
-            return bullets;
-        }
-
-        public int getNumberOfBullets()
-        {
-            return bullets.Count();
-        }
-
-        public bool IsShooting
-        {
-            get { return this.isShooting; }
-            set { this.isShooting = value; }
-        }
-
-        public bool BulletMade
-        {
-            get { return this.bulletMade; }
-            set { this.bulletMade = value; }
+            get { return this.auxiliaryPower; }
+            set { this.auxiliaryPower = value; }
         }
 
         /************************************************************************/
@@ -145,15 +84,15 @@ namespace Perihelion.Models
         {
             updateTurret(rightStick);
 
-            if (isShooting || bulletMade)
+            if (ShootingBullets || bulletMade)
             {
-                shotTimer += gameTime.ElapsedGameTime.Milliseconds;
+                bulletTimer += gameTime.ElapsedGameTime.Milliseconds;
 
-                if (shotTimer > timeBetweenShots)
+                if (bulletTimer > timeBetweenBullets)
                 {
                     // Reset shotTimer
                     bulletMade = true;
-                    shotTimer = 0;
+                    bulletTimer = 0;
 
                     Projectile tempBullet = new Projectile(
                         texture_bullet,
@@ -204,10 +143,10 @@ namespace Perihelion.Models
             if ((rightStick.X < 0.0f || rightStick.Y < 0.0f) || (rightStick.X > 0.0f || rightStick.Y > 0.0f))
             {
                 turretRotationAngle = Math.Atan2((double)rightStick.X, (double)rightStick.Y);
-                IsShooting = true;
+                shootingBullets = true;
             }
             if (rightStick.X == 0.0f && rightStick.Y == 0.0f)
-                IsShooting = false;
+                shootingBullets = false;
         }
 
         public override void Draw(SpriteBatch spriteBatch)

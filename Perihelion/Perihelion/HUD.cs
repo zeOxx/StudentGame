@@ -77,7 +77,7 @@ namespace Perihelion
             if (displayDebug)
             {
                 playerPosition = "Player position: " + player.getPosition();
-                numberOfBullets = "Number of bullets: " + player.getNumberOfBullets();
+                numberOfBullets = "Number of bullets: " + player.BulletList.Count;
                 playerSpeed = "Player speed: " + player.Speed;
             }
 #endif

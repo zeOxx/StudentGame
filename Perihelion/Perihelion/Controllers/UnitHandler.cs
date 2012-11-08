@@ -10,6 +10,8 @@ namespace Perihelion.Controllers
     {
         private Models.Gameworld gameworld;
 
+        private static int enemyBufferDistance;
+
         public UnitHandler()
         {
 
@@ -21,6 +23,7 @@ namespace Perihelion.Controllers
             Vector2 playervector = player.getPosition();
 
             Vector2 direction = enemyvector - playervector;
+            
             direction = direction / direction.Length();
             direction.X = direction.X * -1;
             return direction;

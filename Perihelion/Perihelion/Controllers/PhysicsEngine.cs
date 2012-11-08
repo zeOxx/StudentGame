@@ -69,22 +69,22 @@ namespace Perihelion.Controllers
 
             //Console.WriteLine("Lengde: " + playerObject.getBulletList().Count);
 
-            for (int i = 0; i < gameWorld.getPlayer().getBulletList().Count; i++)
+            for (int i = 0; i < gameWorld.getPlayer().BulletList.Count; i++)
             {
                 //Vector2 bulletPrePosition = gameWorld.getPlayer().getBulletList()[i].getPosition();
                 for (int j = 0; j < gameWorld.getRock().Count; j++)
                 //foreach (Models.Collidable rock in gameWorld.getRock())
                 {
-                    if(gameWorld.getRock()[j].BoundingBox.Intersects(gameWorld.getPlayer().getBulletList()[i].BoundingBox))
+                    if(gameWorld.getRock()[j].BoundingBox.Intersects(gameWorld.getPlayer().BulletList[i].BoundingBox))
                     //if (gameWorld.getPlayer().getBulletList()[i].BoundingBox.Intersects(gameWorld.getRock()[j].BoundingBox))
                     {
-                        if (perPixelCollisionDetection(gameWorld.getPlayer().getBulletList()[i],
+                        if (perPixelCollisionDetection(gameWorld.getPlayer().BulletList[i],
                                                         gameWorld.getRock()[j]))
                         {
                             collidedProjectileIndexes.Add(i);
                             rockCollisionIndex.Add(j);
 
-                            collisions.Add(gameWorld.getPlayer().getBulletList()[i]);
+                            collisions.Add(gameWorld.getPlayer().BulletList[i]);
                             collisions.Add(gameWorld.getRock()[j]);
 
                             //Console.WriteLine("KABLAAAM!!");
@@ -96,7 +96,7 @@ namespace Perihelion.Controllers
             //Remove collided projectiles. 
             for (int i = 0; i < collidedProjectileIndexes.Count; i++)
             {
-                gameWorld.getPlayer().getBulletList().RemoveAt(collidedProjectileIndexes[i]);
+                gameWorld.getPlayer().BulletList.RemoveAt(collidedProjectileIndexes[i]);
             }
 
         }

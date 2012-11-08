@@ -9,10 +9,6 @@ namespace Perihelion.Models
 {
     class Enemy : Unit
     {
-        // Texture variables
-        //protected Texture2D texture_turret;
-        protected Texture2D texture_bullet;
-        protected Texture2D texture_rocket;
         //protected double turretRotationAngle = 0.0;
 
         // Cloak variables
@@ -21,25 +17,6 @@ namespace Perihelion.Models
         private int cloakCountdown = 0;
         private static int cloakCooldown = 100;
 
-        // Shoting variables
-        private bool hasBullets;                // Does enemy have regular projectiles?
-        private bool hasRockets;                // Does enemy have destructible projectiles?
-        private bool shootingBullets;           // 
-        private bool shootingRockets;           //
-        private int timeBetweenBullets = 50;
-        private int timeBetweenRockets = 300;
-        private int bulletTimer = 0;
-        private int rocketTimer = 0;
-        private bool bulletMade = false;
-        private bool rocketMade = false;
-        private int bulletSpeed = 25;
-        private int rocketSpeed = 15;
-        private int bulletCounter = 0;
-        private int rocketCounter = 0;
-
-        // Create a lists with bullets/rockets in them
-        List<Projectile> bullets;
-        List<DestructibleProjectile> rockets;
 
         /************************************************************************/
         /*  Constructors for Enemy object                                       */
@@ -62,6 +39,10 @@ namespace Perihelion.Models
             Cloaked = false;
             ShootingBullets = false;
             ShootingRockets = false;
+
+            // Temp
+            Speed = 0;
+            setMaxSpeed(4);
 
             bullets = new List<Projectile>();
             rockets = new List<DestructibleProjectile>();
@@ -98,68 +79,7 @@ namespace Perihelion.Models
             }
         }
 
-        private bool Bullets
-        {
-            get { return this.hasBullets; }
-            set { this.hasBullets = value; }
-        }
-
-        private bool ShootingBullets
-        {
-            get { return this.shootingBullets; }
-            set { this.shootingBullets = value; }
-        }
-
-        public int BulletNumber
-        {
-            get { return bullets.Count(); }
-        }
-
-        public bool BulletMade
-        {
-            get { return this.bulletMade; }
-            set { this.bulletMade = value; }
-        }
-
-        public int BulletTimeBetween
-        {
-            get { return this.timeBetweenBullets; }
-            set { this.timeBetweenBullets = value; }
-        }
-
-        public List<Projectile> BulletList
-        {
-            get { return bullets; }
-        }
-
-        Texture2D BulletTexture
-        {
-            get { return this.texture_bullet; }
-            set { this.texture_bullet = value; }
-        }
-
-        private bool Rockets
-        {
-            get { return this.hasRockets; }
-            set { this.hasRockets = value; }
-        }
-
-        private bool ShootingRockets
-        {
-            get { return this.shootingRockets; }
-            set { this.shootingRockets = value; }
-        }
-
-        public List<DestructibleProjectile> RocketList
-        {
-            get { return rockets; }
-        }
-
-        Texture2D RocketTexture
-        {
-            get { return this.texture_rocket; }
-            set { this.texture_rocket = value; }
-        }
+        
 
         public bool Cloak
         {
