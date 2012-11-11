@@ -32,6 +32,7 @@ namespace Perihelion
 
         // Particles
         public Texture2D particle_test;
+        public Texture2D particle_smoke;
 
         // HUD elements
         public Texture2D healthAuxBar;
@@ -101,6 +102,7 @@ namespace Perihelion
         private void loadParticles(ContentManager content)
         {
             particle_test = content.Load<Texture2D>("Particles\\particle_test");
+            particle_smoke = content.Load<Texture2D>("Particles\\smoke");
         }
 
         private void loadFonts(ContentManager content)
