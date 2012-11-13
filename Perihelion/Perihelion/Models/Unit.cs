@@ -152,9 +152,19 @@ namespace Perihelion.Models
         /************************************************************************/
         /*  Update functions for Unit attributes                                */
         /************************************************************************/
-        public void unitUpdate (Vector2 velocity)
+        public void unitUpdate (Vector2 leftStick, Vector2 rightStick, GameTime gameTime)
         {
-            base.update(scaleVelocity(velocity));
+            updateTurret(rightStick);
+
+            if (Bullets)
+            {
+                updateBullets(gameTime, rightStick);
+            }
+            if (Rockets)
+            {
+                updateRockets(gameTime);
+            }
+            base.update(scaleVelocity(leftStick));
         }
 
         void updateCurrentHealth(int i)
@@ -250,6 +260,17 @@ namespace Perihelion.Models
         protected void updateRockets(GameTime gameTime)
         {
             // TODO
+        }
+
+        public void updateTurret(Vector2 rightStick)
+        {
+            if ((rightStick.X < 0.0f || rightStick.Y < 0.0f) || (rightStick.X > 0.0f || rightStick.Y > 0.0f))
+            {
+                turretRotationAngle = Math.Atan2((double)rightStick.X, (double)rightStick.Y);
+                shootingBullets = true;
+            }
+            if (rightStick.X == 0.0f && rightStick.Y == 0.0f)
+                shootingBullets = false;
         }
 
         /************************************************************************/

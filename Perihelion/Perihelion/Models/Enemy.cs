@@ -30,15 +30,18 @@ namespace Perihelion.Models
             Cloaked = false;
         }
 
-        public Enemy(Texture2D texture, float x, float y, Vector2 velocity, int currentHealth, int maxHealth) //WIP
+        public Enemy(Texture2D texture, Texture2D texture_turret, Texture2D texture_bullet, float x, float y, Vector2 velocity, int currentHealth, int maxHealth) //WIP
             : base(texture, x, y, velocity, currentHealth, maxHealth)
         {
+            TurretTexture = texture_turret;
+            BulletTexture = texture_bullet;
             Bullets = true;
             Rockets = false;
             Cloak = false;
             Cloaked = false;
             ShootingBullets = false;
             ShootingRockets = false;
+            timeBetweenBullets = 500;
 
             // Temp
             Speed = 0;
@@ -102,20 +105,11 @@ namespace Perihelion.Models
         /************************************************************************/
         /*  Update functions for Enemy attributes                               */
         /************************************************************************/
-        public void update(Vector2 direction, GameTime gameTime, bool rocket)
+        public void update(Vector2 leftStick, Vector2 rightStick, GameTime gameTime, bool rocket)
         {
-            if (base.Bullets)
-            {
-                base.updateBullets(gameTime, direction);
-            }
-            if (base.Rockets)
-            {
-                base.updateRockets(gameTime);
-            }
+            //leftStick = correctCourse(leftStick);
 
-            //direction = correctCourse(direction);
-
-            base.unitUpdate(direction);
+            base.unitUpdate(leftStick, rightStick, gameTime);
         }
 
         private Vector2 correctCourse(Vector2 direction)
