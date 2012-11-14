@@ -40,7 +40,7 @@ namespace Perihelion.Models
         protected List<DestructibleProjectile> rockets;
 
         /************************************************************************/
-        /*  Constructors for Player object                                      */
+        /*  Constructors for Unit object                                        */
         /************************************************************************/
         public Unit()
             : base()
