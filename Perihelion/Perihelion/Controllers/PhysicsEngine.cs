@@ -91,7 +91,7 @@ namespace Perihelion.Controllers
                         {
                             collidedProjectileIndexes.Add(i);
                             rockCollisionIndex.Add(j);
-
+                            gameWorld.getRock()[j].updateCurrentHealth(-(gameWorld.getPlayer().BulletList[i].Damage));
                             collisions.Add(gameWorld.getPlayer().BulletList[i]);
                             collisions.Add(gameWorld.getRock()[j]);
 
@@ -110,7 +110,7 @@ namespace Perihelion.Controllers
                         {
                             collidedProjectileIndexes.Add(i);
                             enemyCollisionIndex.Add(l);
-
+                            gameWorld.EnemyList[l].updateCurrentHealth(-(gameWorld.getPlayer().BulletList[i].Damage));
                             collisions.Add(gameWorld.getPlayer().BulletList[i]);
                             collisions.Add(gameWorld.EnemyList[l]);
 
@@ -121,11 +121,13 @@ namespace Perihelion.Controllers
             }
 
             //Remove collided projectiles. 
-            for (int i = 0; i < collidedProjectileIndexes.Count; i++)
+            if (collidedProjectileIndexes.Count > 0)
             {
-                gameWorld.getPlayer().BulletList.RemoveAt(collidedProjectileIndexes[i]);
+                for (int i = 0; i < collidedProjectileIndexes.Count; i++)
+                {
+                    gameWorld.getPlayer().BulletList.RemoveAt(collidedProjectileIndexes[i]);
+                }
             }
-
         }
 
         private void playerCollisions(Models.Gameworld gameWorld, Vector2 movementVector, Vector2 rightStick, GameTime gameTime)

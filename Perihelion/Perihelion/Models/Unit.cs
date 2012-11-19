@@ -167,16 +167,6 @@ namespace Perihelion.Models
             base.update(scaleVelocity(leftStick));
         }
 
-        void updateCurrentHealth(int i)
-        {
-            CurrentHealth += i;
-        }
-
-        void updateMaxHealth(int i)
-        {
-            MaxHealth += i;
-        }
-
         private Vector2 scaleVelocity (Vector2 velocity)
         {
             float oldlength = this.velocity.Length();

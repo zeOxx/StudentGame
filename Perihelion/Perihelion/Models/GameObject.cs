@@ -185,6 +185,16 @@ namespace Perihelion.Models
                 speed += speedUpdate;
         }
 
+        public void updateCurrentHealth(int i)
+        {
+            CurrentHealth += i;
+        }
+
+        protected void updateMaxHealth(int i)
+        {
+            MaxHealth += i;
+        }
+
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(texture, position, null, Color.White, (float)rotationAngle,

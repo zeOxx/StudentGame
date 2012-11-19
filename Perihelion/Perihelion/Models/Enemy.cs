@@ -113,6 +113,7 @@ namespace Perihelion.Models
 
         private Vector2 correctCourse(Vector2 direction)
         {
+            //TODO!!!!!
             Vector2 corrected = Vector2.Zero;
 
             return corrected;

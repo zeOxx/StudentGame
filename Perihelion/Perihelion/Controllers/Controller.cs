@@ -85,12 +85,18 @@ namespace Perihelion.Controllers
 
             for(int i = 0; i < rockCollisionsIndex.Count; i++)
             {
-                gameWorld.getRock().RemoveAt(rockCollisionsIndex[i]);
+                if (gameWorld.getRock()[i].CurrentHealth <= 0)
+                {
+                    gameWorld.getRock().RemoveAt(rockCollisionsIndex[i]);
+                }
             }
 
             for (int j = 0; j < enemyCollisionsIndex.Count; j++)
             {
-                gameWorld.EnemyList.RemoveAt(enemyCollisionsIndex[j]);
+                if (gameWorld.EnemyList[j].CurrentHealth <= 0)
+                {
+                    gameWorld.EnemyList.RemoveAt(enemyCollisionsIndex[j]);
+                }
             }
 
             //for (int i = 0; i < collisions.Count; i++)

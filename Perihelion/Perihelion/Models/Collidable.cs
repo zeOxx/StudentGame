@@ -38,16 +38,5 @@ namespace Perihelion.Models
             get { return this.isDestructible; }
             private set { this.isDestructible = value; }
         }
-
-        /************************************************************************/
-        /* Misc                                                                 */
-        /************************************************************************/
-        public void updateCurrentHealth(int healthChange)
-        {
-            if (healthChange < 0)
-                CurrentHealth -= healthChange;
-            else
-                CurrentHealth += healthChange;
-        }
     }
 }
