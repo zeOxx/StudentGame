@@ -30,8 +30,8 @@ namespace Perihelion.Models
             Cloaked = false;
         }
 
-        public Enemy(Texture2D texture, Texture2D texture_turret, Texture2D texture_bullet, float x, float y, Vector2 velocity, int currentHealth, int maxHealth) //WIP
-            : base(texture, x, y, velocity, currentHealth, maxHealth)
+        public Enemy(Texture2D texture, Texture2D texture_turret, Texture2D texture_bullet, float x, float y, Vector2 velocity, int health) //WIP
+            : base(texture, x, y, velocity, health)
         {
             TurretTexture = texture_turret;
             BulletTexture = texture_bullet;
@@ -42,6 +42,7 @@ namespace Perihelion.Models
             ShootingBullets = false;
             ShootingRockets = false;
             timeBetweenBullets = 500;
+            bulletSpeed = 15;
 
             // Temp
             Speed = 0;
@@ -51,8 +52,8 @@ namespace Perihelion.Models
             rockets = new List<DestructibleProjectile>();
         }
 
-        public Enemy(Texture2D texture, float x, float y, Vector2 velocity, int currentHealth, int maxHealth, float damageMultiplier, float attackMultiplier, bool projectiles, bool destructibleProjectiles, bool cloak)
-            : base(texture, x, y, velocity, currentHealth, maxHealth, damageMultiplier, attackMultiplier)
+        public Enemy(Texture2D texture, float x, float y, Vector2 velocity, int health, float damageMultiplier, float attackMultiplier, bool projectiles, bool destructibleProjectiles, bool cloak)
+            : base(texture, x, y, velocity, health, damageMultiplier, attackMultiplier)
         {
             Bullets = projectiles;
             Rockets = destructibleProjectiles;
@@ -81,8 +82,6 @@ namespace Perihelion.Models
                 Cloaked = cloaked;
             }
         }
-
-        
 
         public bool Cloak
         {

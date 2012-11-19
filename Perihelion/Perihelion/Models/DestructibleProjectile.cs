@@ -9,17 +9,18 @@ namespace Perihelion.Models
 {
     class DestructibleProjectile : Projectile
     {
-        bool isDestructable;
+        bool isDestructible;
 
-        public DestructibleProjectile(Texture2D texture, float x, float y, Vector2 velocity,int activeTime, int damage, float speed, bool isDestructable)
+        public DestructibleProjectile(Texture2D texture, float x, float y, Vector2 velocity,int activeTime, int damage, float speed, bool isDestructible)
             : base(texture, x, y, velocity, activeTime, damage, speed)
         {
-            setDestructable(isDestructable);
+            Destructible = isDestructible;
         }
 
-        private void setDestructable(bool isDestructable)
+        public bool Destructible
         {
-            this.isDestructable = isDestructable;
+            get { return this.isDestructible; }
+            private set { this.isDestructible = value; }
         }
     }
 }

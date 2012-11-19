@@ -9,36 +9,34 @@ namespace Perihelion.Models
 {
     class Collidable : GameObject
     {
-        bool isDestructable;
+        bool isDestructible;
 
-        // These variables are only used if isDestructable is true. 
+        // Health variables are only used if isDestructable is true. 
         //  If isDestructable is false, the class just generates a normal GameObject
-        //int maxHealth;
-        //int currentHealth;
 
         /************************************************************************/
         /* Constructor                                                          */
         /************************************************************************/
         public Collidable(Texture2D texture, float x, float y, Vector2 velocity, int health)
-            : base(texture, x, y, velocity, health, health)
+            : base(texture, x, y, velocity, health)
         {
             // CREATES A GAMEOBJECT
         }
         
-        // This constructor is used if the object is destructable ONLY.
-        public Collidable(Texture2D texture, float x, float y, Vector2 velocity, bool isDestructable, int maxHealth, int currentHealth, int health)
-            : base(texture, x, y, velocity, currentHealth, maxHealth)
+        // This constructor is used if the object is destructible ONLY.
+        public Collidable(Texture2D texture, float x, float y, Vector2 velocity, bool isDestructible, int health)
+            : base(texture, x, y, velocity, health)
         {
-            Destructable = isDestructable;
+            Destructible = isDestructible;
         }
 
         /************************************************************************/
         /* Setters                                                              */
         /************************************************************************/
-        public bool Destructable
+        public bool Destructible
         {
-            get { return this.isDestructable; }
-            private set { this.isDestructable = value; }
+            get { return this.isDestructible; }
+            private set { this.isDestructible = value; }
         }
 
         /************************************************************************/

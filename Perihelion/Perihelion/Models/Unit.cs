@@ -18,7 +18,7 @@ namespace Perihelion.Models
         private float attackMultiplier;
         private float accelerationMultiplier = 0.02f;
 
-        // Shoting variables
+        // Shooting variables
         protected bool hasBullets;                // Does enemy have regular projectiles?
         protected bool hasRockets;                // Does enemy have destructible projectiles?
         protected bool shootingBullets;           // 
@@ -49,15 +49,15 @@ namespace Perihelion.Models
             AttackMultiplier = 1;
         }
 
-        public Unit(Texture2D texture, float x, float y, Vector2 velocity, int currentHealth, int maxHealth)
-            : base(texture, x, y, velocity, currentHealth, maxHealth)
+        public Unit(Texture2D texture, float x, float y, Vector2 velocity, int health)
+            : base(texture, x, y, velocity, health)
         {
             DamageMultiplier = 1;
             AttackMultiplier = 1;
         }
 
-        public Unit(Texture2D texture, float x, float y, Vector2 velocity, int currentHealth, int maxHealth, float damageMultiplier, float attackMultiplier)
-            : base(texture, x, y, velocity, currentHealth, maxHealth)
+        public Unit(Texture2D texture, float x, float y, Vector2 velocity, int health, float damageMultiplier, float attackMultiplier)
+            : base(texture, x, y, velocity, health)
         {
             DamageMultiplier = damageMultiplier;
             AttackMultiplier = attackMultiplier;

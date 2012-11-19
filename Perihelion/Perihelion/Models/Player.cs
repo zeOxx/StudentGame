@@ -30,8 +30,8 @@ namespace Perihelion.Models
             AuxPower = 100;
         }
 
-        public Player(Texture2D texture_ship, Texture2D texture_turret, Texture2D texture_bullet, float x, float y, Vector2 velocity, int currentHealth, int maxHealth)
-            : base(texture_ship, x, y, velocity, currentHealth, maxHealth)
+        public Player(Texture2D texture_ship, Texture2D texture_turret, Texture2D texture_bullet, float x, float y, Vector2 velocity, int health)
+            : base(texture_ship, x, y, velocity, health)
         {
             TurretTexture = texture_turret;
             BulletTexture = texture_bullet;
@@ -48,8 +48,8 @@ namespace Perihelion.Models
             bullets = new List<Projectile>();
         }
 
-        public Player(Texture2D texture, Texture2D texture_turret, Texture2D texture_bullet, float x, float y, Vector2 velocity, int currentHealth, int maxHealth, float damageMultiplier, float attackMultiplier, float wellMultiplier, int wellStatus, int auxiliaryPower)
-            : base(texture, x, y, velocity, currentHealth, maxHealth, damageMultiplier, attackMultiplier)
+        public Player(Texture2D texture, Texture2D texture_turret, Texture2D texture_bullet, float x, float y, Vector2 velocity, int health, float damageMultiplier, float attackMultiplier, float wellMultiplier, int wellStatus, int auxiliaryPower)
+            : base(texture, x, y, velocity, health, damageMultiplier, attackMultiplier)
         {
             TurretTexture = texture_turret;
             WellMultiplier = wellMultiplier;

@@ -19,7 +19,7 @@ namespace Perihelion.Models
         protected float maxSpeed = 0;
         protected float speed = 0;
         private int identifier = 0;
-        private int health;
+        //private int health;
         private int currentHealth;
         private int maxHealth;
         
@@ -34,16 +34,16 @@ namespace Perihelion.Models
             Velocity = new Vector2(0, 0);
         }
         
-        public GameObject (Texture2D texture, float x, float y, Vector2 velocity, int currentHealth, int maxHealth)
+        public GameObject (Texture2D texture, float x, float y, Vector2 velocity, int health)
         {
             Texture = texture;
             Position = new Vector2(x, y);
             Velocity = velocity;
             setOrigin(texture);
-            this.health = currentHealth;
 
-            CurrentHealth = currentHealth;
-            MaxHealth = maxHealth;
+            CurrentHealth = health;
+            MaxHealth = health;
+            //this.health = currentHealth;
 
             textureData = new ArrayList(texture.Width * texture.Height);
         }
