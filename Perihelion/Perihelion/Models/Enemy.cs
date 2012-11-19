@@ -129,7 +129,14 @@ namespace Perihelion.Models
         /************************************************************************/
         public override void Draw(SpriteBatch spriteBatch)
         {
-            base.Draw(spriteBatch);
+            if (Cloaked)
+            {
+                base.Draw(spriteBatch, Cloaked);
+            }
+            else
+            {
+                base.Draw(spriteBatch);
+            }
             
             foreach (Models.Projectile projectiles in bullets)
             {
