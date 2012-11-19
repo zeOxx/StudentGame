@@ -201,20 +201,10 @@ namespace Perihelion.Models
                     origin, 1.0f, SpriteEffects.None, 0f);
         }
 
-        public virtual void Draw(SpriteBatch spriteBatch, bool cloaked)
+        public virtual void Draw(SpriteBatch spriteBatch, float alpha)
         {
-            // This check does not need to be here, but has been kept in place as a fail-safe
-            // bool cloaked should always be true if this function has been called
-            if (cloaked)
-            {
-                spriteBatch.Draw(texture, position, null, Color.White*0.1f, (float)rotationAngle,
-                        origin, 1.0f, SpriteEffects.None, 0f);
-            }
-            else
-            {
-                spriteBatch.Draw(texture, position, null, Color.White, (float)rotationAngle,
-                        origin, 1.0f, SpriteEffects.None, 0f);
-            }
+            spriteBatch.Draw(texture, position, null, Color.White*alpha, (float)rotationAngle,
+                    origin, 1.0f, SpriteEffects.None, 0f);
         }
 
 

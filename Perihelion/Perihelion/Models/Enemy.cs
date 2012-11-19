@@ -131,7 +131,7 @@ namespace Perihelion.Models
         {
             if (Cloaked)
             {
-                base.Draw(spriteBatch, Cloaked);
+                base.Draw(spriteBatch, 0.1f);
             }
             else
             {
