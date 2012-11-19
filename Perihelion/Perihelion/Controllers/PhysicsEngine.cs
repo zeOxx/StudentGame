@@ -15,6 +15,7 @@ namespace Perihelion.Controllers
         //private ArrayList collisions;
         private List<int> projectileCollisionsIndex;
         private List<int> rockCollisionIndex;
+        private List<int> enemyCollisionIndex;
 
         //private List<int> intList;
         static private List<Models.GameObject> collisions;
@@ -28,6 +29,7 @@ namespace Perihelion.Controllers
             //projectileCollisionsList = new List<Models.GameObject>();
             projectileCollisionsIndex = new List<int>();
             rockCollisionIndex = new List<int>();
+            enemyCollisionIndex = new List<int>();
             collisions = new List<Models.GameObject>();
 
         }
@@ -38,6 +40,7 @@ namespace Perihelion.Controllers
 
             rockCollisionIndex.Clear();
             projectileCollisionsIndex.Clear();
+            enemyCollisionIndex.Clear();
             collisions.Clear();
             
             //rocks = gameWorld.getRock();
@@ -56,6 +59,11 @@ namespace Perihelion.Controllers
         public List<int> getRockCollisions()
         {
             return rockCollisionIndex;
+        }
+
+        public List<int> EnemyCollision
+        {
+            get { return enemyCollisionIndex; }
         }
 
 
@@ -86,6 +94,25 @@ namespace Perihelion.Controllers
 
                             collisions.Add(gameWorld.getPlayer().BulletList[i]);
                             collisions.Add(gameWorld.getRock()[j]);
+
+                            //Console.WriteLine("KABLAAAM!!");
+                        }
+                    }
+                }
+
+                for (int l = 0; l < gameWorld.EnemyList.Count; l++)
+                {
+                    if (gameWorld.EnemyList[l].BoundingBox.Intersects(gameWorld.getPlayer().BulletList[i].BoundingBox))
+                    //if (gameWorld.getPlayer().getBulletList()[i].BoundingBox.Intersects(gameWorld.getRock()[j].BoundingBox))
+                    {
+                        if (perPixelCollisionDetection(gameWorld.getPlayer().BulletList[i],
+                                                        gameWorld.EnemyList[l]))
+                        {
+                            collidedProjectileIndexes.Add(i);
+                            enemyCollisionIndex.Add(l);
+
+                            collisions.Add(gameWorld.getPlayer().BulletList[i]);
+                            collisions.Add(gameWorld.EnemyList[l]);
 
                             //Console.WriteLine("KABLAAAM!!");
                         }

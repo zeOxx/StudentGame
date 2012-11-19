@@ -158,6 +158,11 @@ namespace Perihelion.Models
 			return rocks;
 		}
 
+        public List<Enemy> EnemyList
+        {
+            get { return enemies; }
+        }
+
 		public void updateEnemies(GameTime gameTime)
 		{
 			foreach (Enemy enemy in enemies)
