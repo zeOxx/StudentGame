@@ -44,10 +44,10 @@ namespace Perihelion.Models
             credits = new Credits(contentHolder.creditsFont, contentHolder.creditsHeaderFont, screenWidth, screenHeight);
 
             // Options menu items
-            OptionsMenuItems = new List<string>();
-            OptionsMenuItems.Add("Music");
-            OptionsMenuItems.Add("Sound");
-            OptionsMenuItems.Add("Hints");
+            //OptionsMenuItems = new List<string>();
+            //OptionsMenuItems.Add("Music");
+            //OptionsMenuItems.Add("Sound");
+            //OptionsMenuItems.Add("Hints");
 
             Running = true;
         }
@@ -106,8 +106,10 @@ namespace Perihelion.Models
                     Running = false;
                     mainMenu.PlayHit = false;
                 }
+
                 if (mainMenu.Exiting)
                     Exiting = true;
+
                 if (mainMenu.RollCredits)
                     menuState = MenuStates.Credits;
             }

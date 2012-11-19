@@ -10,7 +10,7 @@ namespace Perihelion.Models
     class MainMenu
     {
         private List<string> mainMenuItems;
-        private int position;
+        private int itemSelected;
         public bool moved;
         public bool exiting;
         public bool playHit;
@@ -48,10 +48,10 @@ namespace Perihelion.Models
             private set { this.mainMenuItems = value; }
         }
 
-        public int Position
+        public int ItemSelected
         {
-            get { return this.position; }
-            private set { this.position = value; }
+            get { return this.itemSelected; }
+            private set { this.itemSelected = value; }
         }
 
         public bool Moved
@@ -94,12 +94,12 @@ namespace Perihelion.Models
             // A series of if checks to make sure position is valid.
             if (movement < 0)
             {
-                Position--;
+                ItemSelected--;
                 Moved = true;
             }
             else if (movement > 0)
             {
-                Position++;
+                ItemSelected++;
                 Moved = true;
             }
             else
@@ -108,20 +108,18 @@ namespace Perihelion.Models
             // This gate is here to prevent unwanted movement
             if (elapsedSinceLastInput > inputAllowed)
             {
-                if (Position < 0)
-                    Position = 0;
-                if (Position > MainMenuItems.Count - 1)
-                    Position = MainMenuItems.Count - 1;
-                if (Position > MainMenuItems.Count - 1)
-                    Position = MainMenuItems.Count - 1;
+                if (ItemSelected < 0)
+                    ItemSelected = 0;
+                if (ItemSelected > MainMenuItems.Count - 1)
+                    ItemSelected = MainMenuItems.Count - 1;
 
-                if (aButton && Position == 0)
+                if (aButton && ItemSelected == 0)
                     PlayHit = true;
 
-                if (aButton && Position == 2)
+                if (aButton && ItemSelected == 2)
                     RollCredits = true;
 
-                if (aButton && Position == (MainMenuItems.Count - 1))
+                if (aButton && ItemSelected == (MainMenuItems.Count - 1))
                     Exiting = true;
             }
 
@@ -137,7 +135,7 @@ namespace Perihelion.Models
 
                 Vector2 itemPosition = new Vector2((screenWidth / 2 - centerText.X / 2), titlePosition.Y + iterator);
 
-                if (i == Position)
+                if (i == ItemSelected)
                     spriteBatch.DrawString(Font, MainMenuItems[i], itemPosition, Color.Green);
                 else
                     spriteBatch.DrawString(Font, MainMenuItems[i], itemPosition, Color.White);
