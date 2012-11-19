@@ -10,7 +10,9 @@ namespace Perihelion.Controllers
     {
         private Models.Gameworld gameworld;
 
-        private static int enemyBufferDistance = 100;
+        private static float enemyBufferDistance = 100;
+        private static float enemyAggroDistance = 300;
+
 
         public UnitHandler()
         {
@@ -26,15 +28,28 @@ namespace Perihelion.Controllers
             
             direction = direction / direction.Length();
             direction.X = direction.X * -1;
+
             return direction;
         }
 
-        public bool getEnemyTarget(Models.Player player, Models.Enemy enemy)
+        public int getEnemyTarget(Models.Player player, Models.Enemy enemy)
         {
-            Vector2 enemyvector = enemy.Velocity;
+            Vector2 enemyvector = enemy.Position;
             Vector2 playervector = player.Position;
 
-            return false;
+            Vector2 diff = enemyvector - playervector;
+            if (enemyAggroDistance < diff.Length())
+            {
+                return 2;
+            }
+            else if (diff.Length() < enemyBufferDistance)
+            {
+                return 0;
+            }
+            else
+            {
+                return 1;
+            }
         }
 
         public void updateHandler(Models.Gameworld gameworld)

@@ -38,7 +38,7 @@ namespace Perihelion.Models
             WellMultiplier = 1;
             WellStatus = 0;
             AuxPower = 100;
-
+            Bullets = true;
             // Temp
             Speed = 0;
             MaxSpeed = 5;
@@ -82,11 +82,8 @@ namespace Perihelion.Models
         /************************************************************************/
         public void update(Vector2 velocity, Vector2 rightStick, GameTime gameTime)
         {
-            updateTurret(rightStick);
 
-            base.updateBullets(gameTime, rightStick);
-
-            base.unitUpdate(velocity);
+            base.unitUpdate(velocity, rightStick, gameTime);
         }
 
         public void updateWellMultiplier(float i)
@@ -97,17 +94,6 @@ namespace Perihelion.Models
         public void updateAuxiliaryPower(int i)
         {
             this.auxiliaryPower += i;
-        }
-
-        public void updateTurret(Vector2 rightStick)
-        {
-            if ((rightStick.X < 0.0f || rightStick.Y < 0.0f) || (rightStick.X > 0.0f || rightStick.Y > 0.0f))
-            {
-                turretRotationAngle = Math.Atan2((double)rightStick.X, (double)rightStick.Y);
-                shootingBullets = true;
-            }
-            if (rightStick.X == 0.0f && rightStick.Y == 0.0f)
-                shootingBullets = false;
         }
 
         public override void Draw(SpriteBatch spriteBatch)

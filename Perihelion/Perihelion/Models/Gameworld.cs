@@ -104,7 +104,7 @@ namespace Perihelion.Models
             rocks.Add(new Collidable(contentHolder.textureRock01, 500, 300, Vector2.Zero, 70));
 			rocks.Add(new Collidable(contentHolder.textureRock02, -100, 250, Vector2.Zero, 200));
 
-            enemies.Add(new Enemy(contentHolder.texturePlayer, 200, 200, Vector2.Zero, 100, 100));
+            enemies.Add(new Enemy(contentHolder.texturePlayer, contentHolder.texturePlayerTurret, contentHolder.texturePlayerBullet, 200, 200, Vector2.Zero, 100, 100));
         }
 
         // Creates the bounds for the level
@@ -163,8 +163,20 @@ namespace Perihelion.Models
             foreach (Enemy enemy in enemies)
             {
                 Vector2 stick = unithandler.getEnemyStickVector(PlayerObject, enemy);
-                bool rocket = unithandler.getEnemyTarget(PlayerObject, enemy);
-                enemy.update(stick, gameTime, rocket);
+                int shot = unithandler.getEnemyTarget(PlayerObject, enemy);
+                bool rocket = false;
+                if (shot == 0)
+                {
+                    enemy.update(Vector2.Zero, stick, gameTime, rocket);
+                }
+                else if (shot == 1)
+                {
+                    enemy.update(stick, stick, gameTime, rocket);
+                }
+                else
+                {
+                    enemy.update(Vector2.Zero, Vector2.Zero, gameTime, rocket);
+                }
             }
         }
     }
