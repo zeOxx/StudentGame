@@ -108,6 +108,8 @@ namespace Perihelion.Controllers
             }
 
 
+
+
             //for (int j = 0; j < enemyCollisionsIndex.Count; j++)
             //{
                 

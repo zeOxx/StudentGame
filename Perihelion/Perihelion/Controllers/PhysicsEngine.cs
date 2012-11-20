@@ -48,7 +48,7 @@ namespace Perihelion.Controllers
 
             projectileCollisions(gameWorld);
             playerCollisions(gameWorld, movementVector, rightStick, gameTime);
-            levelBoundCollision(gameWorld);
+            
         }
 
         public List<Models.GameObject> getCollisions()
@@ -100,24 +100,24 @@ namespace Perihelion.Controllers
                     }
                 }
 
-                //for (int l = 0; l < gameWorld.EnemyList.Count; l++)
-                //{
-                //    if (gameWorld.EnemyList[l].BoundingBox.Intersects(gameWorld.getPlayer().BulletList[i].BoundingBox))
-                //    //if (gameWorld.getPlayer().getBulletList()[i].BoundingBox.Intersects(gameWorld.getRock()[j].BoundingBox))
-                //    {
-                //        if (perPixelCollisionDetection(gameWorld.getPlayer().BulletList[i],
-                //                                        gameWorld.EnemyList[l]))
-                //        {
-                //            collidedProjectileIndexes.Add(i);
-                //            enemyCollisionIndex.Add(l);
-                //            gameWorld.EnemyList[l].updateCurrentHealth(-(gameWorld.getPlayer().BulletList[i].Damage));
-                //            collisions.Add(gameWorld.getPlayer().BulletList[i]);
-                //            collisions.Add(gameWorld.EnemyList[l]);
+                for (int l = 0; l < gameWorld.EnemyList.Count; l++)
+                {
+                    if (gameWorld.EnemyList[l].BoundingBox.Intersects(gameWorld.getPlayer().BulletList[i].BoundingBox))
+                    //if (gameWorld.getPlayer().getBulletList()[i].BoundingBox.Intersects(gameWorld.getRock()[j].BoundingBox))
+                    {
+                        if (perPixelCollisionDetection(gameWorld.getPlayer().BulletList[i],
+                                                        gameWorld.EnemyList[l]))
+                        {
+                            collidedProjectileIndexes.Add(i);
+                            enemyCollisionIndex.Add(l);
+                            gameWorld.EnemyList[l].updateCurrentHealth(-(gameWorld.getPlayer().BulletList[i].Damage));
+                            collisions.Add(gameWorld.getPlayer().BulletList[i]);
+                            collisions.Add(gameWorld.EnemyList[l]);
 
-                //            //Console.WriteLine("KABLAAAM!!");
-                //        }
-                //    }
-                //}
+                            //Console.WriteLine("KABLAAAM!!");
+                        }
+                    }
+                }
             }
 
             //Remove collided projectiles. 
@@ -150,13 +150,12 @@ namespace Perihelion.Controllers
                     }
                 }
             }
-            
-            //If player reaches end of screen - velocity set to 0 -
+
+            levelBoundCollision(gameWorld, prePosition);
         }
 
-        private void levelBoundCollision(Models.Gameworld gameWorld)
+        private void levelBoundCollision(Models.Gameworld gameWorld, Vector2 prePosition)
         {
-            Vector2 prePosition = gameWorld.getPlayer().Position;
             if (!gameWorld.getPlayer().BoundingBox.Intersects(gameWorld.LevelBounds))
             {
                 gameWorld.getPlayer().Position = new Vector2(prePosition.X, prePosition.Y);
