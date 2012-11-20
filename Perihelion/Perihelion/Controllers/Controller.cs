@@ -82,22 +82,35 @@ namespace Perihelion.Controllers
             List<int> rockCollisionsIndex = physicsEngine.getRockCollisions();
             List<int> enemyCollisionsIndex = physicsEngine.EnemyCollision;
             List<Models.GameObject> collisions = physicsEngine.getCollisions();
+            Models.Projectile projectile = null;
+            int damage;
+            int rockCurrentHealth;
 
-            for(int i = 0; i < rockCollisionsIndex.Count; i++)
+            if (collisions.Count != 0)
             {
-                if (gameWorld.getRock()[i].CurrentHealth <= 0)
+
+                for (int i = 0; i < collisions.Count; i=i+2)
                 {
-                    gameWorld.getRock().RemoveAt(rockCollisionsIndex[i]);
+                    projectile = (Models.Projectile)collisions[i];
+                    damage = projectile.Damage;
+
+                    rockCurrentHealth = gameWorld.getRock()[rockCollisionsIndex[i]].CurrentHealth;
+
+                    rockCurrentHealth = rockCurrentHealth - damage;
+
+                    if (rockCurrentHealth <= 0)
+                    {
+                        gameWorld.getRock().RemoveAt(rockCollisionsIndex[i]);
+                    }
+
                 }
             }
-
-            for (int j = 0; j < enemyCollisionsIndex.Count; j++)
-            {
-                if (gameWorld.EnemyList[j].CurrentHealth <= 0)
-                {
-                    gameWorld.EnemyList.RemoveAt(enemyCollisionsIndex[j]);
-                }
-            }
+            //for (int j = 0; j < enemyCollisionsIndex.Count; j++)
+            //{
+                
+            //    gameWorld.EnemyList.RemoveAt(enemyCollisionsIndex[j]);
+                
+            //}
 
             //for (int i = 0; i < collisions.Count; i++)
             //{
