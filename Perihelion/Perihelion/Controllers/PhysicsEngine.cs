@@ -91,7 +91,7 @@ namespace Perihelion.Controllers
                         {
                             collidedProjectileIndexes.Add(i);
                             rockCollisionIndex.Add(j);
-                            gameWorld.getRock()[j].updateCurrentHealth(-(gameWorld.getPlayer().BulletList[i].Damage));
+                            //gameWorld.getRock()[j].updateCurrentHealth(-(gameWorld.getPlayer().BulletList[i].Damage));
                             collisions.Add(gameWorld.getPlayer().BulletList[i]);
                             collisions.Add(gameWorld.getRock()[j]);
 

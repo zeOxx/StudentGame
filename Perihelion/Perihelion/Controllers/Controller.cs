@@ -84,7 +84,7 @@ namespace Perihelion.Controllers
             List<Models.GameObject> collisions = physicsEngine.getCollisions();
             Models.Projectile projectile = null;
             int damage;
-            int rockCurrentHealth;
+            
 
             if (collisions.Count != 0)
             {
@@ -94,17 +94,20 @@ namespace Perihelion.Controllers
                     projectile = (Models.Projectile)collisions[i];
                     damage = projectile.Damage;
 
-                    rockCurrentHealth = gameWorld.getRock()[rockCollisionsIndex[i]].CurrentHealth;
+                    gameWorld.getRock()[rockCollisionsIndex[i]].updateCurrentHealth(-damage);
 
-                    rockCurrentHealth = rockCurrentHealth - damage;
-
-                    if (rockCurrentHealth <= 0)
+                    //Rock is destroyed
+                    if (gameWorld.getRock()[rockCollisionsIndex[i]].CurrentHealth <= 0)
                     {
+                        soundManager.playSound("explosion");
                         gameWorld.getRock().RemoveAt(rockCollisionsIndex[i]);
+
                     }
 
                 }
             }
+
+
             //for (int j = 0; j < enemyCollisionsIndex.Count; j++)
             //{
                 
@@ -130,7 +133,7 @@ namespace Perihelion.Controllers
         {
             if (playerObject.BulletMade)
             {
-                soundManager.playGunSound();
+                soundManager.playSound("pang");
             }
         }
 

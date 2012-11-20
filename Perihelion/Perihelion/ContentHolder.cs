@@ -39,6 +39,7 @@ namespace Perihelion
         public Texture2D special;
 
         //Sound effects
+        public SoundEffect explosion;
         public SoundEffect playerShootingGun;
         public SoundEffect playerGunWindDown;
         public SoundEffect pang;
@@ -70,6 +71,7 @@ namespace Perihelion
             playerShootingGun = content.Load<SoundEffect>("SoundEffects\\pang");
             playerGunWindDown = content.Load<SoundEffect>("SoundEffects\\s_gun_wind_down");
             pang = content.Load<SoundEffect>("SoundEffects\\pang");
+            explosion = content.Load<SoundEffect>("SoundEffects\\explosion");
         }
 
         private void loadTextures(ContentManager content)

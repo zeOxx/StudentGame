@@ -19,9 +19,18 @@ namespace Perihelion.Controllers
         }
 
 
-        public void playGunSound()
+        public void playSound(String soundName)
         {
-            soundContent.pang.Play();
+            switch(soundName)
+            {
+                case "pang":
+                    soundContent.pang.Play();
+                    break;
+                case "explosion":
+                    soundContent.explosion.Play();
+                    break;
+            }
+
             //int durationOfSound = soundContent.playerShootingGun.Duration.Milliseconds;
             //timeSinceLastPlayed += gameTime.ElapsedGameTime.Milliseconds;
 
