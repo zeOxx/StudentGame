@@ -80,23 +80,23 @@ namespace Perihelion.Controllers
             return menu;
         }
 
+        
+        
         public void handleProjectileCollisions(Models.Gameworld gameWorld)
         {
-            List<int> rockCollisionsIndex = physicsEngine.getRockCollisions();
-            List<int> enemyCollisionsIndex = physicsEngine.EnemyCollision;
-            List<Models.GameObject> collisions = physicsEngine.getCollisions();
-            Models.Projectile projectile = null;
+            List<int> rockCollisionsIndex                       = physicsEngine.RockCollisionIndexes;
+            List<int> enemyCollisionsIndex                      = physicsEngine.EnemyCollisionIndexes;
+            List<Models.GameObject> rockProjectileCollisions    = physicsEngine.getRockProjectileCollisions();
+            List<Models.GameObject> enemyProjectileCollisions   = physicsEngine.getEnemyProjectileCollisions();
+            Models.Projectile projectile                        = null;
+            
             int damage;
 
-           
-            
-
-            if (collisions.Count != 0)
+            if (rockProjectileCollisions.Count != 0)
             {
-
-                for (int i = 0; i < collisions.Count; i=i+2)
+                for (int i = 0; i < rockProjectileCollisions.Count; i = i + 2)
                 {
-                    projectile = (Models.Projectile)collisions[i];
+                    projectile = (Models.Projectile)rockProjectileCollisions[i];
                     damage = projectile.Damage;
 
                     gameWorld.getRock()[rockCollisionsIndex[i]].updateCurrentHealth(-damage);
@@ -113,21 +113,24 @@ namespace Perihelion.Controllers
                 }
             }
 
+            if(enemyProjectileCollisions.Count != 0)
+            {
+                for (int i = 0; i < enemyProjectileCollisions.Count; i = i + 2)
+                {
+                    projectile = (Models.Projectile)enemyProjectileCollisions[i];
+                    damage = projectile.Damage;
 
+                    gameWorld.getRock()[enemyCollisionsIndex[i]].updateCurrentHealth(-damage);
 
-
-            //for (int j = 0; j < enemyCollisionsIndex.Count; j++)
-            //{
-
-            //    gameWorld.EnemyList.RemoveAt(enemyCollisionsIndex[j]);
-
-            //}
-
-            //for (int i = 0; i < collisions.Count; i++)
-            //{
-            //    for(int j = 0; j < gameWorld.getRock()
-            //}
-
+                    //Enemy is destroyed
+                    if (gameWorld.getRock()[enemyCollisionsIndex[i]].CurrentHealth <= 0)
+                    {
+                        spawnExplosionParticles(gameWorld.EnemyList[enemyCollisionsIndex[i]], projectile, gameWorld.getParticleSystem());
+                        soundManager.playSound("explosion");
+                        gameWorld.EnemyList.RemoveAt(enemyCollisionsIndex[i]);
+                    }
+                }
+            }
         }
 
         //Creates explosion 
@@ -136,8 +139,8 @@ namespace Perihelion.Controllers
             Vector2 objectPosition = explodingObject.Position;
             Vector2 explosionDirection = projectile.Velocity;
             particleSystem.newSpawner(content.particle_test, objectPosition, 1000, 0, 10, false, explosionDirection*8);
-            
         }
+        
         //Copies the entire Gamestate
         public void getModelFromGameworld(Gameworld gameWorld)
         {

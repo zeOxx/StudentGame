@@ -18,7 +18,8 @@ namespace Perihelion.Controllers
         private List<int> enemyCollisionIndex;
 
         //private List<int> intList;
-        static private List<Models.GameObject> collisions;
+        static private List<Models.GameObject> rockProjectileCollisions;
+        static private List<Models.GameObject> enemyProjectileCollisions;
 
         
 
@@ -30,8 +31,8 @@ namespace Perihelion.Controllers
             projectileCollisionsIndex = new List<int>();
             rockCollisionIndex = new List<int>();
             enemyCollisionIndex = new List<int>();
-            collisions = new List<Models.GameObject>();
-
+            rockProjectileCollisions= new List<Models.GameObject>();
+            enemyProjectileCollisions= new List<Models.GameObject>();
         }
 
         public void collisionDetection(ref Models.Gameworld gameWorld, Vector2 movementVector, Vector2 rightStick, GameTime gameTime)
@@ -41,7 +42,8 @@ namespace Perihelion.Controllers
             rockCollisionIndex.Clear();
             projectileCollisionsIndex.Clear();
             enemyCollisionIndex.Clear();
-            collisions.Clear();
+            enemyProjectileCollisions.Clear();
+            rockProjectileCollisions.Clear();
             
             //rocks = gameWorld.getRock();
             //playerObject = gameWorld.getPlayer();
@@ -51,17 +53,22 @@ namespace Perihelion.Controllers
             
         }
 
-        public List<Models.GameObject> getCollisions()
+        public List<Models.GameObject> getRockProjectileCollisions()
         {
-            return collisions;
+            return rockProjectileCollisions;
         }
 
-        public List<int> getRockCollisions()
+        public List<Models.GameObject> getEnemyProjectileCollisions()
         {
-            return rockCollisionIndex;
+            return enemyProjectileCollisions;
         }
 
-        public List<int> EnemyCollision
+        public List<int> RockCollisionIndexes
+        {
+            get { return rockCollisionIndex; }
+        }
+
+        public List<int> EnemyCollisionIndexes
         {
             get { return enemyCollisionIndex; }
         }
@@ -69,55 +76,39 @@ namespace Perihelion.Controllers
 
         private void projectileCollisions(Models.Gameworld gameWorld)
         {
-            //List<Models.Projectile> bullets = gameWorld.getPlayer().getBulletList();
-
             List<int> collidedProjectileIndexes = new List<int>();
-
-
-
-            //Console.WriteLine("Lengde: " + playerObject.getBulletList().Count);
 
             for (int i = 0; i < gameWorld.getPlayer().BulletList.Count; i++)
             {
-                //Vector2 bulletPrePosition = gameWorld.getPlayer().getBulletList()[i].getPosition();
-                for (int j = 0; j < gameWorld.getRock().Count; j++)
-                //foreach (Models.Collidable rock in gameWorld.getRock())
+                for (int j = 0; j < gameWorld.getRock().Count; j++)   
                 {
                     if(gameWorld.getRock()[j].BoundingBox.Intersects(gameWorld.getPlayer().BulletList[i].BoundingBox))
-                    //if (gameWorld.getPlayer().getBulletList()[i].BoundingBox.Intersects(gameWorld.getRock()[j].BoundingBox))
                     {
                         if (perPixelCollisionDetection(gameWorld.getPlayer().BulletList[i],
                                                         gameWorld.getRock()[j]))
                         {
                             collidedProjectileIndexes.Add(i);
                             rockCollisionIndex.Add(j);
-                            //gameWorld.getRock()[j].updateCurrentHealth(-(gameWorld.getPlayer().BulletList[i].Damage));
-                            collisions.Add(gameWorld.getPlayer().BulletList[i]);
-                            collisions.Add(gameWorld.getRock()[j]);
-
-                            //Console.WriteLine("KABLAAAM!!");
+                            rockProjectileCollisions.Add(gameWorld.getPlayer().BulletList[i]);
+                            rockProjectileCollisions.Add(gameWorld.getRock()[j]);
                         }
                     }
                 }
 
-                //for (int l = 0; l < gameWorld.EnemyList.Count; l++)
-                //{
-                //    if (gameWorld.EnemyList[l].BoundingBox.Intersects(gameWorld.getPlayer().BulletList[i].BoundingBox))
-                //    //if (gameWorld.getPlayer().getBulletList()[i].BoundingBox.Intersects(gameWorld.getRock()[j].BoundingBox))
-                //    {
-                //        if (perPixelCollisionDetection(gameWorld.getPlayer().BulletList[i],
-                //                                        gameWorld.EnemyList[l]))
-                //        {
-                //            collidedProjectileIndexes.Add(i);
-                //            enemyCollisionIndex.Add(l);
-                //            gameWorld.EnemyList[l].updateCurrentHealth(-(gameWorld.getPlayer().BulletList[i].Damage));
-                //            collisions.Add(gameWorld.getPlayer().BulletList[i]);
-                //            collisions.Add(gameWorld.EnemyList[l]);
-
-                //            //Console.WriteLine("KABLAAAM!!");
-                //        }
-                //    }
-                //}
+                for (int l = 0; l < gameWorld.EnemyList.Count; l++)
+                {
+                    if (gameWorld.EnemyList[l].BoundingBox.Intersects(gameWorld.getPlayer().BulletList[i].BoundingBox))
+                    {
+                        if (perPixelCollisionDetection(gameWorld.getPlayer().BulletList[i],
+                                                        gameWorld.EnemyList[l]))
+                        {
+                            collidedProjectileIndexes.Add(i);
+                            enemyCollisionIndex.Add(l);
+                            enemyProjectileCollisions.Add(gameWorld.getPlayer().BulletList[i]);
+                            enemyProjectileCollisions.Add(gameWorld.EnemyList[l]);
+                        }
+                    }
+                }
             }
 
             //Remove collided projectiles. 
@@ -130,6 +121,7 @@ namespace Perihelion.Controllers
             }
         }
 
+        //Checks for collisions on the Player. 
         private void playerCollisions(Models.Gameworld gameWorld, Vector2 movementVector, Vector2 rightStick, GameTime gameTime)
         {
             Vector2 prePosition = gameWorld.getPlayer().Position;
