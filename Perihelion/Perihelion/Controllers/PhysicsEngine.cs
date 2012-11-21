@@ -93,11 +93,13 @@ namespace Perihelion.Controllers
 
         private void checkPlayerProjectileCollisions(Models.Gameworld gameWorld)
         {
-            int collidedIndex = 100000000;
             List<int> collidedProjectileIndexes = new List<int>();
+
+            bool flaggBecauseFuckYouThatsWhy = false;
 
             for (int i = 0; i < gameWorld.getPlayer().BulletList.Count; i++)
             {
+                flaggBecauseFuckYouThatsWhy = false;
                 for (int j = 0; j < gameWorld.getRock().Count; j++)   
                 {
                     if(gameWorld.getRock()[j].BoundingBox.Intersects(gameWorld.getPlayer().BulletList[i].BoundingBox))
@@ -109,26 +111,30 @@ namespace Perihelion.Controllers
                             rockCollisionIndex.Add(j);
                             rockProjectileCollisions.Add(gameWorld.getPlayer().BulletList[i]);
                             rockProjectileCollisions.Add(gameWorld.getRock()[j]);
+                            flaggBecauseFuckYouThatsWhy = true;
+                            
                         }
                     }
+                    if(flaggBecauseFuckYouThatsWhy) break;
                 }
-
-                for (int l = 0; l < gameWorld.EnemyList.Count; l++)
+                if (!flaggBecauseFuckYouThatsWhy)
                 {
-                    if (gameWorld.EnemyList[l].BoundingBox.Intersects(gameWorld.getPlayer().BulletList[i].BoundingBox))
+                    for (int l = 0; l < gameWorld.EnemyList.Count; l++)
                     {
-                        if (perPixelCollisionDetection(gameWorld.getPlayer().BulletList[i],
-                                                        gameWorld.EnemyList[l]))
+                        if (gameWorld.EnemyList[l].BoundingBox.Intersects(gameWorld.getPlayer().BulletList[i].BoundingBox))
                         {
-                            if (!(i == collidedIndex))
+                            if (perPixelCollisionDetection(gameWorld.getPlayer().BulletList[i],
+                                                            gameWorld.EnemyList[l]))
                             {
+                               
                                 collidedProjectileIndexes.Add(i);
-                                collidedIndex = i;
+                                enemyCollisionIndex.Add(l);
+                                enemyProjectileCollisions.Add(gameWorld.getPlayer().BulletList[i]);
+                                enemyProjectileCollisions.Add(gameWorld.EnemyList[l]);
+                                flaggBecauseFuckYouThatsWhy = true;
                             }
-                            enemyCollisionIndex.Add(l);
-                            enemyProjectileCollisions.Add(gameWorld.getPlayer().BulletList[i]);
-                            enemyProjectileCollisions.Add(gameWorld.EnemyList[l]);
                         }
+                        if (flaggBecauseFuckYouThatsWhy) break;
                     }
                 }
             }
