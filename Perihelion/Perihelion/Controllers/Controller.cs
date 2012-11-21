@@ -107,9 +107,7 @@ namespace Perihelion.Controllers
                         spawnExplosionParticles(gameWorld.getRock()[rockCollisionsIndex[i]], projectile, gameWorld.getParticleSystem());
                         soundManager.playSound("explosion");
                         gameWorld.getRock().RemoveAt(rockCollisionsIndex[i]);
-
                     }
-
                 }
             }
 
@@ -138,7 +136,7 @@ namespace Perihelion.Controllers
         {
             Vector2 objectPosition = explodingObject.Position;
             Vector2 explosionDirection = projectile.Velocity;
-            particleSystem.newSpawner(content.particle_test, objectPosition, 1000, 0, 10, false, explosionDirection*8);
+            particleSystem.newSpawner(content.particle_test, objectPosition, 1000, 0, 10, false, explosionDirection*7);
         }
         
         //Copies the entire Gamestate

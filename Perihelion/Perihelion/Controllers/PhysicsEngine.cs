@@ -10,47 +10,38 @@ namespace Perihelion.Controllers
 {
     class PhysicsEngine
     {
-        //private List<Models.Collidable> rocks;
-        //private Models.Player playerObject;
-        //private ArrayList collisions;
         private List<int> projectileCollisionsIndex;
         private List<int> rockCollisionIndex;
         private List<int> enemyCollisionIndex;
-
-        //private List<int> intList;
         static private List<Models.GameObject> rockProjectileCollisions;
         static private List<Models.GameObject> enemyProjectileCollisions;
+        static private List<Models.GameObject> playerProjectileCollisions;
 
-        
 
         public PhysicsEngine()
         {
-            //rocks = new List<Models.Collidable>();
-            //collisions = new ArrayList();
-            //projectileCollisionsList = new List<Models.GameObject>();
-            projectileCollisionsIndex = new List<int>();
-            rockCollisionIndex = new List<int>();
-            enemyCollisionIndex = new List<int>();
-            rockProjectileCollisions= new List<Models.GameObject>();
-            enemyProjectileCollisions= new List<Models.GameObject>();
+            projectileCollisionsIndex   = new List<int>();
+            rockCollisionIndex          = new List<int>();
+            enemyCollisionIndex         = new List<int>();
+            rockProjectileCollisions    = new List<Models.GameObject>();
+            enemyProjectileCollisions   = new List<Models.GameObject>();
+            playerProjectileCollisions  = new List<Models.GameObject>();
         }
 
         public void collisionDetection(ref Models.Gameworld gameWorld, Vector2 movementVector, Vector2 rightStick, GameTime gameTime)
         {
-            //playerObject.update(movementVector, rightStick, gameTime);
-
             rockCollisionIndex.Clear();
-            projectileCollisionsIndex.Clear();
+            rockProjectileCollisions.Clear();
+
             enemyCollisionIndex.Clear();
             enemyProjectileCollisions.Clear();
-            rockProjectileCollisions.Clear();
             
-            //rocks = gameWorld.getRock();
-            //playerObject = gameWorld.getPlayer();
+            projectileCollisionsIndex.Clear();
+            checkPlayerProjectileCollisions(gameWorld);
 
-            projectileCollisions(gameWorld);
-            playerCollisions(gameWorld, movementVector, rightStick, gameTime);
+            checkEnemyProjectileCollisions(gameWorld);
             
+            playerCollisions(gameWorld, movementVector, rightStick, gameTime);
         }
 
         public List<Models.GameObject> getRockProjectileCollisions()
@@ -73,8 +64,32 @@ namespace Perihelion.Controllers
             get { return enemyCollisionIndex; }
         }
 
+        private void checkEnemyProjectileCollisions(Models.Gameworld gameWorld)
+        {
+            List<int> collidedProjectileIndexes = new List<int>();
+            Models.Player playerObject = gameWorld.PlayerObject;
 
-        private void projectileCollisions(Models.Gameworld gameWorld)
+            for (int i = 0; i < gameWorld.EnemyList.Count; i++)
+            {
+                for (int j = 0; j < gameWorld.EnemyList[i].BulletList.Count; j++)
+                {
+                    if (playerObject.BoundingBox.Intersects(gameWorld.EnemyList[i].BulletList[j].BoundingBox))
+                    {
+                        if (perPixelCollisionDetection(playerObject, gameWorld.EnemyList[i].BulletList[j]))
+                        {
+                            collidedProjectileIndexes.Add(j);
+                            playerProjectileCollisions.Add(gameWorld.EnemyList[i].BulletList[j]);
+                        }
+                    }
+                }
+                for (int k = 0; k < collidedProjectileIndexes.Count; k++)
+                {
+                    gameWorld.EnemyList[i].BulletList.RemoveAt(collidedProjectileIndexes[k]);
+                }
+            }
+        }
+
+        private void checkPlayerProjectileCollisions(Models.Gameworld gameWorld)
         {
             List<int> collidedProjectileIndexes = new List<int>();
 
