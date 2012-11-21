@@ -45,7 +45,7 @@ namespace Perihelion.Models
             MaxHealth = health;
             //this.health = currentHealth;
 
-            textureData = new ArrayList(texture.Width * texture.Height);
+            //textureData = new ArrayList(texture.Width * texture.Height);
         }
 
         /************************************************************************/
@@ -56,8 +56,8 @@ namespace Perihelion.Models
             get
             {
                 return new Rectangle(
-                    (int)position.X,
-                    (int)position.Y,
+                    (int)position.X - texture.Width/2,
+                    (int)position.Y - texture.Height/2,
                     texture.Width,
                     texture.Height);
             }

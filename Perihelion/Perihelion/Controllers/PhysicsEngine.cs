@@ -100,24 +100,24 @@ namespace Perihelion.Controllers
                     }
                 }
 
-                for (int l = 0; l < gameWorld.EnemyList.Count; l++)
-                {
-                    if (gameWorld.EnemyList[l].BoundingBox.Intersects(gameWorld.getPlayer().BulletList[i].BoundingBox))
-                    //if (gameWorld.getPlayer().getBulletList()[i].BoundingBox.Intersects(gameWorld.getRock()[j].BoundingBox))
-                    {
-                        if (perPixelCollisionDetection(gameWorld.getPlayer().BulletList[i],
-                                                        gameWorld.EnemyList[l]))
-                        {
-                            collidedProjectileIndexes.Add(i);
-                            enemyCollisionIndex.Add(l);
-                            gameWorld.EnemyList[l].updateCurrentHealth(-(gameWorld.getPlayer().BulletList[i].Damage));
-                            collisions.Add(gameWorld.getPlayer().BulletList[i]);
-                            collisions.Add(gameWorld.EnemyList[l]);
+                //for (int l = 0; l < gameWorld.EnemyList.Count; l++)
+                //{
+                //    if (gameWorld.EnemyList[l].BoundingBox.Intersects(gameWorld.getPlayer().BulletList[i].BoundingBox))
+                //    //if (gameWorld.getPlayer().getBulletList()[i].BoundingBox.Intersects(gameWorld.getRock()[j].BoundingBox))
+                //    {
+                //        if (perPixelCollisionDetection(gameWorld.getPlayer().BulletList[i],
+                //                                        gameWorld.EnemyList[l]))
+                //        {
+                //            collidedProjectileIndexes.Add(i);
+                //            enemyCollisionIndex.Add(l);
+                //            gameWorld.EnemyList[l].updateCurrentHealth(-(gameWorld.getPlayer().BulletList[i].Damage));
+                //            collisions.Add(gameWorld.getPlayer().BulletList[i]);
+                //            collisions.Add(gameWorld.EnemyList[l]);
 
-                            //Console.WriteLine("KABLAAAM!!");
-                        }
-                    }
-                }
+                //            //Console.WriteLine("KABLAAAM!!");
+                //        }
+                //    }
+                //}
             }
 
             //Remove collided projectiles. 
@@ -183,7 +183,7 @@ namespace Perihelion.Controllers
             playerTexture.GetData(playerTextureData);
             collidableTexture.GetData(collidableTextureData);
 
-            Vector2 velocity = playerObject.Velocity;
+            //Vector2 velocity = playerObject.Velocity;
 
             for (int y = top; y < bottom; y++)
             {

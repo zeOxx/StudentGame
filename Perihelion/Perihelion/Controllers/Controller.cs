@@ -18,6 +18,8 @@ namespace Perihelion.Controllers
         private ContentHolder content;
         private SoundManager soundManager;
         private PhysicsEngine physicsEngine;
+        
+
 
         public Controller(ContentHolder content, SoundManager soundManager, string title)
         {
@@ -26,6 +28,7 @@ namespace Perihelion.Controllers
             playerObject = null;
             this.content = content;
             physicsEngine = new PhysicsEngine();
+            
         }
 
         //************** FUNCTIONS ******************
@@ -84,6 +87,8 @@ namespace Perihelion.Controllers
             List<Models.GameObject> collisions = physicsEngine.getCollisions();
             Models.Projectile projectile = null;
             int damage;
+
+           
             
 
             if (collisions.Count != 0)
@@ -99,6 +104,7 @@ namespace Perihelion.Controllers
                     //Rock is destroyed
                     if (gameWorld.getRock()[rockCollisionsIndex[i]].CurrentHealth <= 0)
                     {
+                        spawnExplosionParticles(gameWorld.getRock()[rockCollisionsIndex[i]], projectile, gameWorld.getParticleSystem());
                         soundManager.playSound("explosion");
                         gameWorld.getRock().RemoveAt(rockCollisionsIndex[i]);
 
@@ -112,9 +118,9 @@ namespace Perihelion.Controllers
 
             //for (int j = 0; j < enemyCollisionsIndex.Count; j++)
             //{
-                
+
             //    gameWorld.EnemyList.RemoveAt(enemyCollisionsIndex[j]);
-                
+
             //}
 
             //for (int i = 0; i < collisions.Count; i++)
@@ -124,6 +130,14 @@ namespace Perihelion.Controllers
 
         }
 
+        //Creates explosion 
+        public void spawnExplosionParticles(Models.GameObject explodingObject, Models.Projectile projectile, Controllers.ParticleSystem particleSystem)
+        {
+            Vector2 objectPosition = explodingObject.Position;
+            Vector2 explosionDirection = projectile.Velocity;
+            particleSystem.newSpawner(content.particle_test, objectPosition, 1000, 0, 10, false, explosionDirection*8);
+            
+        }
         //Copies the entire Gamestate
         public void getModelFromGameworld(Gameworld gameWorld)
         {

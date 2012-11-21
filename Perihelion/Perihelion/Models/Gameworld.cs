@@ -41,6 +41,11 @@ namespace Perihelion.Models
 			LevelSize = levelSize;
 		}
 
+        public Controllers.ParticleSystem getParticleSystem()
+        {
+            return particleSystem;
+        }
+
 		public Player getPlayer()
 		{
 			return playerObject;
