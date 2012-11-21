@@ -35,7 +35,8 @@ namespace Perihelion.Controllers
 
             enemyCollisionIndex.Clear();
             enemyProjectileCollisions.Clear();
-            
+
+            playerProjectileCollisions.Clear();
             projectileCollisionsIndex.Clear();
             checkPlayerProjectileCollisions(gameWorld);
 
@@ -86,11 +87,13 @@ namespace Perihelion.Controllers
                 {
                     gameWorld.EnemyList[i].BulletList.RemoveAt(collidedProjectileIndexes[k]);
                 }
+                collidedProjectileIndexes.Clear();
             }
         }
 
         private void checkPlayerProjectileCollisions(Models.Gameworld gameWorld)
         {
+            int collidedIndex = 100000000;
             List<int> collidedProjectileIndexes = new List<int>();
 
             for (int i = 0; i < gameWorld.getPlayer().BulletList.Count; i++)
@@ -117,7 +120,11 @@ namespace Perihelion.Controllers
                         if (perPixelCollisionDetection(gameWorld.getPlayer().BulletList[i],
                                                         gameWorld.EnemyList[l]))
                         {
-                            collidedProjectileIndexes.Add(i);
+                            if (!(i == collidedIndex))
+                            {
+                                collidedProjectileIndexes.Add(i);
+                                collidedIndex = i;
+                            }
                             enemyCollisionIndex.Add(l);
                             enemyProjectileCollisions.Add(gameWorld.getPlayer().BulletList[i]);
                             enemyProjectileCollisions.Add(gameWorld.EnemyList[l]);

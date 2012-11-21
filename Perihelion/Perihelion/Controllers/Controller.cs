@@ -94,14 +94,17 @@ namespace Perihelion.Controllers
 
             if (rockProjectileCollisions.Count != 0)
             {
-                for (int i = 0; i < rockProjectileCollisions.Count; i = i + 2)
+                for (int i = 0; i < rockProjectileCollisions.Count; i++)
                 {
-                    projectile = (Models.Projectile)rockProjectileCollisions[i];
+                    projectile = (Models.Projectile)rockProjectileCollisions[i++];
                     damage = projectile.Damage;
 
-                    gameWorld.getRock()[rockCollisionsIndex[i]].updateCurrentHealth(-damage);
+                    rockProjectileCollisions[i].updateCurrentHealth(-damage);
 
-                    //Rock is destroyed
+ 
+                }
+                for (int i = 0; i < rockCollisionsIndex.Count; i++)
+                {
                     if (gameWorld.getRock()[rockCollisionsIndex[i]].CurrentHealth <= 0)
                     {
                         spawnExplosionParticles(gameWorld.getRock()[rockCollisionsIndex[i]], projectile, gameWorld.getParticleSystem());
@@ -113,15 +116,19 @@ namespace Perihelion.Controllers
 
             if(enemyProjectileCollisions.Count != 0)
             {
-                for (int i = 0; i < enemyProjectileCollisions.Count; i = i + 2)
+                for (int i = 0; i < enemyProjectileCollisions.Count; i++)
                 {
                     projectile = (Models.Projectile)enemyProjectileCollisions[i];
+                    i++;
                     damage = projectile.Damage;
 
-                    gameWorld.getRock()[enemyCollisionsIndex[i]].updateCurrentHealth(-damage);
+                    enemyProjectileCollisions[i].updateCurrentHealth(-damage);
 
-                    //Enemy is destroyed
-                    if (gameWorld.getRock()[enemyCollisionsIndex[i]].CurrentHealth <= 0)
+                    
+                }
+                for (int i = enemyCollisionsIndex.Count -1; i >= 0; i--)
+                {
+                    if (gameWorld.EnemyList[enemyCollisionsIndex[i]].CurrentHealth <= 0)
                     {
                         spawnExplosionParticles(gameWorld.EnemyList[enemyCollisionsIndex[i]], projectile, gameWorld.getParticleSystem());
                         soundManager.playSound("explosion");
