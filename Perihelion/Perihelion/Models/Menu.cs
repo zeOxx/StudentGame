@@ -10,9 +10,6 @@ namespace Perihelion.Models
 {
     class Menu
     {
-        private List<string> optionsMenuItems;
-        private List<string> creditsMenuItems;
-        public string infoText;
         public bool running;
         public bool exiting;
         Texture2D title;
@@ -28,6 +25,7 @@ namespace Perihelion.Models
         public MenuStates menuState;
 
         MainMenu mainMenu;
+        Options options;
         Credits credits;
 
         /************************************************************************/
@@ -41,6 +39,7 @@ namespace Perihelion.Models
             Font = contentHolder.menuFont;
 
             mainMenu = new MainMenu(Font);
+            options = new Options(Font);
             credits = new Credits(contentHolder.creditsFont, contentHolder.creditsHeaderFont, screenWidth, screenHeight);
 
             // Options menu items
@@ -65,18 +64,6 @@ namespace Perihelion.Models
         {
             get { return this.font; }
             private set { this.font = value; }
-        }
-
-        public List<string> OptionsMenuItems
-        {
-            get { return this.optionsMenuItems; }
-            private set { this.optionsMenuItems = value; }
-        }
-
-        public List<string> CreditsMenuItems
-        {
-            get { return this.creditsMenuItems; }
-            private set { this.creditsMenuItems = value; }
         }
 
         public bool Running
@@ -110,6 +97,9 @@ namespace Perihelion.Models
                 if (mainMenu.Exiting)
                     Exiting = true;
 
+                if (mainMenu.IntoOptions)
+                    menuState = MenuStates.Options;
+
                 if (mainMenu.RollCredits)
                     menuState = MenuStates.Credits;
             }
@@ -124,7 +114,20 @@ namespace Perihelion.Models
                     menuState = MenuStates.Main;
                     mainMenu.RollCredits = false;
                 }
-                    
+            }
+            else if (menuState == MenuStates.Options)
+            {
+                options.Active = true;
+
+                options.update(movement, aButton, gameTime);
+
+                if (options.Exiting)
+                {
+                    options.Active = false;
+                    menuState = MenuStates.Main;
+                    mainMenu.Exiting = false;
+                    mainMenu.IntoOptions = false;
+                }
             }
         }
 
@@ -137,6 +140,11 @@ namespace Perihelion.Models
             if (menuState == MenuStates.Main)
             {
                 mainMenu.Draw(spriteBatch, screenWidth, screenHeight, iterator, titlePosition);
+            }
+
+            if (menuState == MenuStates.Options)
+            {
+                options.Draw(spriteBatch, screenWidth, screenHeight, iterator, titlePosition);
             }
 
             if (menuState == MenuStates.Credits)
