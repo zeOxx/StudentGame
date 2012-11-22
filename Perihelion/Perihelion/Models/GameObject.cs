@@ -19,7 +19,7 @@ namespace Perihelion.Models
         protected float maxSpeed = 0;
         protected float speed = 0;
         private int identifier = 0;
-        private int health;
+        //private int health;
         private int currentHealth;
         private int maxHealth;
         
@@ -34,18 +34,18 @@ namespace Perihelion.Models
             Velocity = new Vector2(0, 0);
         }
         
-        public GameObject (Texture2D texture, float x, float y, Vector2 velocity, int currentHealth, int maxHealth)
+        public GameObject (Texture2D texture, float x, float y, Vector2 velocity, int health)
         {
             Texture = texture;
             Position = new Vector2(x, y);
             Velocity = velocity;
             setOrigin(texture);
-            this.health = currentHealth;
 
-            CurrentHealth = currentHealth;
-            MaxHealth = maxHealth;
+            CurrentHealth = health;
+            MaxHealth = health;
+            //this.health = currentHealth;
 
-            textureData = new ArrayList(texture.Width * texture.Height);
+            //textureData = new ArrayList(texture.Width * texture.Height);
         }
 
         /************************************************************************/
@@ -56,8 +56,8 @@ namespace Perihelion.Models
             get
             {
                 return new Rectangle(
-                    (int)position.X,
-                    (int)position.Y,
+                    (int)position.X - texture.Width/2,
+                    (int)position.Y - texture.Height/2,
                     texture.Width,
                     texture.Height);
             }
@@ -185,9 +185,25 @@ namespace Perihelion.Models
                 speed += speedUpdate;
         }
 
+        public void updateCurrentHealth(int i)
+        {
+            CurrentHealth += i;
+        }
+
+        protected void updateMaxHealth(int i)
+        {
+            MaxHealth += i;
+        }
+
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(texture, position, null, Color.White, (float)rotationAngle,
+                    origin, 1.0f, SpriteEffects.None, 0f);
+        }
+
+        public virtual void Draw(SpriteBatch spriteBatch, float alpha)
+        {
+            spriteBatch.Draw(texture, position, null, Color.White*alpha, (float)rotationAngle,
                     origin, 1.0f, SpriteEffects.None, 0f);
         }
 

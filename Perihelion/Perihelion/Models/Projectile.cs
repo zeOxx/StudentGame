@@ -18,7 +18,7 @@ namespace Perihelion.Models
         /* Constructor                                                          */
         /************************************************************************/
         public Projectile(Texture2D texture, float x, float y, Vector2 velocity, int activeTime, int damage, float speed)
-            : base(texture, x, y, velocity, 0, 0)
+            : base(texture, x, y, velocity, 0)
         {
             ActiveTime = activeTime;
             Damage = damage;
@@ -36,7 +36,8 @@ namespace Perihelion.Models
 
             TotalActiveTime = 0;
 
-            setOrigin(new Vector2((Texture.Width/2), Texture.Height));
+            //setOrigin(new Vector2((Texture.Width/2), Texture.Height/2));
+            //setOrigin(texture);
         }
          
         /************************************************************************/

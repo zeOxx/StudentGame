@@ -10,97 +10,146 @@ namespace Perihelion.Controllers
 {
     class PhysicsEngine
     {
-        //private List<Models.Collidable> rocks;
-        //private Models.Player playerObject;
-        //private ArrayList collisions;
         private List<int> projectileCollisionsIndex;
         private List<int> rockCollisionIndex;
+        private List<int> enemyCollisionIndex;
+        static private List<Models.GameObject> rockProjectileCollisions;
+        static private List<Models.GameObject> enemyProjectileCollisions;
+        static private List<Models.GameObject> playerProjectileCollisions;
 
-        //private List<int> intList;
-        static private List<Models.GameObject> collisions;
-
-        
 
         public PhysicsEngine()
         {
-            //rocks = new List<Models.Collidable>();
-            //collisions = new ArrayList();
-            //projectileCollisionsList = new List<Models.GameObject>();
-            projectileCollisionsIndex = new List<int>();
-            rockCollisionIndex = new List<int>();
-            collisions = new List<Models.GameObject>();
-
+            projectileCollisionsIndex   = new List<int>();
+            rockCollisionIndex          = new List<int>();
+            enemyCollisionIndex         = new List<int>();
+            rockProjectileCollisions    = new List<Models.GameObject>();
+            enemyProjectileCollisions   = new List<Models.GameObject>();
+            playerProjectileCollisions  = new List<Models.GameObject>();
         }
 
         public void collisionDetection(ref Models.Gameworld gameWorld, Vector2 movementVector, Vector2 rightStick, GameTime gameTime)
         {
-            //playerObject.update(movementVector, rightStick, gameTime);
-
             rockCollisionIndex.Clear();
+            rockProjectileCollisions.Clear();
+
+            enemyCollisionIndex.Clear();
+            enemyProjectileCollisions.Clear();
+
+            playerProjectileCollisions.Clear();
             projectileCollisionsIndex.Clear();
-            collisions.Clear();
+            checkPlayerProjectileCollisions(gameWorld);
+
+            checkEnemyProjectileCollisions(gameWorld);
             
-            //rocks = gameWorld.getRock();
-            //playerObject = gameWorld.getPlayer();
-
-            projectileCollisions(gameWorld);
             playerCollisions(gameWorld, movementVector, rightStick, gameTime);
-            levelBoundCollision(gameWorld);
         }
 
-        public List<Models.GameObject> getCollisions()
+        public List<Models.GameObject> getRockProjectileCollisions()
         {
-            return collisions;
+            return rockProjectileCollisions;
         }
 
-        public List<int> getRockCollisions()
+        public List<Models.GameObject> getEnemyProjectileCollisions()
         {
-            return rockCollisionIndex;
+            return enemyProjectileCollisions;
         }
 
-
-        private void projectileCollisions(Models.Gameworld gameWorld)
+        public List<int> RockCollisionIndexes
         {
-            //List<Models.Projectile> bullets = gameWorld.getPlayer().getBulletList();
+            get { return rockCollisionIndex; }
+        }
 
+        public List<int> EnemyCollisionIndexes
+        {
+            get { return enemyCollisionIndex; }
+        }
+
+        private void checkEnemyProjectileCollisions(Models.Gameworld gameWorld)
+        {
+            List<int> collidedProjectileIndexes = new List<int>();
+            Models.Player playerObject = gameWorld.PlayerObject;
+
+            for (int i = 0; i < gameWorld.EnemyList.Count; i++)
+            {
+                for (int j = 0; j < gameWorld.EnemyList[i].BulletList.Count; j++)
+                {
+                    if (playerObject.BoundingBox.Intersects(gameWorld.EnemyList[i].BulletList[j].BoundingBox))
+                    {
+                        if (perPixelCollisionDetection(playerObject, gameWorld.EnemyList[i].BulletList[j]))
+                        {
+                            collidedProjectileIndexes.Add(j);
+                            playerProjectileCollisions.Add(gameWorld.EnemyList[i].BulletList[j]);
+                        }
+                    }
+                }
+                for (int k = 0; k < collidedProjectileIndexes.Count; k++)
+                {
+                    gameWorld.EnemyList[i].BulletList.RemoveAt(collidedProjectileIndexes[k]);
+                }
+                collidedProjectileIndexes.Clear();
+            }
+        }
+
+        private void checkPlayerProjectileCollisions(Models.Gameworld gameWorld)
+        {
             List<int> collidedProjectileIndexes = new List<int>();
 
-
-
-            //Console.WriteLine("Lengde: " + playerObject.getBulletList().Count);
+            bool flaggBecauseFuckYouThatsWhy = false;
 
             for (int i = 0; i < gameWorld.getPlayer().BulletList.Count; i++)
             {
-                //Vector2 bulletPrePosition = gameWorld.getPlayer().getBulletList()[i].getPosition();
-                for (int j = 0; j < gameWorld.getRock().Count; j++)
-                //foreach (Models.Collidable rock in gameWorld.getRock())
+                flaggBecauseFuckYouThatsWhy = false;
+                for (int j = 0; j < gameWorld.getRock().Count; j++)   
                 {
                     if(gameWorld.getRock()[j].BoundingBox.Intersects(gameWorld.getPlayer().BulletList[i].BoundingBox))
-                    //if (gameWorld.getPlayer().getBulletList()[i].BoundingBox.Intersects(gameWorld.getRock()[j].BoundingBox))
                     {
                         if (perPixelCollisionDetection(gameWorld.getPlayer().BulletList[i],
                                                         gameWorld.getRock()[j]))
                         {
                             collidedProjectileIndexes.Add(i);
                             rockCollisionIndex.Add(j);
-
-                            collisions.Add(gameWorld.getPlayer().BulletList[i]);
-                            collisions.Add(gameWorld.getRock()[j]);
-
-                            //Console.WriteLine("KABLAAAM!!");
+                            rockProjectileCollisions.Add(gameWorld.getPlayer().BulletList[i]);
+                            rockProjectileCollisions.Add(gameWorld.getRock()[j]);
+                            flaggBecauseFuckYouThatsWhy = true;
+                            
                         }
+                    }
+                    if(flaggBecauseFuckYouThatsWhy) break;
+                }
+                if (!flaggBecauseFuckYouThatsWhy)
+                {
+                    for (int l = 0; l < gameWorld.EnemyList.Count; l++)
+                    {
+                        if (gameWorld.EnemyList[l].BoundingBox.Intersects(gameWorld.getPlayer().BulletList[i].BoundingBox))
+                        {
+                            if (perPixelCollisionDetection(gameWorld.getPlayer().BulletList[i],
+                                                            gameWorld.EnemyList[l]))
+                            {
+                               
+                                collidedProjectileIndexes.Add(i);
+                                enemyCollisionIndex.Add(l);
+                                enemyProjectileCollisions.Add(gameWorld.getPlayer().BulletList[i]);
+                                enemyProjectileCollisions.Add(gameWorld.EnemyList[l]);
+                                flaggBecauseFuckYouThatsWhy = true;
+                            }
+                        }
+                        if (flaggBecauseFuckYouThatsWhy) break;
                     }
                 }
             }
 
             //Remove collided projectiles. 
-            for (int i = 0; i < collidedProjectileIndexes.Count; i++)
+            if (collidedProjectileIndexes.Count > 0)
             {
-                gameWorld.getPlayer().BulletList.RemoveAt(collidedProjectileIndexes[i]);
+                for (int i = 0; i < collidedProjectileIndexes.Count; i++)
+                {
+                    gameWorld.getPlayer().BulletList.RemoveAt(collidedProjectileIndexes[i]);
+                }
             }
-
         }
 
+        //Checks for collisions on the Player. 
         private void playerCollisions(Models.Gameworld gameWorld, Vector2 movementVector, Vector2 rightStick, GameTime gameTime)
         {
             Vector2 prePosition = gameWorld.getPlayer().Position;
@@ -121,13 +170,12 @@ namespace Perihelion.Controllers
                     }
                 }
             }
-            
-            //If player reaches end of screen - velocity set to 0 -
+
+            levelBoundCollision(gameWorld, prePosition);
         }
 
-        private void levelBoundCollision(Models.Gameworld gameWorld)
+        private void levelBoundCollision(Models.Gameworld gameWorld, Vector2 prePosition)
         {
-            Vector2 prePosition = gameWorld.getPlayer().Position;
             if (!gameWorld.getPlayer().BoundingBox.Intersects(gameWorld.LevelBounds))
             {
                 gameWorld.getPlayer().Position = new Vector2(prePosition.X, prePosition.Y);
@@ -155,7 +203,7 @@ namespace Perihelion.Controllers
             playerTexture.GetData(playerTextureData);
             collidableTexture.GetData(collidableTextureData);
 
-            Vector2 velocity = playerObject.Velocity;
+            //Vector2 velocity = playerObject.Velocity;
 
             for (int y = top; y < bottom; y++)
             {

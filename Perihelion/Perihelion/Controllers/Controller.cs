@@ -18,6 +18,8 @@ namespace Perihelion.Controllers
         private ContentHolder content;
         private SoundManager soundManager;
         private PhysicsEngine physicsEngine;
+        
+
 
         public Controller(ContentHolder content, SoundManager soundManager, string title)
         {
@@ -26,6 +28,7 @@ namespace Perihelion.Controllers
             playerObject = null;
             this.content = content;
             physicsEngine = new PhysicsEngine();
+            
         }
 
         //************** FUNCTIONS ******************
@@ -77,23 +80,72 @@ namespace Perihelion.Controllers
             return menu;
         }
 
+        
+        
         public void handleProjectileCollisions(Models.Gameworld gameWorld)
         {
-            List<int> rockCollisionsIndex = physicsEngine.getRockCollisions();
-            List<Models.GameObject> collisions = physicsEngine.getCollisions();
+            List<int> rockCollisionsIndex                       = physicsEngine.RockCollisionIndexes;
+            List<int> enemyCollisionsIndex                      = physicsEngine.EnemyCollisionIndexes;
+            List<Models.GameObject> rockProjectileCollisions    = physicsEngine.getRockProjectileCollisions();
+            List<Models.GameObject> enemyProjectileCollisions   = physicsEngine.getEnemyProjectileCollisions();
+            Models.Projectile projectile                        = null;
+            
+            int damage;
 
-            for(int i = 0; i < rockCollisionsIndex.Count; i++)
+            if (rockProjectileCollisions.Count != 0)
             {
-                gameWorld.getRock().RemoveAt(rockCollisionsIndex[i]);
+                for (int i = 0; i < rockProjectileCollisions.Count; i++)
+                {
+                    projectile = (Models.Projectile)rockProjectileCollisions[i++];
+                    damage = projectile.Damage;
+
+                    rockProjectileCollisions[i].updateCurrentHealth(-damage);
+
+ 
+                }
+                for (int i = 0; i < rockCollisionsIndex.Count; i++)
+                {
+                    if (gameWorld.getRock()[rockCollisionsIndex[i]].CurrentHealth <= 0)
+                    {
+                        spawnExplosionParticles(gameWorld.getRock()[rockCollisionsIndex[i]], projectile, gameWorld.getParticleSystem());
+                        soundManager.playSound("explosion");
+                        gameWorld.getRock().RemoveAt(rockCollisionsIndex[i]);
+                    }
+                }
             }
 
-            //for (int i = 0; i < collisions.Count; i++)
-            //{
-            //    for(int j = 0; j < gameWorld.getRock()
-            //}
+            if(enemyProjectileCollisions.Count != 0)
+            {
+                for (int i = 0; i < enemyProjectileCollisions.Count; i++)
+                {
+                    projectile = (Models.Projectile)enemyProjectileCollisions[i];
+                    i++;
+                    damage = projectile.Damage;
 
+                    enemyProjectileCollisions[i].updateCurrentHealth(-damage);
+
+                    
+                }
+                for (int i = enemyCollisionsIndex.Count -1; i >= 0; i--)
+                {
+                    if (gameWorld.EnemyList[enemyCollisionsIndex[i]].CurrentHealth <= 0)
+                    {
+                        spawnExplosionParticles(gameWorld.EnemyList[enemyCollisionsIndex[i]], projectile, gameWorld.getParticleSystem());
+                        soundManager.playSound("explosion");
+                        gameWorld.EnemyList.RemoveAt(enemyCollisionsIndex[i]);
+                    }
+                }
+            }
         }
 
+        //Creates explosion 
+        public void spawnExplosionParticles(Models.GameObject explodingObject, Models.Projectile projectile, Controllers.ParticleSystem particleSystem)
+        {
+            Vector2 objectPosition = explodingObject.Position;
+            Vector2 explosionDirection = projectile.Velocity;
+            particleSystem.newSpawner(content.particle_test, objectPosition, 1000, 0, 10, false, explosionDirection*7);
+        }
+        
         //Copies the entire Gamestate
         public void getModelFromGameworld(Gameworld gameWorld)
         {
@@ -105,7 +157,7 @@ namespace Perihelion.Controllers
         {
             if (playerObject.BulletMade)
             {
-                soundManager.playGunSound();
+                soundManager.playSound("pang");
             }
         }
 

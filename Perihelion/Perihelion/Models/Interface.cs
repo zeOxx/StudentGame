@@ -16,7 +16,7 @@ namespace Perihelion.Models
         /* Constructor                                                          */
         /************************************************************************/
         public Interface(Texture2D texture, float x, float y, Vector2 velocity, int health) 
-            : base(texture, x, y, velocity, health, health)
+            : base(texture, x, y, velocity, health)
         {
             // nothing
             setOriginZero();

@@ -137,7 +137,7 @@ namespace Perihelion
             {
                 // Sends gamestate to controller and receives updated state. 
                 gameWorld = gameController.updateGameWorld(gameWorld, gameTime, inputHandler);
-                loadEnemies();
+                //loadEnemies();
             }
 
             // Calculates Frames Per Second and Updates Per Second and puts them in the window title
@@ -167,27 +167,27 @@ namespace Perihelion
             }
         }
 
-        public void loadEnemies()
-        {
-            int randY = random.Next(100, 400);
+        //public void loadEnemies()
+        //{
+        //    int randY = random.Next(100, 400);
 
-            if (spawn >= 1)
-            {
-                spawn = 0.0f;
-                if (enemies.Count() < 4)
-                    enemies.Add(new spawnEnemies(Content.Load<Texture2D>("texturePlayer"), new Vector2(1100, randY)));
+        //    if (spawn >= 1)
+        //    {
+        //        spawn = 0.0f;
+        //        if (enemies.Count() < 4)
+        //            enemies.Add(new spawnEnemies(Content.Load<Texture2D>("texturePlayer"), new Vector2(1100, randY)));
 
-            }
+        //    }
 
-            for (int i = 0; i < enemies.Count(); i++)
-            {
-                if (!enemies[i].isVisible)
-                {
-                    enemies.RemoveAt(i);
-                    i--;
-                }
-            }
-        }
+        //    for (int i = 0; i < enemies.Count(); i++)
+        //    {
+        //        if (!enemies[i].isVisible)
+        //        {
+        //            enemies.RemoveAt(i);
+        //            i--;
+        //        }
+        //    }
+        //}
 
 
         /// <summary>

@@ -9,6 +9,9 @@ Content\HUD\hud_special_01.xnb
 Content\PlayerTextures\ship_bare.xnb
 Content\PlayerTextures\ship_turret.xnb
 Content\PlayerTextures\weapon_special_01.xnb
+Content\SoundEffects\s_gun_shooting.xnb
+Content\SoundEffects\s_gun_wind_down.xnb
+Content\SoundEffects\pang.xnb
 Content\Backgrounds\bg_01_0.xnb
 Content\Backgrounds\bg_01_1.xnb
 Content\Backgrounds\bg_02_0.xnb
@@ -16,10 +19,10 @@ Content\Backgrounds\bg_02_1.xnb
 Content\Particles\particle_test.xnb
 Content\Menu\Title.xnb
 Content\Particles\smoke.xnb
-Content\SoundEffects\s_gun_shooting.xnb
-Content\SoundEffects\s_gun_wind_down.xnb
-Content\SoundEffects\pang.xnb
 Content\Fonts\debugFont.xnb
 Content\Fonts\menuFont.xnb
 Content\Fonts\creditsFont.xnb
 Content\Fonts\creditsHeaderFont.xnb
+Content\SoundEffects\explosion.xnb
+Content\PlayerTextures\bullet2.xnb
+Content\PlayerTextures\bullet3.xnb
