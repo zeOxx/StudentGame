@@ -19,6 +19,7 @@ namespace Perihelion
         public Texture2D texturePlayerBullet;
         public Texture2D texturePlayerBullet2;
         public Texture2D texturePlayerSpecal01;
+        public Texture2D textureGravityWell;
 
         // Object textures
         public Texture2D textureRock01;
@@ -69,20 +70,21 @@ namespace Perihelion
 
         private void loadSounds(ContentManager content)
         {
-            playerShootingGun = content.Load<SoundEffect>("SoundEffects\\pang");
-            playerGunWindDown = content.Load<SoundEffect>("SoundEffects\\s_gun_wind_down");
-            pang = content.Load<SoundEffect>("SoundEffects\\pang");
-            explosion = content.Load<SoundEffect>("SoundEffects\\explosion");
+            playerShootingGun   = content.Load<SoundEffect>("SoundEffects\\pang");
+            playerGunWindDown   = content.Load<SoundEffect>("SoundEffects\\s_gun_wind_down");
+            pang                = content.Load<SoundEffect>("SoundEffects\\pang");
+            explosion           = content.Load<SoundEffect>("SoundEffects\\explosion");
         }
 
         private void loadTextures(ContentManager content)
         {
             // Player
-            texturePlayer = content.Load<Texture2D>("PlayerTextures\\ship_bare");
-            texturePlayerTurret = content.Load<Texture2D>("PlayerTextures\\ship_turret");
-            texturePlayerBullet = content.Load<Texture2D>("PlayerTextures\\bullet");
-            texturePlayerBullet2 = content.Load<Texture2D>("PlayerTextures\\bullet2");
-            texturePlayerSpecal01 = content.Load<Texture2D>("PlayerTextures\\weapon_special_01");
+            texturePlayer           = content.Load<Texture2D>("PlayerTextures\\ship_bare");
+            texturePlayerTurret     = content.Load<Texture2D>("PlayerTextures\\ship_turret");
+            texturePlayerBullet     = content.Load<Texture2D>("PlayerTextures\\bullet");
+            texturePlayerBullet2    = content.Load<Texture2D>("PlayerTextures\\bullet2");
+            texturePlayerSpecal01   = content.Load<Texture2D>("PlayerTextures\\weapon_special_01");
+            textureGravityWell      = content.Load<Texture2D>("PlayerTextures\\gravityWell");
 
             // Objects
             textureRock01 = content.Load<Texture2D>("Environment\\rock_01");

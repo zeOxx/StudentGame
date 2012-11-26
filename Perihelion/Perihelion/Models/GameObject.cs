@@ -11,7 +11,7 @@ namespace Perihelion.Models
     class GameObject
     {
         protected Texture2D texture;
-        private ArrayList textureData;
+        //private ArrayList textureData;
         protected Vector2 origin;
         protected Vector2 position;
         protected Vector2 velocity;
@@ -96,10 +96,10 @@ namespace Perihelion.Models
             set { this.velocity = value; }
         }
 
-        public ArrayList TextureData
-        {
-            get { return textureData; }
-        }
+        //public ArrayList TextureData
+        //{
+        //    get { return textureData; }
+        //}
 
         
         // Three different setOrigin methods.

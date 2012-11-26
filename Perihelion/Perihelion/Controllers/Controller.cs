@@ -33,7 +33,7 @@ namespace Perihelion.Controllers
 
         //************** FUNCTIONS ******************
         
-        public Gameworld updateGameWorld(Gameworld gameWorld, GameTime gameTime, InputHandler inputHandler)
+        public void updateGameWorld(ref Gameworld gameWorld, GameTime gameTime, InputHandler inputHandler)
         {
             getModelFromGameworld(gameWorld);
 
@@ -42,7 +42,7 @@ namespace Perihelion.Controllers
             checkInput(gameTime, inputHandler, gameWorld);
             gameWorld.updateEnemies(gameTime);
             handleProjectileCollisions(gameWorld);
-            
+            updateGravityWell(gameWorld);
 
             //physicsEngine.collisionDetection(gameWorld);
 
@@ -51,7 +51,13 @@ namespace Perihelion.Controllers
             gameWorld.update(gameTime, content);
             playSounds();
 
-            return gameWorld;
+            //return gameWorld;
+        }
+
+        public void updateGravityWell(Gameworld gameWorld)
+        {
+            gameWorld.GravityWell.Position = gameWorld.PlayerObject.Position;
+            //System.Console.WriteLine("X = " + gameWorld.GravityWell.Position.X + " Y = " + gameWorld.GravityWell.Position.Y);
         }
 
         public Menu updateMenu(Menu menu, InputHandler inputHandler, GameTime gameTime)

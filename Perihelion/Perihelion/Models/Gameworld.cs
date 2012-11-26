@@ -21,6 +21,7 @@ namespace Perihelion.Models
 		int levelSize = 4096;
 
 		private Player playerObject;
+        private GameObject gravityWell;
 		private List<Collidable> rocks = new List<Collidable>();
 		private Background background01;
 		private Background background02;
@@ -62,6 +63,11 @@ namespace Perihelion.Models
 			set { this.playerObject = value; }
 		}
 
+        public GameObject GravityWell
+        {
+            get { return playerObject; }
+        }
+
 		public int LevelSize
 		{
 			get { return this.levelSize; }
@@ -91,7 +97,17 @@ namespace Perihelion.Models
 
 		private void initializeGameworld(ContentHolder contentHolder)
 		{
-			playerObject = new Player(contentHolder.texturePlayer, contentHolder.texturePlayerTurret, contentHolder.texturePlayerBullet, 0, 0, Vector2.Zero, 100);
+			playerObject = new Player(  contentHolder.texturePlayer, 
+                                        contentHolder.texturePlayerTurret, 
+                                        contentHolder.texturePlayerBullet, 
+                                      0, 0, Vector2.Zero, 100);
+
+            gravityWell = new GameObject(contentHolder.textureGravityWell,
+                                         playerObject.Position.X,
+                                         playerObject.Position.Y,
+                                         Vector2.Zero,
+                                         0);
+
 			levelBounds = createBounds();
 			background01 = new Background(contentHolder.bg_variant0, playerObject.Velocity, levelBounds, 0, 0, 0.4f);
 			background02 = new Background(contentHolder.bg_variant1, playerObject.Velocity, levelBounds, 0, 0, 0.2f);
@@ -143,6 +159,7 @@ namespace Perihelion.Models
 			particleSystem.Draw(spriteBatch);
 			playerObject.Draw(spriteBatch);
 			hud.Draw(spriteBatch);
+            gravityWell.Draw(spriteBatch);
 		}
 
 		public void update(GameTime gameTime, ContentHolder contentHolder)
@@ -153,7 +170,10 @@ namespace Perihelion.Models
 			hud.updateHudPositions(camera);
 			hud.update(playerObject);
 			particleSystem.update(gameTime, contentHolder, getPlayer().Position, getPlayer().Velocity);
-			
+
+            gravityWell.Position = playerObject.Position;
+
+            System.Console.WriteLine("X = " + gravityWell.Position.X + " Y = " + gravityWell.Position.Y);
 		}
 
 		//Returns camera to draw function
