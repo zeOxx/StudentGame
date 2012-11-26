@@ -14,6 +14,7 @@ namespace Perihelion.Models
         public bool moved;
         public bool exiting;
         public bool playHit;
+        public bool intoOptions;
         public bool rollCredits;
         SpriteFont font;
 
@@ -35,6 +36,7 @@ namespace Perihelion.Models
             MainMenuItems.Add("Quit game");
 
             Exiting = false;
+            IntoOptions = false;
             PlayHit = false;
             Moved = false;
         }
@@ -63,13 +65,19 @@ namespace Perihelion.Models
         public bool Exiting
         {
             get { return this.exiting; }
-            private set { this.exiting = value; }
+            set { this.exiting = value; }
         }
 
         public bool PlayHit
         {
             get { return this.playHit; }
             set { this.playHit = value; }
+        }
+
+        public bool IntoOptions
+        {
+            get { return this.intoOptions; }
+            set { this.intoOptions = value; }
         }
 
         public bool RollCredits
@@ -115,6 +123,9 @@ namespace Perihelion.Models
 
                 if (aButton && ItemSelected == 0)
                     PlayHit = true;
+
+                if (aButton && ItemSelected == 1)
+                    IntoOptions = true;
 
                 if (aButton && ItemSelected == 2)
                     RollCredits = true;

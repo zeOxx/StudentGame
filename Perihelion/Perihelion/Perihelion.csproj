@@ -128,6 +128,7 @@
     <Compile Include="Models\Interface.cs" />
     <Compile Include="Models\MainMenu.cs" />
     <Compile Include="Models\Menu.cs" />
+    <Compile Include="Models\Options.cs" />
     <Compile Include="Models\Particle.cs" />
     <Compile Include="Models\ParticleEmitter.cs" />
     <Compile Include="Models\ParticleSpawner.cs" />

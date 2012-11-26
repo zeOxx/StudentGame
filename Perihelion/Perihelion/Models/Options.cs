@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Perihelion.Models
 {
@@ -9,6 +11,7 @@ namespace Perihelion.Models
     {
         private List<string> optionsItems;
         private int position;
+        public bool active;
         public bool moved;
         public bool exiting;
         public bool playHit;
@@ -21,19 +24,18 @@ namespace Perihelion.Models
         /************************************************************************/
         /* Constructor                                                          */
         /************************************************************************/
-        public MainMenu(SpriteFont font)
+        public Options(SpriteFont font)
         {
             Font = font;
 
             // Main menu items 
             OptionsItems = new List<string>();
-            OptionsItems.Add("Start game");
-            OptionsItems.Add("Options");
-            OptionsItems.Add("Credits");
-            OptionsItems.Add("Quit game");
+            OptionsItems.Add("Fullscreen");
+            OptionsItems.Add("Resolution");
+            OptionsItems.Add("Back");
 
+            Active = false;
             Exiting = false;
-            PlayHit = false;
             Moved = false;
         }
 
@@ -52,6 +54,12 @@ namespace Perihelion.Models
             private set { this.position = value; }
         }
 
+        public bool Active
+        {
+            get { return this.active; }
+            set { this.active = value; }
+        }
+
         public bool Moved
         {
             get { return this.moved; }
@@ -62,18 +70,6 @@ namespace Perihelion.Models
         {
             get { return this.exiting; }
             private set { this.exiting = value; }
-        }
-
-        public bool PlayHit
-        {
-            get { return this.playHit; }
-            set { this.playHit = value; }
-        }
-
-        public bool RollCredits
-        {
-            get { return this.rollCredits; }
-            set { this.rollCredits = value; }
         }
 
         public SpriteFont Font
@@ -110,14 +106,6 @@ namespace Perihelion.Models
                     Position = 0;
                 if (Position > OptionsItems.Count - 1)
                     Position = OptionsItems.Count - 1;
-                if (Position > OptionsItems.Count - 1)
-                    Position = OptionsItems.Count - 1;
-
-                if (aButton && Position == 0)
-                    PlayHit = true;
-
-                if (aButton && Position == 2)
-                    RollCredits = true;
 
                 if (aButton && Position == (OptionsItems.Count - 1))
                     Exiting = true;
