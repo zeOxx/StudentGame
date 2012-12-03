@@ -54,7 +54,6 @@ namespace Perihelion
 
         // Menu textures
         public Texture2D title;
-        public Texture2D boxTexture;
 
 #if DEBUG
         // Debug font
@@ -93,7 +92,6 @@ namespace Perihelion
 
             // Menu
             title = content.Load<Texture2D>("Menu\\Title");
-            boxTexture = content.Load<Texture2D>("Menu\\boxTexture");
 
             //Background arrays
             bg_variant0[0] = content.Load<Texture2D>("Backgrounds\\bg_01_0");
