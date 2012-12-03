@@ -16,21 +16,27 @@ Content\Backgrounds\bg_02_1.xnb
 Content\Particles\particle_test.xnb
 Content\Menu\Title.xnb
 Content\Particles\smoke.xnb
+<<<<<<< HEAD
+Content\PlayerTextures\bullet2.xnb
+Content\PlayerTextures\bullet3.xnb
+Content\PlayerTextures\gravityWell.xnb
 Content\SoundEffects\s_gun_shooting.xnb
 Content\SoundEffects\s_gun_wind_down.xnb
 Content\SoundEffects\pang.xnb
+Content\SoundEffects\explosion.xnb
+=======
+Content\SoundEffects\s_gun_shooting.xnb
+Content\SoundEffects\s_gun_wind_down.xnb
+Content\SoundEffects\pang.xnb
+>>>>>>> 58d14bf6bb6aeece995694db0526cc75647a6636
 Content\Fonts\debugFont.xnb
 Content\Fonts\menuFont.xnb
 Content\Fonts\creditsFont.xnb
 Content\Fonts\creditsHeaderFont.xnb
 <<<<<<< HEAD
-Content\PlayerTextures\bullet2.xnb
-Content\PlayerTextures\bullet3.xnb
-Content\Menu\boxTexture.xnb
-Content\SoundEffects\explosion.xnb
 =======
-Content\Particles\smoke.xnb
 Content\PlayerTextures\bullet2.xnb
 Content\PlayerTextures\bullet3.xnb
+Content\SoundEffects\explosion.xnb
 Content\PlayerTextures\gravityWell.xnb
->>>>>>> 7cee318100b834571bba3d720f1803e858dc237a
+>>>>>>> 58d14bf6bb6aeece995694db0526cc75647a6636
