@@ -25,7 +25,6 @@ namespace Perihelion
         ContentHolder contentHolder;
         InputHandler inputHandler;
         SoundManager soundManager;
-        Menu menu;
 
         // Handling gamestates
         public enum GameStates
@@ -75,10 +74,9 @@ namespace Perihelion
             gamestate = GameStates.Menu;
             contentHolder = new ContentHolder(this.Content);
             soundManager = new SoundManager(contentHolder);
-            gameController = new Controllers.Controller(contentHolder, soundManager, gameName);
+            gameController = new Controllers.Controller(contentHolder, soundManager, gameName, width, height);
             inputHandler = new InputHandler();
             gameWorld = new Models.Gameworld(contentHolder, GraphicsDevice.Viewport, 4096);    //TODO SINGLETON
-            menu = new Menu(contentHolder, width, height);
 
             base.Initialize();
         }
@@ -125,13 +123,14 @@ namespace Perihelion
             KeyboardState keyboard = Keyboard.GetState();
 
             // Exits the game when ESC is pressed
-            if (keyboard.IsKeyDown(Keys.Escape) || menu.Exiting)
+            if ((gamestate == GameStates.Running && keyboard.IsKeyDown(Keys.Escape)) 
+                || gameController.menuHandler.mainMenu.Exiting)
                 Exit();
             
             // Checks to see what should be updated, menu or gameworld
             if (gamestate == GameStates.Menu)
             {
-                menu = gameController.updateMenu(menu, inputHandler, gameTime);
+                gameController.updateMenu(inputHandler, gameTime);
             }
             else if (gamestate == GameStates.Running)
             {
@@ -156,7 +155,7 @@ namespace Perihelion
             base.Update(gameTime);
             updates++;
 
-            if (menu.Running)
+            if (gameController.menuHandler.Active)
             {
                 if (gamestate != GameStates.Menu)
                     gamestate = GameStates.Menu;
@@ -204,7 +203,7 @@ namespace Perihelion
             if (gamestate == GameStates.Menu)
             {
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
-                menu.Draw(spriteBatch, width, height);
+                gameController.menuHandler.Draw(spriteBatch);
             }
             else if (gamestate == GameStates.Running)
             {

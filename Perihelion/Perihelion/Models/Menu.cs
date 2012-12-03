@@ -6,150 +6,146 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
+
 namespace Perihelion.Models
 {
     class Menu
     {
-        public bool running;
-        public bool exiting;
-        Texture2D title;
-        SpriteFont font;
+        // DECLARATIONS
+        protected List<string> items;
+        protected Vector2 titlePosition;
+        protected bool active;
+        protected int spaceBetweenItems;
+        protected int itemSelected;
+        protected int screenWidth;
+        protected int screenHeight;
+        protected int titlePadding;
+        protected Texture2D title;
+        protected SpriteFont itemFont;
 
-        public enum MenuStates
+        // CONSTRUCTOR
+        public Menu(ContentHolder content, int width, int height)
         {
-            Main,
-            Options,
-            Credits
+            ScreenWidth = width;
+            ScreenHeight = height;
+
+            Items = new List<string>();
+
+            Active = false;
+
+            Title = content.title;
+            TitlePadding = 150;
+            TitlePosition = new Vector2((ScreenWidth / 2 - Title.Width / 2), TitlePadding - (Title.Height / 2));
+
+            ItemFont = content.menuFont;
+
+            SpaceBetweenItems = 50;
         }
 
-        public MenuStates menuState;
-
-        MainMenu mainMenu;
-        Options options;
-        Credits credits;
-
-        /************************************************************************/
-        /* Constructor                                                          */
-        /************************************************************************/
-        public Menu(ContentHolder contentHolder, int screenWidth, int screenHeight)
+        // ACCESSORS
+        protected List<string> Items
         {
-            menuState = MenuStates.Main;
-
-            Title = contentHolder.title;
-            Font = contentHolder.menuFont;
-
-            mainMenu = new MainMenu(Font);
-            options = new Options(Font);
-            credits = new Credits(contentHolder.creditsFont, contentHolder.creditsHeaderFont, screenWidth, screenHeight);
-
-            // Options menu items
-            //OptionsMenuItems = new List<string>();
-            //OptionsMenuItems.Add("Music");
-            //OptionsMenuItems.Add("Sound");
-            //OptionsMenuItems.Add("Hints");
-
-            Running = true;
+            get { return this.items; }
+            set { this.items = value; }
         }
 
-        /************************************************************************/
-        /* Accessors                                                            */
-        /************************************************************************/
-        public Texture2D Title
+        protected Vector2 TitlePosition
+        {
+            get { return this.titlePosition; }
+            set { this.titlePosition = value; }
+        }
+
+        public bool Active
+        {
+            get { return this.active; }
+            set { this.active = value; }
+        }
+
+        protected int SpaceBetweenItems
+        {
+            get { return this.spaceBetweenItems; }
+            set { this.spaceBetweenItems = value; }
+        }
+
+        protected int ItemSelected
+        {
+            get { return this.itemSelected; }
+            set { this.itemSelected = value; }
+        }
+
+        protected int ScreenWidth
+        {
+            get { return this.screenWidth; }
+            set { this.screenWidth = value; }
+        }
+
+        protected int ScreenHeight
+        {
+            get { return this.screenHeight; }
+            set { this.screenHeight = value; }
+        }
+
+        protected int TitlePadding
+        {
+            get { return this.titlePadding; }
+            set { this.titlePadding = value; }
+        }
+
+        protected Texture2D Title
         {
             get { return this.title; }
-            private set { this.title = value; }
+            set { this.title = value; }
         }
 
-        public SpriteFont Font
+        protected SpriteFont ItemFont
         {
-            get { return this.font; }
-            private set { this.font = value; }
+            get { return this.itemFont; }
+            set { this.itemFont = value; }
         }
 
-        public bool Running
+        // METHODS
+        // NOT USED AT THE MOMENT
+        public void changeResolution(int width, int height)
         {
-            get { return this.running; }
-            private set { this.running = value; }
+            ScreenWidth = width;
+            ScreenHeight = height;
         }
 
-        public bool Exiting
+        // XNA METHODS
+        public void update(int yAxis)
         {
-            get { return this.exiting; }
-            private set { this.exiting = value; }
+            if (yAxis > 0)
+                ItemSelected++;
+            else if (yAxis < 0)
+                ItemSelected--;
+
+            if (ItemSelected < 0)
+                ItemSelected = 0;
+
+            if (ItemSelected > (Items.Count - 1))
+                ItemSelected = (Items.Count - 1);
+
+            //updateRectangle();
         }
 
-        /************************************************************************/
-        /* XNA Methods                                                          */
-        /************************************************************************/
-        public void update(int movement, bool aButton, bool bButton, GameTime gameTime)
+        public void draw(SpriteBatch spriteBatch)
         {
-            // Runs only if the player is in the main menu
-            if (menuState == MenuStates.Main)
+            Vector2 centerText;
+            Vector2 itemPosition;
+            Color color;
+            itemPosition = new Vector2(TitlePosition.X, TitlePosition.Y + (spaceBetweenItems * 3));
+
+            spriteBatch.Draw(Title, TitlePosition, Color.White);
+
+            for (int i = 0; i < Items.Count; i++)
             {
-                mainMenu.update(movement, aButton, gameTime);
-
-                if (mainMenu.PlayHit)
-                {
-                    Running = false;
-                    mainMenu.PlayHit = false;
-                }
-
-                if (mainMenu.Exiting)
-                    Exiting = true;
-
-                if (mainMenu.IntoOptions)
-                    menuState = MenuStates.Options;
-
-                if (mainMenu.RollCredits)
-                    menuState = MenuStates.Credits;
-            }
-            else if (menuState == MenuStates.Credits)
-            {
-                credits.Active = true;
-
-                credits.update(bButton);
-
-                if (!credits.Active)
-                {
-                    menuState = MenuStates.Main;
-                    mainMenu.RollCredits = false;
-                }
-            }
-            else if (menuState == MenuStates.Options)
-            {
-                options.Active = true;
-
-                options.update(movement, aButton, gameTime);
-
-                if (options.Exiting)
-                {
-                    options.Active = false;
-                    menuState = MenuStates.Main;
-                    mainMenu.Exiting = false;
-                    mainMenu.IntoOptions = false;
-                }
-            }
-        }
-
-        public void Draw(SpriteBatch spriteBatch, int screenWidth, int screenHeight)
-        {
-            Vector2 titlePosition = new Vector2(((screenWidth / 2) - (title.Width / 2)), (150 - (title.Height / 2)));
-            int iterator = (int)titlePosition.Y + 50;
-            spriteBatch.Draw(Title, titlePosition, Color.White);
-
-            if (menuState == MenuStates.Main)
-            {
-                mainMenu.Draw(spriteBatch, screenWidth, screenHeight, iterator, titlePosition);
-            }
-
-            if (menuState == MenuStates.Options)
-            {
-                options.Draw(spriteBatch, screenWidth, screenHeight, iterator, titlePosition);
-            }
-
-            if (menuState == MenuStates.Credits)
-            {
-                credits.Draw(spriteBatch, screenWidth, screenHeight);
+                    centerText = ItemFont.MeasureString(Items[i]);
+                    itemPosition = new Vector2((ScreenWidth / 2 - centerText.X / 2), itemPosition.Y + SpaceBetweenItems);
+                    if (i == ItemSelected)
+                        color = Color.Green;
+                    else
+                        color = Color.White;
+                    spriteBatch.DrawString(ItemFont, Items[i], itemPosition, color);
             }
         }
     }
