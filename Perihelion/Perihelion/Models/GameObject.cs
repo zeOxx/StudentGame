@@ -11,10 +11,12 @@ namespace Perihelion.Models
     class GameObject
     {
         protected Texture2D texture;
+        protected Texture2D rectangle = Perihelion.ContentHolder.textureRectangle;
         //private ArrayList textureData;
         protected Vector2 origin;
         protected Vector2 position;
         protected Vector2 velocity;
+        protected Vector2 direction = new Vector2(-1, 0);
         protected double rotationAngle = 0.0;
         protected float maxSpeed = 0;
         protected float speed = 0;
@@ -43,6 +45,7 @@ namespace Perihelion.Models
 
             CurrentHealth = health;
             MaxHealth = health;
+            speed = 1;
             //this.health = currentHealth;
 
             //textureData = new ArrayList(texture.Width * texture.Height);
@@ -62,6 +65,7 @@ namespace Perihelion.Models
                     texture.Height);
             }
         }
+
 
         /************************************************************************/
         /* Getters/setters for GameObject                                       */
@@ -94,6 +98,12 @@ namespace Perihelion.Models
         {
             get { return this.velocity; }
             set { this.velocity = value; }
+        }
+
+        public Vector2 Direction
+        {
+            get { return this.direction; }
+            set { this.direction = value; }
         }
 
         //public ArrayList TextureData
@@ -141,6 +151,11 @@ namespace Perihelion.Models
             get { return this.identifier; }
             set { this.identifier = value; }
         }
+
+        public double RotationAngle
+        {
+            get { return this.rotationAngle; }
+        }
         /************************************************************************/
         /* Other methods                                                        */
         /************************************************************************/
@@ -168,6 +183,10 @@ namespace Perihelion.Models
         public void updateVelocity(Vector2 velocity)
         {
             this.velocity = velocity;
+            if (velocity != Vector2.Zero)
+            {
+                Direction = velocity;
+            }
         }
 
         public void updateAngle(Vector2 velocity)
@@ -199,6 +218,7 @@ namespace Perihelion.Models
         {
             spriteBatch.Draw(texture, position, null, Color.White, (float)rotationAngle,
                     origin, 1.0f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(rectangle, BoundingBox, Color.White);
         }
 
         public virtual void Draw(SpriteBatch spriteBatch, float alpha)
@@ -211,6 +231,7 @@ namespace Perihelion.Models
         {
         spriteBatch.Draw(texture, position, null, Color.White * scale, (float)rotationAngle,
                     origin, scale, SpriteEffects.None, 0f);
+        spriteBatch.Draw(rectangle, BoundingBox, Color.White);
         }
 
 

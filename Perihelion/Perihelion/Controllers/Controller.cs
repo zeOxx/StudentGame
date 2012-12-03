@@ -57,7 +57,8 @@ namespace Perihelion.Controllers
         {
             gameWorld.GravityWell.Position = gameWorld.PlayerObject.Position;
             gameWorld.setDrawGravityWell(true, rightTrigger);
-            //System.Console.WriteLine("X = " + gameWorld.GravityWell.Position.X + " Y = " + gameWorld.GravityWell.Position.Y);
+
+            physicsEngine.checkGravityWellCollision(gameWorld.GravityWell, gameWorld.getRock());
         }
 
         public void updateMenu(InputHandler inputHandler, GameTime gameTime)
