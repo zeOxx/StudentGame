@@ -162,7 +162,7 @@ namespace Perihelion.Models
 			hud.Draw(spriteBatch);
             if (drawWell)
             {
-                gravityWell.Draw(spriteBatch);
+                gravityWell.DrawScale(spriteBatch, playerObject.WellStatus);
             }
 		}
 
@@ -218,9 +218,10 @@ namespace Perihelion.Models
 			}
 		}
         
-        public void setDrawGravityWell(bool draw)
+        public void setDrawGravityWell(bool draw, float wellStatus)
         {
             drawWell = draw;
+            playerObject.WellStatus = wellStatus;
         }
 	
     }

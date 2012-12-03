@@ -16,7 +16,7 @@ namespace Perihelion.Models
         
         // Powers and stuff
         private float wellMultiplier;
-        private int wellStatus;
+        private float wellStatus;
         private int auxiliaryPower;
 
         /************************************************************************/
@@ -67,7 +67,7 @@ namespace Perihelion.Models
             set { this.wellMultiplier = value; }
         }
 
-        protected int WellStatus
+        public float WellStatus
         {
             get { return this.wellStatus; }
             set { this.wellStatus = value; }

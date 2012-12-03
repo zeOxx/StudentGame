@@ -223,6 +223,12 @@ namespace Perihelion.Models
                     origin, 1.0f, SpriteEffects.None, 0f);
         }
 
+        public virtual void DrawScale(SpriteBatch spriteBatch, float scale)
+        {
+        spriteBatch.Draw(texture, position, null, Color.White * scale, (float)rotationAngle,
+                    origin, scale, SpriteEffects.None, 0f);
+        }
+
 
         protected void constructGameObject(Texture2D texture, float x, float y, Vector2 velocity)
         {

@@ -16,9 +16,9 @@ Content\Backgrounds\bg_02_1.xnb
 Content\Particles\particle_test.xnb
 Content\Menu\Title.xnb
 Content\Particles\smoke.xnb
-Content\PlayerTextures\bullet2.xnb
-Content\PlayerTextures\bullet3.xnb
-Content\PlayerTextures\gravityWell.xnb
+Content\SoundEffects\s_gun_shooting.xnb
+Content\SoundEffects\s_gun_wind_down.xnb
+Content\SoundEffects\pang.xnb
 Content\SoundEffects\s_gun_shooting.xnb
 Content\SoundEffects\s_gun_wind_down.xnb
 Content\SoundEffects\pang.xnb
@@ -27,3 +27,4 @@ Content\Fonts\debugFont.xnb
 Content\Fonts\menuFont.xnb
 Content\Fonts\creditsFont.xnb
 Content\Fonts\creditsHeaderFont.xnb
+Content\SoundEffects\explosion.xnb
