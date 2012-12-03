@@ -4,154 +4,72 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace Perihelion.Models
 {
-    class MainMenu
+    class MainMenu : Menu
     {
-        private List<string> mainMenuItems;
-        private int itemSelected;
-        public bool moved;
         public bool exiting;
-        public bool playHit;
-        public bool intoOptions;
-        public bool rollCredits;
-        SpriteFont font;
+        public bool goPlay;
+        public bool goOptions;
+        public bool goCredits;
 
-        private int inputAllowed = 100;            // Time that should elapse between input is read.
-        private int elapsedSinceLastInput = 0;      // Time that has elapsed since last input.
-
-        /************************************************************************/
-        /* Constructor                                                          */
-        /************************************************************************/
-        public MainMenu(SpriteFont font)
+        public MainMenu(ContentHolder content, int width, int height) 
+            : base(content, width, height)
         {
-            Font = font;
+            Items.Add("New Game");  // itemselected = 0
+            Items.Add("Options");   // itemselected = 1
+            Items.Add("Credits");   // itemselected = 2
+            Items.Add("Exit Game"); // itemselected = 3
 
-            // Main menu items 
-            MainMenuItems = new List<string>();
-            MainMenuItems.Add("Start game");
-            MainMenuItems.Add("Options");
-            MainMenuItems.Add("Credits");
-            MainMenuItems.Add("Quit game");
-
-            Exiting = false;
-            IntoOptions = false;
-            PlayHit = false;
-            Moved = false;
-        }
-
-        /************************************************************************/
-        /* Accessors                                                            */
-        /************************************************************************/
-        public List<string> MainMenuItems
-        {
-            get { return this.mainMenuItems; }
-            private set { this.mainMenuItems = value; }
-        }
-
-        public int ItemSelected
-        {
-            get { return this.itemSelected; }
-            private set { this.itemSelected = value; }
-        }
-
-        public bool Moved
-        {
-            get { return this.moved; }
-            private set { this.moved = value; }
+            Active = true;
         }
 
         public bool Exiting
         {
             get { return this.exiting; }
-            set { this.exiting = value; }
+            private set { this.exiting = value; }
         }
 
-        public bool PlayHit
+        public bool GoPlay
         {
-            get { return this.playHit; }
-            set { this.playHit = value; }
+            get { return this.goPlay; }
+            private set { this.goPlay = value; }
         }
 
-        public bool IntoOptions
+        public bool GoOptions
         {
-            get { return this.intoOptions; }
-            set { this.intoOptions = value; }
+            get { return this.goOptions; }
+            private set { this.goOptions = value; }
         }
 
-        public bool RollCredits
+        public bool GoCredits
         {
-            get { return this.rollCredits; }
-            set { this.rollCredits = value; }
+            get { return this.goCredits; }
+            private set { this.goCredits = value; }
         }
 
-        public SpriteFont Font
+        // XNA METHODS
+        public void update(int yAxis, bool aButton)
         {
-            get { return this.font; }
-            private set { this.font = value; }
-        }
+            base.update(yAxis);
 
-        /************************************************************************/
-        /* XNA Methods                                                          */
-        /************************************************************************/
-        public void update(int movement, bool aButton, GameTime gameTime)
-        {
-            elapsedSinceLastInput += gameTime.ElapsedGameTime.Milliseconds;
-
-            // A series of if checks to make sure position is valid.
-            if (movement < 0)
+            if (aButton && ItemSelected == 0)
             {
-                ItemSelected--;
-                Moved = true;
+                GoPlay = true;
             }
-            else if (movement > 0)
+            else if (aButton && ItemSelected == 1)
             {
-                ItemSelected++;
-                Moved = true;
+                GoOptions = true;
             }
-            else
-                Moved = false;
-
-            // This gate is here to prevent unwanted movement
-            if (elapsedSinceLastInput > inputAllowed)
+            else if (aButton && ItemSelected == 2)
             {
-                if (ItemSelected < 0)
-                    ItemSelected = 0;
-                if (ItemSelected > MainMenuItems.Count - 1)
-                    ItemSelected = MainMenuItems.Count - 1;
-
-                if (aButton && ItemSelected == 0)
-                    PlayHit = true;
-
-                if (aButton && ItemSelected == 1)
-                    IntoOptions = true;
-
-                if (aButton && ItemSelected == 2)
-                    RollCredits = true;
-
-                if (aButton && ItemSelected == (MainMenuItems.Count - 1))
-                    Exiting = true;
+                GoCredits = true;
             }
-
-            if (moved)
-                elapsedSinceLastInput = 0;
-        }
-
-        public void Draw(SpriteBatch spriteBatch, int screenWidth, int screenHeight, int iterator, Vector2 titlePosition)
-        {
-            for (int i = 0; i < MainMenuItems.Count; i++)
+            else if (aButton && ItemSelected == 3)
             {
-                Vector2 centerText = Font.MeasureString(MainMenuItems[i]);
-
-                Vector2 itemPosition = new Vector2((screenWidth / 2 - centerText.X / 2), titlePosition.Y + iterator);
-
-                if (i == ItemSelected)
-                    spriteBatch.DrawString(Font, MainMenuItems[i], itemPosition, Color.Green);
-                else
-                    spriteBatch.DrawString(Font, MainMenuItems[i], itemPosition, Color.White);
-
-                iterator += 75;
+                Exiting = true;
             }
         }
     }

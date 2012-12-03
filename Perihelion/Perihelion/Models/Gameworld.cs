@@ -220,7 +220,7 @@ namespace Perihelion.Models
 				}
 				else if (shot == 1)
 				{
-					enemy.update(stick, stick, gameTime, rocket);
+                    enemy.update(unithandler.restrictEnemy(enemy, stick), stick, gameTime, rocket);
 				}
 				else
 				{

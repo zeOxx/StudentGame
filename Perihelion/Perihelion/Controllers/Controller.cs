@@ -18,17 +18,16 @@ namespace Perihelion.Controllers
         private ContentHolder content;
         private SoundManager soundManager;
         private PhysicsEngine physicsEngine;
-        
+        public MenuHandler menuHandler;
 
-
-        public Controller(ContentHolder content, SoundManager soundManager, string title)
+        public Controller(ContentHolder content, SoundManager soundManager, string title, int width, int height)
         {
             //playerObject = new GameObject[Constants.maxNumberOfObjectsInArray];
             this.soundManager = soundManager;
             playerObject = null;
             this.content = content;
             physicsEngine = new PhysicsEngine();
-            
+            menuHandler = new MenuHandler(content, width, height);
         }
 
         //************** FUNCTIONS ******************
@@ -62,7 +61,7 @@ namespace Perihelion.Controllers
             physicsEngine.checkGravityWellCollision(gameWorld.GravityWell, gameWorld.getRock());
         }
 
-        public Menu updateMenu(Menu menu, InputHandler inputHandler, GameTime gameTime)
+        public void updateMenu(InputHandler inputHandler, GameTime gameTime)
         {
             inputHandler.updateInput();
 
@@ -83,9 +82,16 @@ namespace Perihelion.Controllers
             if (inputHandler.ButtonPressed(Buttons.B) || inputHandler.KeyDown(Keys.Back))
                 bButton = true;
 
-            menu.update(movement, aButton, bButton, gameTime);
+            if (menuHandler.ElapsedSinceLastInput > menuHandler.AllowedTimeBetweenInputs)
+            {
+                if (movement != 0 || aButton || bButton)
+                {
+                    menuHandler.update(movement, aButton, bButton);
+                    menuHandler.ElapsedSinceLastInput = 0;
+                }
+            }
 
-            return menu;
+            menuHandler.ElapsedSinceLastInput += gameTime.ElapsedGameTime.Milliseconds;
         }
 
         
