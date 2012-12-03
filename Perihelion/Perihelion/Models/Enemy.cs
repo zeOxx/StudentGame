@@ -106,7 +106,10 @@ namespace Perihelion.Models
         /************************************************************************/
         public void update(Vector2 leftStick, Vector2 rightStick, GameTime gameTime, bool rocket)
         {
-            //leftStick = correctCourse(leftStick);
+            //if (!leftStick.Equals(Vector2.Zero) && base.velocity.Equals(Vector2.Zero))
+            //{
+            //    leftStick = correctCourse(leftStick);
+            //}
 
             base.unitUpdate(leftStick, rightStick, gameTime);
         }
@@ -114,9 +117,42 @@ namespace Perihelion.Models
         private Vector2 correctCourse(Vector2 direction)
         {
             //TODO!!!!!
-            Vector2 corrected = Vector2.Zero;
+            //float dot = Vector2.Dot(base.velocity, direction);
 
-            return corrected;
+            //float angle = dot /
+            //    (((float)Math.Sqrt(Math.Pow(base.velocity.X, 2) + Math.Pow(direction.X, 2)))
+            //    * ((float)Math.Sqrt(Math.Pow(base.velocity.Y, 2) + Math.Pow(direction.Y, 2))));
+            //angle = (float)(RadianToDegree(Math.Acos(angle)));
+            ////Console.Out.WriteLine(angle);
+            //if(angle > 5)
+            //{
+            //    Vector2 corrected = Vector2.Zero;
+            //    return corrected;
+            //}
+            //else
+            //{
+            //    return direction;
+            //}return (float) Math.Atan2(this.x * b.y - this.y * b.x, this.Dot(b));
+            float angle = (float)Math.Atan2((double)
+                            ((base.velocity.X * direction.Y)
+                            - (base.velocity.Y * direction.X))
+                            , Vector2.Dot(base.velocity, direction));
+            if (angle > 1)
+            {
+                if (true){
+                    
+                }
+                else
+                {
+                    
+                }
+            }
+            else
+            {
+                return direction;
+            }
+            return Vector2.Zero;
+
         }
 
         private void updateCloakcountdown(int i)
