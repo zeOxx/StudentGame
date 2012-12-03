@@ -54,10 +54,10 @@ namespace Perihelion.Controllers
             //return gameWorld;
         }
 
-        public void updateGravityWell(Gameworld gameWorld)
+        public void updateGravityWell(Gameworld gameWorld, float rightTrigger)
         {
             gameWorld.GravityWell.Position = gameWorld.PlayerObject.Position;
-            gameWorld.setDrawGravityWell(true);
+            gameWorld.setDrawGravityWell(true, rightTrigger);
             //System.Console.WriteLine("X = " + gameWorld.GravityWell.Position.X + " Y = " + gameWorld.GravityWell.Position.Y);
         }
 
@@ -182,11 +182,11 @@ namespace Perihelion.Controllers
 
             if (inputHandler.ButtonDown(Buttons.RightTrigger))
             {
-                updateGravityWell(gameWorld);
+                updateGravityWell(gameWorld, inputHandler.getRightTrigger());
             }
             else
             {
-                gameWorld.setDrawGravityWell(false);
+                gameWorld.setDrawGravityWell(false, 0);
             }
 
 #if DEBUG

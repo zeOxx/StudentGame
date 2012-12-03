@@ -122,6 +122,11 @@ namespace Perihelion
             return movementInput;
         }
 
+        public float getRightTrigger()
+        {
+            return currentGamePadState.Triggers.Right;
+        }
+
         public float updateLeftStickX()
         {
             return currentGamePadState.ThumbSticks.Left.X;
