@@ -56,7 +56,7 @@ namespace Perihelion
         }
 
         /************************************************************************/
-        /* Accessors                                                            */
+        /* Accessors this doesn't compile in Release                                                            */
         /************************************************************************/
         public bool DisplayDebug
         {

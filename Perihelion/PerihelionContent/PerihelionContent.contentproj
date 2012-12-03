@@ -230,8 +230,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Menu\boxTexture.png">
-      <Name>boxTexture</Name>
+    <Compile Include="PlayerTextures\gravityWell.png">
+      <Name>gravityWell</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

@@ -135,7 +135,7 @@ namespace Perihelion
             else if (gamestate == GameStates.Running)
             {
                 // Sends gamestate to controller and receives updated state. 
-                gameWorld = gameController.updateGameWorld(gameWorld, gameTime, inputHandler);
+                gameController.updateGameWorld(ref gameWorld, gameTime, inputHandler);
                 //loadEnemies();
             }
 

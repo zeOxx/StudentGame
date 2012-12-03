@@ -23,7 +23,8 @@ Content\Fonts\debugFont.xnb
 Content\Fonts\menuFont.xnb
 Content\Fonts\creditsFont.xnb
 Content\Fonts\creditsHeaderFont.xnb
+Content\Particles\smoke.xnb
 Content\PlayerTextures\bullet2.xnb
 Content\PlayerTextures\bullet3.xnb
-Content\Menu\boxTexture.xnb
+Content\PlayerTextures\gravityWell.xnb
 Content\SoundEffects\explosion.xnb
