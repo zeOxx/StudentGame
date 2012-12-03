@@ -119,7 +119,6 @@ namespace Perihelion.Models
 			// NOT THAT THE RED PARTICLE ATTACHED TO THE SHIP IS OBVIOUSLY PLACEHOLDER
 
 			particleSystem.newEmitter(contentHolder.particle_smoke, getPlayer().Position, 0, 200, 12, false, getPlayer().Velocity);
-			particleSystem.newSpawner(contentHolder.particle_test, new Vector2(-100, -100), 1000, 500, 3, true, new Vector2(0, 0));
 
 			rocks.Add(new Collidable(contentHolder.textureRock01, 150, 300, Vector2.Zero, true, 400));
 			rocks.Add(new Collidable(contentHolder.textureRock02, -250, -330, Vector2.Zero, true, 40));
