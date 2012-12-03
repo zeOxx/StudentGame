@@ -34,7 +34,7 @@ namespace Perihelion.Controllers
 
         public Vector2 restrictEnemy(Models.Enemy enemy, Vector2 target)
         {
-            float restrict = 0.01f;
+            float restrict = 0.001f;
             Vector2 vector;
             if (lessThanAlpha(enemy.Direction, target, restrict))
             {
