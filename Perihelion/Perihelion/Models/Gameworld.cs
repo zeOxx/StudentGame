@@ -66,7 +66,7 @@ namespace Perihelion.Models
 
         public GameObject GravityWell
         {
-            get { return playerObject; }
+            get { return gravityWell; }
         }
 
 		public int LevelSize
@@ -121,16 +121,21 @@ namespace Perihelion.Models
 			particleSystem.newEmitter(contentHolder.particle_smoke, getPlayer().Position, 0, 200, 12, false, getPlayer().Velocity);
 			particleSystem.newSpawner(contentHolder.particle_test, new Vector2(-100, -100), 1000, 500, 3, true, new Vector2(0, 0));
 
-			rocks.Add(new Collidable(contentHolder.textureRock01, 150, 300, Vector2.Zero, true, 400));
-			rocks.Add(new Collidable(contentHolder.textureRock02, -250, -330, Vector2.Zero, true, 40));
-			rocks.Add(new Collidable(contentHolder.textureRock01, 500, 300, Vector2.Zero, true, 70));
-			rocks.Add(new Collidable(contentHolder.textureRock02, -100, 250, Vector2.Zero, true, 200));
+            
+            
 
-            for (int i = 0; i < 20; i++)
-            {
+			rocks.Add(new Collidable(contentHolder.textureRock01,  150,  300, Vector2.Zero, true, 400));
+			rocks.Add(new Collidable(contentHolder.textureRock02, -250, -330, Vector2.Zero, true,  40));
+			rocks.Add(new Collidable(contentHolder.textureRock01,  500,  300, Vector2.Zero, true,  70));
+			rocks.Add(new Collidable(contentHolder.textureRock02, -100,  250, Vector2.Zero, true, 200));
 
-                enemies.Add(new Enemy(contentHolder.texturePlayer, contentHolder.texturePlayerTurret, contentHolder.texturePlayerBullet, i*20 + 200, i*20 + 200, Vector2.Zero, 100));
-            }
+            rocks.Add(new Collidable(contentHolder.textureRock01, 0, -250, new Vector2(0, -2), true, 200));
+
+            //for (int i = 0; i < 20; i++)
+            //{
+
+            //    enemies.Add(new Enemy(contentHolder.texturePlayer, contentHolder.texturePlayerTurret, contentHolder.texturePlayerBullet, i*20 + 200, i*20 + 200, Vector2.Zero, 100));
+            //}
 		}
 
 		// Creates the bounds for the level
@@ -177,7 +182,13 @@ namespace Perihelion.Models
 
             gravityWell.Position = playerObject.Position;
 
-            System.Console.WriteLine("X = " + gravityWell.Position.X + " Y = " + gravityWell.Position.Y);
+            //System.Console.WriteLine("X = " + gravityWell.Position.X + " Y = " + gravityWell.Position.Y);
+
+            for (int i = 0; i < rocks.Count; i++)
+            {
+                rocks[i].updatePosition();
+            }
+
 		}
 
 		//Returns camera to draw function

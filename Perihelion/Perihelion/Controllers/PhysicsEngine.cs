@@ -65,6 +65,62 @@ namespace Perihelion.Controllers
             get { return enemyCollisionIndex; }
         }
 
+        public void checkGravityWellCollision(Models.GameObject gravityWell, List<Models.Collidable> rocks)
+        {
+            for(int i = 0; i < rocks.Count; i++)
+            {
+                if (gravityWell.BoundingBox.Intersects(rocks[i].BoundingBox))
+                {
+                    if (perPixelCollisionDetection(gravityWell, rocks[i]))
+                    {
+                        calculateGravitationalPull(gravityWell, rocks[i]);
+                    }
+                }
+            }
+        }
+
+        private void calculateGravitationalPull(Models.GameObject gravityWell, Models.Collidable rock)
+        {
+            Vector2 vectorBetweenRockAndWell = rock.Position - gravityWell.Position;
+            float angleBetweenRockAndWell = vectorToAngle(vectorBetweenRockAndWell);
+            float rockVelocityAngle = vectorToAngle(rock.Velocity);
+
+            
+
+            System.Console.WriteLine("angle: " + angleBetweenRockAndWell);
+
+            if (angleBetweenRockAndWell < 0 && angleBetweenRockAndWell < 0.5f)
+            {
+                rock.Velocity = vectorBetweenRockAndWell * 0.01f;
+            }
+            //else if(angleBetweenRockAndWell)
+            
+            
+            
+            //if(rockVelocityAngle <= angleBetweenRockAndWell)
+            //{
+            //    rockVelocityAngle += 0.02f;
+            //    rock.Velocity = angleToVector(rockVelocityAngle);
+            //}
+            //else
+            //{
+            //    rockVelocityAngle -= 0.02f;
+            //    rock.Velocity = angleToVector(rockVelocityAngle);
+            //}
+
+           
+        }
+
+        private Vector2 angleToVector(float angle)
+        {
+            return new Vector2((float)Math.Sin(angle), -(float)Math.Cos(angle));
+        }
+
+        private float vectorToAngle(Vector2 vector)
+        {
+            return (float)Math.Atan2(vector.X, -vector.Y);
+        }
+        
         private void checkEnemyProjectileCollisions(Models.Gameworld gameWorld)
         {
             List<int> collidedProjectileIndexes = new List<int>();
