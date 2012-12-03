@@ -21,6 +21,7 @@ namespace Perihelion.Models
 		int levelSize = 4096;
 
 		private Player playerObject;
+        private Boolean drawWell;
         private GameObject gravityWell;
 		private List<Collidable> rocks = new List<Collidable>();
 		private Background background01;
@@ -159,7 +160,10 @@ namespace Perihelion.Models
 			particleSystem.Draw(spriteBatch);
 			playerObject.Draw(spriteBatch);
 			hud.Draw(spriteBatch);
-            gravityWell.Draw(spriteBatch);
+            if (drawWell)
+            {
+                gravityWell.Draw(spriteBatch);
+            }
 		}
 
 		public void update(GameTime gameTime, ContentHolder contentHolder)
@@ -213,7 +217,15 @@ namespace Perihelion.Models
 				}
 			}
 		}
-	}
+        
+        public void setDrawGravityWell(bool draw)
+        {
+            drawWell = draw;
+        }
+	
+    }
+
+    
 
 	
 }
