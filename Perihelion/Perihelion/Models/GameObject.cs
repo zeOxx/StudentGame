@@ -15,6 +15,7 @@ namespace Perihelion.Models
         protected Vector2 origin;
         protected Vector2 position;
         protected Vector2 velocity;
+        protected Vector2 direction = new Vector2(-1, 0);
         protected double rotationAngle = 0.0;
         protected float maxSpeed = 0;
         protected float speed = 0;
@@ -96,6 +97,12 @@ namespace Perihelion.Models
             set { this.velocity = value; }
         }
 
+        public Vector2 Direction
+        {
+            get { return this.direction; }
+            set { this.direction = value; }
+        }
+
         //public ArrayList TextureData
         //{
         //    get { return textureData; }
@@ -141,6 +148,11 @@ namespace Perihelion.Models
             get { return this.identifier; }
             set { this.identifier = value; }
         }
+
+        public double RotationAngle
+        {
+            get { return this.rotationAngle; }
+        }
         /************************************************************************/
         /* Other methods                                                        */
         /************************************************************************/
@@ -168,6 +180,10 @@ namespace Perihelion.Models
         public void updateVelocity(Vector2 velocity)
         {
             this.velocity = velocity;
+            if (velocity != Vector2.Zero)
+            {
+                Direction = velocity;
+            }
         }
 
         public void updateAngle(Vector2 velocity)
