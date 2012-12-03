@@ -11,7 +11,7 @@ namespace Perihelion.Controllers
         private Models.Gameworld gameworld;
 
         private static float enemyBufferDistance = 100;
-        private static float enemyAggroDistance = 300;
+        private static float enemyAggroDistance = 400;
 
 
         public UnitHandler()
@@ -48,15 +48,11 @@ namespace Perihelion.Controllers
                 if (c < 0) // turn right
                 {
                     vector = rotate(enemy.Direction, -restrict);
-                    Console.Out.Write("turning right: ");
-                    Console.Out.WriteLine(vector);
                     return vector;
                 }
                 else //if (c >= 0) // turn left
                 {
                     vector = rotate(enemy.Direction, restrict);
-                    Console.Out.Write("turning left: ");
-                    Console.Out.WriteLine(vector);
                     return vector;
                 }
             }
