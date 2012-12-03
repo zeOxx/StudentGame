@@ -30,7 +30,9 @@ namespace Perihelion.Models
             AuxPower = 100;
         }
 
-        public Player(Texture2D texture_ship, Texture2D texture_turret, Texture2D texture_bullet, float x, float y, Vector2 velocity, int health)
+        public Player(Texture2D texture_ship,   Texture2D texture_turret, 
+                      Texture2D texture_bullet,
+                      float x, float y, Vector2 velocity, int health)
             : base(texture_ship, x, y, velocity, health)
         {
             TurretTexture = texture_turret;
@@ -114,6 +116,8 @@ namespace Perihelion.Models
             {
                 projectiles.Draw(spriteBatch);
             }
+
+            
         }
 
         public void stop()
