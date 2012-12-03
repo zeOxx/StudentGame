@@ -184,7 +184,7 @@ namespace Perihelion.Controllers
             Vector2 rightStick = inputHandler.getRightStickMovement();
             //playerObject.update(movementVector, rightStick, gameTime);
 
-            if (inputHandler.ButtonDown(Buttons.RightTrigger))
+            if (inputHandler.ButtonDown(Buttons.RightTrigger) || inputHandler.KeyDown(Keys.LeftShift))
             {
                 updateGravityWell(gameWorld, inputHandler.getRightTrigger());
             }
