@@ -149,20 +149,20 @@ namespace Perihelion.Models
                     {
                         if (Velocity.X != 0)
                         {
-                            randomNumberX = random.Next(1, 3);
-                            if (randomNumberX == 1)
-                                velocity.X += 0.2f;
-                            else if (randomNumberX == 2)
-                                velocity.X -= 0.2f;
+                            randomNumberX = (float)random.NextDouble();
+                            if (randomNumberX < 0.5f)
+                                velocity.X += (float)random.NextDouble();
+                            else if (randomNumberX >= 0.5f)
+                                velocity.X -= (float)random.NextDouble();
                         }
 
                         if (Velocity.Y != 0)
                         {
-                            randomNumberY = random.Next(1, 3);
-                            if (randomNumberY == 1)
-                                velocity.Y += 0.2f;
-                            else if (randomNumberY == 2)
-                                velocity.Y -= 0.2f;
+                            randomNumberY = (float)random.NextDouble();
+                            if (randomNumberY < 0.5f)
+                                velocity.Y += (float)random.NextDouble();
+                            else if (randomNumberY >= 0.5f)
+                                velocity.Y -= (float)random.NextDouble();
                         }
                     }
 

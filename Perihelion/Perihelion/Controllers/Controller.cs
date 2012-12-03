@@ -57,7 +57,8 @@ namespace Perihelion.Controllers
         {
             gameWorld.GravityWell.Position = gameWorld.PlayerObject.Position;
             gameWorld.setDrawGravityWell(true, rightTrigger);
-            //System.Console.WriteLine("X = " + gameWorld.GravityWell.Position.X + " Y = " + gameWorld.GravityWell.Position.Y);
+
+            physicsEngine.checkGravityWellCollision(gameWorld.GravityWell, gameWorld.getRock());
         }
 
         public void updateMenu(InputHandler inputHandler, GameTime gameTime)
@@ -156,7 +157,7 @@ namespace Perihelion.Controllers
         {
             Vector2 objectPosition = explodingObject.Position;
             Vector2 explosionDirection = projectile.Velocity;
-            particleSystem.newSpawner(content.particle_test, objectPosition, 1000, 0, 10, false, explosionDirection*7);
+            particleSystem.newSpawner(content.particle_test, objectPosition, 1000, 0, 10, false, explosionDirection*2);
         }
         
         //Copies the entire Gamestate
@@ -183,9 +184,6 @@ namespace Perihelion.Controllers
             Vector2 rightStick = inputHandler.getRightStickMovement();
             //playerObject.update(movementVector, rightStick, gameTime);
 
-            
-            physicsEngine.collisionDetection(ref gameWorld, movementVector, rightStick, gameTime);
-
             if (inputHandler.ButtonDown(Buttons.RightTrigger))
             {
                 updateGravityWell(gameWorld, inputHandler.getRightTrigger());
@@ -202,6 +200,9 @@ namespace Perihelion.Controllers
            
 
             // Temp Keyboardinput
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////
+            // !USING A KEYBOARD WILL BREAK THE SPEED OF THE PLAYER. THIS IS NOT TO BE INCLUDED IN THE FINAL GAME! //
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////
             inputHandler.updateInput();
 
             // Zooming
@@ -220,33 +221,36 @@ namespace Perihelion.Controllers
 
             // Movement
             if (inputHandler.KeyDown(Keys.D))
-            {
-                playerObject.updatePosition(5, 0);
-            }
+                movementVector.X = 1; 
 
             if (inputHandler.KeyDown(Keys.A))
-            {
-                playerObject.updatePosition(-5, 0);
-
-            }
+                movementVector.X = -1; 
 
             if (inputHandler.KeyDown(Keys.S))
-            {
-                playerObject.updatePosition(0, 5);
-            }
-
+                movementVector.Y = -1; 
 
             if (inputHandler.KeyDown(Keys.W))
-            {
-                playerObject.updatePosition(0, -5);
+                movementVector.Y = 1; 
 
-            }
+            // Shooting
+            if (inputHandler.KeyDown(Keys.Right))
+                rightStick.X = 1;
 
+            if (inputHandler.KeyDown(Keys.Left))
+                rightStick.X = -1;
+
+            if (inputHandler.KeyDown(Keys.Down))
+                rightStick.Y = -1;
+
+            if (inputHandler.KeyDown(Keys.Up))
+                rightStick.Y = 1;
             // Other keys
 #if DEBUG
             if (inputHandler.KeyReleased(Keys.F1))
                 gameWorld.setDebug();
 #endif
+
+            physicsEngine.collisionDetection(ref gameWorld, movementVector, rightStick, gameTime);
         }
     }
 }
