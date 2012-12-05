@@ -174,7 +174,7 @@ namespace Perihelion.Models
         /************************************************************************/
         /*  Draw functions for Enemy attributes                                 */
         /************************************************************************/
-        public override void Draw(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch, bool debug)
         {
             if (Cloaked)
             {
@@ -182,16 +182,16 @@ namespace Perihelion.Models
             }
             else
             {
-                base.Draw(spriteBatch);
+                base.Draw(spriteBatch, debug);
             }
             
             foreach (Models.Projectile projectiles in bullets)
             {
-                projectiles.Draw(spriteBatch);
+                projectiles.Draw(spriteBatch, debug);
             }
             foreach (Models.DestructibleProjectile projectiles in rockets)
             {
-                projectiles.Draw(spriteBatch);
+                projectiles.Draw(spriteBatch, debug);
             }
         }
     }

@@ -98,9 +98,9 @@ namespace Perihelion.Models
             this.auxiliaryPower += i;
         }
 
-        public override void Draw(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch, bool debug)
         {
-            base.Draw(spriteBatch);
+            base.Draw(spriteBatch, debug);
 
             spriteBatch.Draw(texture_turret,
                 position,
@@ -114,7 +114,7 @@ namespace Perihelion.Models
 
             foreach (Models.Projectile projectiles in bullets)
             {
-                projectiles.Draw(spriteBatch);
+                projectiles.Draw(spriteBatch, debug);
             }
 
             

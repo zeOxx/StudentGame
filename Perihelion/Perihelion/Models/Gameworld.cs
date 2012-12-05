@@ -33,6 +33,7 @@ namespace Perihelion.Models
 		private Controllers.ParticleSystem particleSystem;
 		private List<Enemy> enemies = new List<Enemy>();
 		private Controllers.UnitHandler unithandler = new Controllers.UnitHandler(); //WIP - mostly empty
+        private bool debug;
 
 		public Gameworld(ContentHolder contentHolder, Viewport view, int levelSize)
 		{
@@ -41,6 +42,7 @@ namespace Perihelion.Models
 			camera = new Camera(view);
 			hud = new HUD(contentHolder, camera);
 			LevelSize = levelSize;
+            Debug = false;
 		}
 
         public Controllers.ParticleSystem getParticleSystem()
@@ -86,13 +88,25 @@ namespace Perihelion.Models
 			return numbOfCurrentCollidables;
 		}
 
+        private bool Debug
+        {
+            get { return this.debug; }
+            set { this.debug = value; }
+        }
+
 #if DEBUG
 		public void setDebug()
 		{
-			if (hud.DisplayDebug)
-				hud.DisplayDebug = false;
-			else
-				hud.DisplayDebug = true;
+            if (hud.DisplayDebug)
+            {
+                hud.DisplayDebug = false;
+                Debug = false;
+            }
+            else
+            {
+                hud.DisplayDebug = true;
+                Debug = true;
+            }
 		}
 #endif
 
@@ -153,20 +167,20 @@ namespace Perihelion.Models
 
 			for (int i = 0; i < rocks.Count; i++)
 			{
-				rocks[i].Draw(spriteBatch);
+				rocks[i].Draw(spriteBatch, Debug);
 			}
 
 			foreach (Enemy enemy in enemies)
 			{
-				enemy.Draw(spriteBatch);
+				enemy.Draw(spriteBatch, Debug);
 			}
 
 			particleSystem.Draw(spriteBatch);
-			playerObject.Draw(spriteBatch);
-			hud.Draw(spriteBatch);
+            playerObject.Draw(spriteBatch, Debug);
+            hud.Draw(spriteBatch, Debug);
             if (drawWell)
             {
-                gravityWell.DrawScale(spriteBatch, playerObject.WellStatus);
+                gravityWell.DrawScale(spriteBatch, playerObject.WellStatus, Debug);
             }
 		}
 

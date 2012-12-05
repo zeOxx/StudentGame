@@ -83,10 +83,10 @@ namespace Perihelion
 #endif
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch, bool debug)
         {
-            healthAuxBar.Draw(spriteBatch);
-            special.Draw(spriteBatch);
+            healthAuxBar.Draw(spriteBatch, debug);
+            special.Draw(spriteBatch, debug);
 
 #if DEBUG
             if (displayDebug)
