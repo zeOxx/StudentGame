@@ -28,3 +28,5 @@ Content\PlayerTextures\bullet3.xnb
 Content\SoundEffects\explosion.xnb
 Content\PlayerTextures\gravityWell.xnb
 Content\PlayerTextures\rasstangle.xnb
+Content\Enemies\enemy_01.xnb
+Content\Particles\particle_explosion.xnb

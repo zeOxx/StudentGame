@@ -14,11 +14,15 @@ namespace Perihelion.Models
         private Vector2 velocity;
         private Vector2 origin;
 
+        private Random random;
+
         private int life;                   // Length of the particle's life, in MS
         private int totalLife;              // Time that has elapsed in the particles lifetime
         private float rotation;
         private float speed;
         private int startFading;                    // Tells the class when to start fading. this is set further down to half of a particles life.
+        private bool randomScale;
+        private float scale;
 
         // Fade values
         private float fadeIncrement = 0.1f;
@@ -27,16 +31,23 @@ namespace Perihelion.Models
         /************************************************************************/
         /* Constructor                                                          */
         /************************************************************************/
-        public Particle(Texture2D texture, Vector2 position, Vector2 velocity, int life, float rotation, float speed)
+        public Particle(Texture2D texture, Vector2 position, Vector2 velocity, int life, float speed, bool randomScale)
         {
             Texture = texture;
             Position = position;
             Velocity = velocity;
             Life = life;
-            Rotation = rotation;
             Speed = speed;
+            RandomScale = randomScale;
+            random = new Random();
+
+            Scale = 1.0f;
+
+            if (RandomScale)
+                setRandomScale();
 
             setStartFading();
+            randomRotation();
 
             Origin = new Vector2(Texture.Width / 2, Texture.Height / 2);
         }
@@ -98,8 +109,20 @@ namespace Perihelion.Models
             private set { this.startFading = value; }
         }
 
+        private bool RandomScale
+        {
+            get { return this.randomScale; }
+            set { this.randomScale = value; }
+        }
+
+        private float Scale
+        {
+            get { return this.scale; }
+            set { this.scale = value; }
+        }
+
         /************************************************************************/
-        /* XNA Methods                                                          */
+        /* Methods                                                              */
         /************************************************************************/
         private void setStartFading()
         {
@@ -109,6 +132,19 @@ namespace Perihelion.Models
         public void fade()
         {
             fadeAmount -= fadeIncrement;
+        }
+
+        public void randomRotation()
+        {
+            Rotation = (float)random.NextDouble();
+        }
+
+        public void setRandomScale()
+        {
+            do
+            {
+                Scale = (float)random.NextDouble() + (float)random.NextDouble();
+            } while (Scale <= 0);
         }
 
         /************************************************************************/
@@ -124,7 +160,7 @@ namespace Perihelion.Models
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Texture, Position, null, Color.White * fadeAmount, Rotation, origin, 1.0f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(Texture, Position, null, Color.White * fadeAmount, Rotation, origin, Scale, SpriteEffects.None, 0f);
         }
     }
 }

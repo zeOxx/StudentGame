@@ -130,11 +130,11 @@ namespace Perihelion.Models
 
             rocks.Add(new Collidable(contentHolder.textureRock01, 0, -250, new Vector2(0, -2), true, 200));
 
-            //for (int i = 0; i < 20; i++)
-            //{
+            for (int i = 0; i < 1; i++)
+            {
 
-            //    enemies.Add(new Enemy(contentHolder.texturePlayer, contentHolder.texturePlayerTurret, contentHolder.texturePlayerBullet, i*20 + 200, i*20 + 200, Vector2.Zero, 100));
-            //}
+                enemies.Add(new Enemy(contentHolder.textureEnemy01, contentHolder.texturePlayerTurret, contentHolder.texturePlayerBullet, i * 20 + 200, i * 20 + 200, Vector2.Zero, 100));
+            }
 		}
 
 		// Creates the bounds for the level

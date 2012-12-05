@@ -157,7 +157,7 @@ namespace Perihelion.Controllers
         {
             Vector2 objectPosition = explodingObject.Position;
             Vector2 explosionDirection = projectile.Velocity;
-            particleSystem.newSpawner(content.particle_test, objectPosition, 1000, 0, 10, false, explosionDirection*2);
+            particleSystem.newSpawner(content.particle_explosion, objectPosition, 1000, 0, 10, false, explosionDirection*2);
         }
         
         //Copies the entire Gamestate
