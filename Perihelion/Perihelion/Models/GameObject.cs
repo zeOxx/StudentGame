@@ -189,6 +189,11 @@ namespace Perihelion.Models
             }
         }
 
+        public void pushPull(Vector2 force)
+        {
+            velocity += force;
+        }
+
         public void updateAngle(Vector2 velocity)
         {
 

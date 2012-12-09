@@ -79,34 +79,33 @@ namespace Perihelion.Controllers
             }
         }
 
+        /*
+         * Applies a gravitational pull on the second parameter object. Mass is hardcoded, but 
+         * this can be changed. IT WORKS!!
+         */
         private void calculateGravitationalPull(Models.GameObject gravityWell, Models.Collidable rock)
         {
-            Vector2 vectorBetweenRockAndWell = rock.Position - gravityWell.Position;
-            float angleBetweenRockAndWell = vectorToAngle(vectorBetweenRockAndWell);
-            float rockVelocityAngle = vectorToAngle(rock.Velocity);
+            float distance = Math.Abs((float) Math.Sqrt(((rock.Position.X - gravityWell.Position.X) *
+                                                (rock.Position.X - gravityWell.Position.X))
+                                                           +
+                                               ((rock.Position.Y - gravityWell.Position.Y) *
+                                                (rock.Position.Y - gravityWell.Position.Y))
+                                       ));
 
-            
+            const int mass = 15;
 
-            System.Console.WriteLine("angle: " + angleBetweenRockAndWell);
 
-            if (angleBetweenRockAndWell < 0 && angleBetweenRockAndWell < 0.5f)
-            {
-                rock.Velocity = vectorBetweenRockAndWell * 0.01f;
-            }
-            //else if(angleBetweenRockAndWell)
-            
-            
-            
-            //if(rockVelocityAngle <= angleBetweenRockAndWell)
-            //{
-            //    rockVelocityAngle += 0.02f;
-            //    rock.Velocity = angleToVector(rockVelocityAngle);
-            //}
-            //else
-            //{
-            //    rockVelocityAngle -= 0.02f;
-            //    rock.Velocity = angleToVector(rockVelocityAngle);
-            //}
+            float deltaX = rock.Position.X - gravityWell.Position.X;
+            float deltaY = rock.Position.Y - gravityWell.Position.Y;
+
+            Vector2 force = new Vector2();
+            force.X = - (deltaX * (mass / (distance * distance)));              // <-------------------- Gotta flip the X for some reason.
+            force.Y =   (deltaY * (mass / (distance * distance)));
+
+            //accelleration.X = Math.Abs(accelleration.X);
+            //accelleration.Y = Math.Abs(accelleration.Y);
+
+            rock.pushPull(force);
 
            
         }
