@@ -27,7 +27,7 @@ namespace Perihelion
         public Texture2D textureRock02;
 
         // Enemy textures
-        public Texture2D textureEnemy;
+        public Texture2D textureEnemy01;
 
         // Background textures
         public Texture2D[] bg_variant0 = new Texture2D[2];
@@ -36,6 +36,7 @@ namespace Perihelion
         // Particles
         public Texture2D particle_test;
         public Texture2D particle_smoke;
+        public Texture2D particle_explosion;
 
         // HUD elements
         public Texture2D healthAuxBar;
@@ -94,6 +95,9 @@ namespace Perihelion
             textureRock01 = content.Load<Texture2D>("Environment\\rock_01");
             textureRock02 = content.Load<Texture2D>("Environment\\rock_02");
 
+            // Enemies
+            textureEnemy01 = content.Load<Texture2D>("Enemies\\enemy_01");
+
             // Menu
             title = content.Load<Texture2D>("Menu\\Title");
 
@@ -113,6 +117,7 @@ namespace Perihelion
         {
             particle_test = content.Load<Texture2D>("Particles\\particle_test");
             particle_smoke = content.Load<Texture2D>("Particles\\smoke");
+            particle_explosion = content.Load<Texture2D>("Particles\\particle_explosion");
         }
 
         private void loadFonts(ContentManager content)

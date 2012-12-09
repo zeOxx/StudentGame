@@ -176,7 +176,7 @@ namespace Perihelion.Models
                         }
                     }
 
-                    Particle tempParticle = new Particle(Texture, Position, Velocity, Life, 0.0f, 1.0f);
+                    Particle tempParticle = new Particle(Texture, Position, Velocity, Life, 1.0f, true);
 
                     particles.Add(tempParticle);
 

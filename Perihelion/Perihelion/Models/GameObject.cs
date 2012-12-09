@@ -219,11 +219,13 @@ namespace Perihelion.Models
             MaxHealth += i;
         }
 
-        public virtual void Draw(SpriteBatch spriteBatch)
+        public virtual void Draw(SpriteBatch spriteBatch, bool debug)
         {
             spriteBatch.Draw(texture, position, null, Color.White, (float)rotationAngle,
                     origin, 1.0f, SpriteEffects.None, 0f);
-            spriteBatch.Draw(rectangle, BoundingBox, Color.White);
+            
+            if (debug)
+                spriteBatch.Draw(rectangle, BoundingBox, Color.White);
         }
 
         public virtual void Draw(SpriteBatch spriteBatch, float alpha)
@@ -232,11 +234,13 @@ namespace Perihelion.Models
                     origin, 1.0f, SpriteEffects.None, 0f);
         }
 
-        public virtual void DrawScale(SpriteBatch spriteBatch, float scale)
+        public virtual void DrawScale(SpriteBatch spriteBatch, float scale, bool debug)
         {
-        spriteBatch.Draw(texture, position, null, Color.White * scale, (float)rotationAngle,
+            spriteBatch.Draw(texture, position, null, Color.White * scale, (float)rotationAngle,
                     origin, scale, SpriteEffects.None, 0f);
-        spriteBatch.Draw(rectangle, BoundingBox, Color.White);
+                
+            if (debug)
+                spriteBatch.Draw(rectangle, BoundingBox, Color.White);
         }
 
 
