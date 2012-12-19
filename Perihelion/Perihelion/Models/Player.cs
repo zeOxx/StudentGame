@@ -42,7 +42,7 @@ namespace Perihelion.Models
             AuxPower = 100;
             Bullets = true;
             // Temp
-            Speed = 0;
+            Speed = 2;
             MaxSpeed = 5;
 
             ShootingBullets = false;
