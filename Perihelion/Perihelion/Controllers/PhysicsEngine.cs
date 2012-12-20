@@ -79,36 +79,29 @@ namespace Perihelion.Controllers
             }
         }
 
+        /*
+         * Applies a gravitational pull on the second parameter object. Mass is hardcoded, but 
+         * this can be changed. IT WORKS!!
+         */
         private void calculateGravitationalPull(Models.GameObject gravityWell, Models.Collidable rock)
         {
-            Vector2 vectorBetweenRockAndWell = rock.Position - gravityWell.Position;
-            float angleBetweenRockAndWell = vectorToAngle(vectorBetweenRockAndWell);
-            float rockVelocityAngle = vectorToAngle(rock.Velocity);
+            float distance = ((float) Math.Sqrt(((rock.Position.X - gravityWell.Position.X) *
+                                                (rock.Position.X - gravityWell.Position.X))
+                                                           +
+                                               ((rock.Position.Y - gravityWell.Position.Y) *
+                                                (rock.Position.Y - gravityWell.Position.Y))
+                                       ));
 
-            
+            const int mass = 15;
 
-            System.Console.WriteLine("angle: " + angleBetweenRockAndWell);
+            float deltaX = rock.Position.X - gravityWell.Position.X;
+            float deltaY = rock.Position.Y - gravityWell.Position.Y;
 
-            if (angleBetweenRockAndWell < 0 && angleBetweenRockAndWell < 0.5f)
-            {
-                rock.Velocity = vectorBetweenRockAndWell * 0.01f;
-            }
-            //else if(angleBetweenRockAndWell)
-            
-            
-            
-            //if(rockVelocityAngle <= angleBetweenRockAndWell)
-            //{
-            //    rockVelocityAngle += 0.02f;
-            //    rock.Velocity = angleToVector(rockVelocityAngle);
-            //}
-            //else
-            //{
-            //    rockVelocityAngle -= 0.02f;
-            //    rock.Velocity = angleToVector(rockVelocityAngle);
-            //}
+            Vector2 force = new Vector2();
+            force.X = - (deltaX * (mass / (distance * distance)));              // <-------------------- Gotta flip the X for some reason.
+            force.Y =   (deltaY * (mass / (distance * distance)));
 
-           
+            rock.pushPull(force);   
         }
 
         private Vector2 angleToVector(float angle)
@@ -139,9 +132,16 @@ namespace Perihelion.Controllers
                         }
                     }
                 }
-                for (int k = 0; k < collidedProjectileIndexes.Count; k++)
+
+                if (collidedProjectileIndexes.Count > 0)
                 {
-                    gameWorld.EnemyList[i].BulletList.RemoveAt(collidedProjectileIndexes[k]);
+                    collidedProjectileIndexes.Sort();
+
+                    //for (int i = 0; i < collidedProjectileIndexes.Count; i++)
+                    for (int k = collidedProjectileIndexes.Count - 1; k >= 0; k--)
+                    {
+                        gameWorld.EnemyList[i].BulletList.RemoveAt(collidedProjectileIndexes[k]);
+                    }
                 }
                 collidedProjectileIndexes.Clear();
             }
@@ -196,13 +196,18 @@ namespace Perihelion.Controllers
             }
 
             //Remove collided projectiles. 
+
             if (collidedProjectileIndexes.Count > 0)
             {
-                for (int i = 0; i < collidedProjectileIndexes.Count; i++)
+                collidedProjectileIndexes.Sort();
+
+                //for (int i = 0; i < collidedProjectileIndexes.Count; i++)
+                for (int i = collidedProjectileIndexes.Count - 1; i >= 0; i--)
                 {
                     gameWorld.getPlayer().BulletList.RemoveAt(collidedProjectileIndexes[i]);
                 }
             }
+            
         }
 
         //Checks for collisions on the Player. 
@@ -220,14 +225,27 @@ namespace Perihelion.Controllers
                 {
                     if (perPixelCollisionDetection(gameWorld.getPlayer(), rock))
                     {
+
+
                         gameWorld.getPlayer().Position = new Vector2(prePosition.X, prePosition.Y);
-                        gameWorld.getPlayer().Velocity = (Vector2.Zero);
-                        
+                        //gameWorld.getPlayer().Velocity = (Vector2.Zero);
+
+                        knockback(gameWorld.PlayerObject, rock);
+                        break;
                     }
                 }
             }
 
             levelBoundCollision(gameWorld, prePosition);
+        }
+
+
+        // Not finished.
+        private void knockback(Models.GameObject knockBackObject, Models.GameObject collidingObject)
+        {
+            collidingObject.Velocity += (knockBackObject.Velocity * 0.7f);
+
+            knockBackObject.Velocity = ((Vector2.Normalize(- knockBackObject.Velocity) * 1.2f));
         }
 
         private void levelBoundCollision(Models.Gameworld gameWorld, Vector2 prePosition)
