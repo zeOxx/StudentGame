@@ -20,14 +20,14 @@ namespace Perihelion.Controllers
         private PhysicsEngine physicsEngine;
         public MenuHandler menuHandler;
 
-        public Controller(ContentHolder content, SoundManager soundManager, string title, int width, int height)
+        public Controller(ContentHolder content, SoundManager soundManager, Highscores hs, string title, int width, int height)
         {
             //playerObject = new GameObject[Constants.maxNumberOfObjectsInArray];
             this.soundManager = soundManager;
             playerObject = null;
             this.content = content;
             physicsEngine = new PhysicsEngine();
-            menuHandler = new MenuHandler(content, width, height);
+            menuHandler = new MenuHandler(content, width, height, hs);
         }
 
         //************** FUNCTIONS ******************
@@ -61,7 +61,7 @@ namespace Perihelion.Controllers
             physicsEngine.checkGravityWellCollision(gameWorld.GravityWell, gameWorld.getRock());
         }
 
-        public void updateMenu(InputHandler inputHandler, GameTime gameTime)
+        public void updateMenu(InputHandler inputHandler, GameTime gameTime, Highscores highscores)
         {
             inputHandler.updateInput();
 
@@ -191,6 +191,15 @@ namespace Perihelion.Controllers
             else
             {
                 gameWorld.setDrawGravityWell(false, 0);
+            }
+
+            if (inputHandler.ButtonDown(Buttons.LeftTrigger) || inputHandler.KeyDown(Keys.Space))
+            {
+                gameWorld.getPlayer().ShootingRockets = true;
+            }
+            if (inputHandler.ButtonReleased(Buttons.LeftTrigger) || inputHandler.KeyReleased(Keys.Space))
+            {
+                gameWorld.getPlayer().ShootingRockets = false;
             }
 
 #if DEBUG

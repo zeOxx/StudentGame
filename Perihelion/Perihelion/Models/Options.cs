@@ -54,10 +54,5 @@ namespace Perihelion.Models
             else if (aButton && ItemSelected == 2)
                 Active = false;
         }
-
-        //public void Draw(SpriteBatch spriteBatch)
-        //{
-        //    base.draw(spriteBatch);
-        //}
     }
 }

@@ -126,7 +126,7 @@ namespace Perihelion.Models
         /************************************************************************/
         /* XNA Methods                                                          */
         /************************************************************************/
-        public void update(GameTime gameTime, ContentHolder content, Vector2 position, Vector2 velocity)
+        public void update(GameTime gameTime, Vector2 position, Vector2 velocity)
         {
             LifeTimer += gameTime.ElapsedGameTime.Milliseconds;
             TimeBetweenUpdates += gameTime.ElapsedGameTime.Milliseconds;

@@ -19,25 +19,26 @@ namespace Perihelion.Models
         private float accelerationMultiplier = 0.02f;
 
         // Shooting variables
-        protected bool hasBullets;                // Does enemy have regular projectiles?
-        protected bool hasRockets;                // Does enemy have destructible projectiles?
+        protected bool hasBullets;                // Does the unit have regular projectiles?
+        protected bool hasRockets;                // Does the unit have destructible projectiles?
         protected bool shootingBullets;           // 
         protected bool shootingRockets;           //
         protected int timeBetweenBullets = 50;
         protected int timeBetweenRockets = 300;
         protected int bulletTimer = 0;
-        protected int rocketTimer = 0;
+        protected int rocketTimer = 300;
         protected bool bulletMade = false;
         protected bool rocketMade = false;
         protected int bulletSpeed = 25;
         protected int rocketSpeed = 15;
         protected int bulletCounter = 0;
         protected int rocketCounter = 0;
+        protected int rocketAmmo = 0;
         protected double turretRotationAngle = 0.0;
+        protected double rocketExitAngle = 0.0;
 
         // Create a lists with bullets/rockets in them
         protected List<Projectile> bullets;
-        protected List<DestructibleProjectile> rockets;
 
         /************************************************************************/
         /*  Constructors for Unit object                                        */
@@ -126,15 +127,22 @@ namespace Perihelion.Models
             set { this.hasRockets = value; }
         }
 
-        protected bool ShootingRockets
+        public bool ShootingRockets
         {
             get { return this.shootingRockets; }
             set { this.shootingRockets = value; }
         }
 
-        public List<DestructibleProjectile> RocketList
+        public bool RocketMade
         {
-            get { return rockets; }
+            get { return this.rocketMade; }
+            set { this.rocketMade = value; }
+        }
+
+        public int RocketAmmo
+        {
+            get { return this.rocketAmmo; }
+            set { this.rocketAmmo = value; }
         }
 
         protected Texture2D RocketTexture
@@ -164,6 +172,7 @@ namespace Perihelion.Models
             {
                 updateRockets(gameTime);
             }
+
             base.update(scaleVelocity(leftStick));
         }
 
@@ -247,9 +256,41 @@ namespace Perihelion.Models
             }
         }
 
-        protected void updateRockets(GameTime gameTime)
+        public void updateRockets(GameTime gameTime)
         {
-            // TODO
+            if (ShootingRockets || RocketMade)
+            {
+                rocketTimer += gameTime.ElapsedGameTime.Milliseconds;
+
+                Console.Out.WriteLine(rocketTimer);
+
+                if ((rocketTimer > timeBetweenRockets) && RocketAmmo > 0)
+                {
+                    // reset RocketTimer
+                    rocketTimer = 0;
+                    RocketMade = true;
+
+                    Projectile tempRocket = new Projectile(
+                        texture_rocket,
+                        this.Position.X,
+                        this.Position.Y,
+                        this.Velocity,
+                        1500,
+                        60,
+                        rocketSpeed);
+
+                    tempRocket.Identifier = bulletCounter++;
+
+                    bullets.Add(tempRocket);
+
+                    RocketAmmo--;
+                }
+                else
+                {
+                    if (RocketMade)
+                        RocketMade = false;
+                }
+            }
         }
 
         public void updateTurret(Vector2 rightStick)

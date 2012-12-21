@@ -12,16 +12,18 @@ namespace Perihelion.Models
     {
         public bool exiting;
         public bool goPlay;
+        public bool goLeaderBoards;
         public bool goOptions;
         public bool goCredits;
 
         public MainMenu(ContentHolder content, int width, int height) 
             : base(content, width, height)
         {
-            Items.Add("New Game");  // itemselected = 0
-            Items.Add("Options");   // itemselected = 1
-            Items.Add("Credits");   // itemselected = 2
-            Items.Add("Exit Game"); // itemselected = 3
+            Items.Add("New Game");      // itemselected = 0
+            Items.Add("Leaderboards");  //itemselected = 1
+            Items.Add("Options");       // itemselected = 2
+            Items.Add("Credits");       // itemselected = 3
+            Items.Add("Exit Game");     // itemselected = 4
 
             Active = true;
         }
@@ -36,6 +38,12 @@ namespace Perihelion.Models
         {
             get { return this.goPlay; }
             private set { this.goPlay = value; }
+        }
+
+        public bool GoLeaderBoards
+        {
+            get { return this.goLeaderBoards; }
+            private set { this.goLeaderBoards = value; }
         }
 
         public bool GoOptions
@@ -61,13 +69,17 @@ namespace Perihelion.Models
             }
             else if (aButton && ItemSelected == 1)
             {
-                GoOptions = true;
+                goLeaderBoards = true;
             }
             else if (aButton && ItemSelected == 2)
             {
-                GoCredits = true;
+                GoOptions = true;
             }
             else if (aButton && ItemSelected == 3)
+            {
+                GoCredits = true;
+            }
+            else if (aButton && ItemSelected == 4)
             {
                 Exiting = true;
             }

@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using System.Threading;
 using Perihelion.Models;
 using Perihelion.Controllers;
 
@@ -25,6 +26,9 @@ namespace Perihelion
         ContentHolder contentHolder;
         InputHandler inputHandler;
         SoundManager soundManager;
+        Highscores highScores;
+
+        Thread thread;
 
         // Handling gamestates
         public enum GameStates
@@ -72,9 +76,10 @@ namespace Perihelion
         {
             // TODO: Add your initialization logic here
             gamestate = GameStates.Menu;
+            highScores = new Highscores();
             contentHolder = new ContentHolder(this.Content);
             soundManager = new SoundManager(contentHolder);
-            gameController = new Controllers.Controller(contentHolder, soundManager, gameName, width, height);
+            gameController = new Controllers.Controller(contentHolder, soundManager, highScores, gameName, width, height);
             inputHandler = new InputHandler();
             gameWorld = new Models.Gameworld(contentHolder, GraphicsDevice.Viewport, 4096);    //TODO SINGLETON
 
@@ -123,14 +128,19 @@ namespace Perihelion
             KeyboardState keyboard = Keyboard.GetState();
 
             // Exits the game when ESC is pressed
-            if ((gamestate == GameStates.Running && keyboard.IsKeyDown(Keys.Escape)) 
+            if ((gamestate == GameStates.Running && keyboard.IsKeyDown(Keys.Escape))
                 || gameController.menuHandler.mainMenu.Exiting)
+            {
+                thread = new Thread(() => highScores.sendScore("1", "Inge", "yau", 180)); 
+                thread.Start();
+                
                 Exit();
+            }
             
             // Checks to see what should be updated, menu or gameworld
             if (gamestate == GameStates.Menu)
             {
-                gameController.updateMenu(inputHandler, gameTime);
+                gameController.updateMenu(inputHandler, gameTime, highScores);
             }
             else if (gamestate == GameStates.Running)
             {

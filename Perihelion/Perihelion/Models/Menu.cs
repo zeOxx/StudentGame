@@ -128,7 +128,7 @@ namespace Perihelion.Models
             //updateRectangle();
         }
 
-        public void draw(SpriteBatch spriteBatch)
+        public virtual void draw(SpriteBatch spriteBatch)
         {
             Vector2 centerText;
             Vector2 itemPosition;
