@@ -113,7 +113,7 @@ namespace Perihelion.Controllers
                     projectile = (Models.Projectile)rockProjectileCollisions[i++];
                     damage = projectile.Damage;
 
-                    rockProjectileCollisions[i].updateCurrentHealth(-damage);
+                    rockProjectileCollisions[i].updateCurrentHealth(- damage);
 
  
                 }
