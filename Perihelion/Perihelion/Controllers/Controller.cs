@@ -202,6 +202,7 @@ namespace Perihelion.Controllers
             // Temp Keyboardinput
             /////////////////////////////////////////////////////////////////////////////////////////////////////////
             // !USING A KEYBOARD WILL BREAK THE SPEED OF THE PLAYER. THIS IS NOT TO BE INCLUDED IN THE FINAL GAME! //
+            // !IT ALSO SCREWS WITH PROJECTILE VELOCITY/DIRECTION!                                                 //
             /////////////////////////////////////////////////////////////////////////////////////////////////////////
             inputHandler.updateInput();
 
