@@ -124,6 +124,8 @@ namespace Perihelion.Controllers
 
                     rockProjectileCollisions[i].updateCurrentHealth(- damage);
 
+                    spawnExplosionParticles(projectile, projectile, gameWorld.getParticleSystem());
+
                     physicsEngine.collisionUsingAllKindaCrazyStuff(rockProjectileCollisions[i], projectile);
  
                 }
