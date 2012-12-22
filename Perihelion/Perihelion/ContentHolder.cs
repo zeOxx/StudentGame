@@ -78,6 +78,8 @@ namespace Perihelion
             playerGunWindDown   = content.Load<SoundEffect>("SoundEffects\\s_gun_wind_down");
             pang                = content.Load<SoundEffect>("SoundEffects\\pang");
             explosion           = content.Load<SoundEffect>("SoundEffects\\explosion");
+
+            soundtrack          = content.Load<Song>("SoundEffects\\m_soundtrack");
         }
 
         private void loadTextures(ContentManager content)

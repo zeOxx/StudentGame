@@ -142,6 +142,8 @@ namespace Perihelion.Models
 
 			rocks.Add(new Collidable(contentHolder.textureRock01, 0, -250, new Vector2(0, -2), true, 200));
 
+
+            
             //for (int i = 0; i < 20; i++)
             //{
 

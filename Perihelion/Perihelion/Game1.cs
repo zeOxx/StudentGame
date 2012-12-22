@@ -27,6 +27,7 @@ namespace Perihelion
         InputHandler inputHandler;
         SoundManager soundManager;
         Highscores highScores;
+        
 
         Thread thread;
 
@@ -82,6 +83,7 @@ namespace Perihelion
             gameController = new Controllers.Controller(contentHolder, soundManager, highScores, gameName, width, height);
             inputHandler = new InputHandler();
             gameWorld = new Models.Gameworld(contentHolder, GraphicsDevice.Viewport, 4096);    //TODO SINGLETON
+            
 
             base.Initialize();
         }
@@ -120,6 +122,8 @@ namespace Perihelion
             foreach (spawnEnemies enemy in enemies)
                 enemy.update(graphics.GraphicsDevice);
 
+            
+
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
@@ -136,6 +140,7 @@ namespace Perihelion
                 
                 Exit();
             }
+
             
             // Checks to see what should be updated, menu or gameworld
             if (gamestate == GameStates.Menu)

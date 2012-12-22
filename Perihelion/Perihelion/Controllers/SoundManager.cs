@@ -16,6 +16,9 @@ namespace Perihelion.Controllers
         public SoundManager(ContentHolder soundContent)
         {
             this.soundContent = soundContent;
+
+            
+            
         }
 
 
@@ -24,7 +27,7 @@ namespace Perihelion.Controllers
             switch(soundName)
             {
                 case "pang":
-                    soundContent.pang.Play();
+                    soundContent.pang.Play(0.5f, 0f, 0f);
                     break;
                 case "explosion":
                     soundContent.explosion.Play();
@@ -41,6 +44,11 @@ namespace Perihelion.Controllers
             //    timeSinceLastPlayed = gameTime.ElapsedGameTime.Milliseconds;
 
             //}
+        }
+
+        public void playSoundtrack()
+        {
+            Microsoft.Xna.Framework.Media.Song instance = soundContent.soundtrack;
         }
         
     }

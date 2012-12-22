@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 using Perihelion.Models;
 using Perihelion;
 
@@ -28,6 +30,8 @@ namespace Perihelion.Controllers
             this.content = content;
             physicsEngine = new PhysicsEngine();
             menuHandler = new MenuHandler(content, width, height, hs);
+
+            soundManager.playSoundtrack();
         }
 
         //************** FUNCTIONS ******************
@@ -37,6 +41,11 @@ namespace Perihelion.Controllers
             getModelFromGameworld(gameWorld);
 
             //Change gamestate
+
+            if (!(MediaPlayer.State == MediaState.Playing))
+            {
+                MediaPlayer.Play(content.soundtrack);
+            }
 
             checkInput(gameTime, inputHandler, gameWorld);
             gameWorld.updateEnemies(gameTime);
