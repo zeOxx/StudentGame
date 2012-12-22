@@ -20,7 +20,7 @@ namespace Perihelion
         private Matrix transform;
         private Vector2 center;
         private Viewport view;
-        float zoom = 0.3f;
+        float zoom = 1.0f;
         int timeSinceLastUpdate;
         float length;
 

@@ -142,13 +142,21 @@ namespace Perihelion
             // Checks to see what should be updated, menu or gameworld
             if (gamestate == GameStates.Menu)
             {
-                gameController.updateMenu(inputHandler, gameTime, highScores);
+                gameController.updateMenu(gameWorld, inputHandler, gameTime, highScores);
             }
             else if (gamestate == GameStates.Running)
             {
                 // Sends gamestate to controller and receives updated state. 
                 gameController.updateGameWorld(ref gameWorld, gameTime, inputHandler);
                 //loadEnemies();
+
+                if (gameWorld.PlayerObject.CurrentHealth < 0)
+                {
+                    gamestate = GameStates.Menu;
+                    gameController.menuHandler.Active = true;
+                    gameController.menuHandler.endMenu.Active = true;
+                }
+                    
             }
 
             // Calculates Frames Per Second and Updates Per Second and puts them in the window title

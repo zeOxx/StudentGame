@@ -212,6 +212,7 @@ namespace Perihelion.Controllers
                         {
                             collidedProjectileIndexes.Add(j);
                             playerProjectileCollisions.Add(gameWorld.EnemyList[i].BulletList[j]);
+                            playerObject.updateCurrentHealth(-gameWorld.EnemyList[i].BulletList[j].Damage);
                         }
                     }
                 }
@@ -223,6 +224,7 @@ namespace Perihelion.Controllers
                     //for (int i = 0; i < collidedProjectileIndexes.Count; i++)
                     for (int k = collidedProjectileIndexes.Count - 1; k >= 0; k--)
                     {
+                        
                         gameWorld.EnemyList[i].BulletList.RemoveAt(collidedProjectileIndexes[k]);
                     }
                 }

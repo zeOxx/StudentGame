@@ -40,7 +40,7 @@ namespace Perihelion.Controllers
         public bool Active
         {
             get { return this.active; }
-            private set { this.active = value; }
+            set { this.active = value; }
         }
 
         public bool ExitGame
@@ -136,11 +136,10 @@ namespace Perihelion.Controllers
             {
                 endMenu.update(yAxis, xAxis, aButton);
 
-                // If endGame is finished
-                if (!endMenu.Active)
+                if (endMenu.sendScore)
                 {
-                    if (endMenu.sendScore)
-                        sendScore = true;
+                    sendScore = true;
+                    endMenu.Active = false;
                 }
             }
         }

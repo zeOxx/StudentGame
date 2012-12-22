@@ -124,7 +124,6 @@ namespace Perihelion.Models
             if (aButton)
             {
                 sendScore = true;
-                Active = false;
                 name = (abc0[abcPosition[0]].ToString() + abc1[abcPosition[1]].ToString() + abc2[abcPosition[2]].ToString());
             }
         }

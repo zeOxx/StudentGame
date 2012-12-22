@@ -26,6 +26,11 @@ namespace Perihelion.Controllers
         private int randomTimeBetweenSpawns;
         private Random randGen;
 
+        public Highscores hs;
+
+        public Thread thread;
+
+
         public Controller(ContentHolder content, SoundManager soundManager, Highscores hs, string title, int width, int height)
         {
             //playerObject = new GameObject[Constants.maxNumberOfObjectsInArray];
@@ -99,7 +104,7 @@ namespace Perihelion.Controllers
             physicsEngine.checkGravityWellCollision(gameWorld.GravityWell, gameWorld.getRock());
         }
 
-        public void updateMenu(InputHandler inputHandler, GameTime gameTime, Highscores highscores)
+        public void updateMenu(Gameworld gameWorld, InputHandler inputHandler, GameTime gameTime, Highscores highscores)
         {
             inputHandler.updateInput();
 
@@ -137,17 +142,18 @@ namespace Perihelion.Controllers
 
             menuHandler.ElapsedSinceLastInput += gameTime.ElapsedGameTime.Milliseconds;
 
+
             if (menuHandler.sendScore)
             {
-                sendScore();
+                sendScore(gameWorld);
 
                 menuHandler.ExitGame = true;
             }
         }
 
-        public void sendScore()
+        public void sendScore(Gameworld gameWorld)
         {
-            thread = new Thread(() => hs.sendScore("1", "Inge", "yau", 180));
+            thread = new Thread(() => hs.sendScore("1", menuHandler.endMenu.name, "null", gameWorld.Score));
             thread.Start();
         }
         
