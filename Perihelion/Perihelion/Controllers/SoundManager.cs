@@ -16,34 +16,34 @@ namespace Perihelion.Controllers
         public SoundManager(ContentHolder soundContent)
         {
             this.soundContent = soundContent;
-
-            
-            
         }
-
 
         public void playSound(String soundName)
         {
+            switch (soundName)
+            {
+                case "pang":
+                    soundContent.pang.Play(0.1f, 0f, 0f);
+                    break;
+            }
+        }
+
+        public void playSoundWithPositioning(String soundName, Models.Player player, Models.GameObject explodingObject)
+        {
+            int halfWidthOfScreen = 1280 / 2;
+            float relativeHorizontalPosition = player.Position.X - explodingObject.Position.X;
+            float panning = - (relativeHorizontalPosition / halfWidthOfScreen);
+
+
             switch(soundName)
             {
                 case "pang":
-                    soundContent.pang.Play(0.5f, 0f, 0f);
+                    soundContent.pang.Play(0.5f, 0f, panning);
                     break;
                 case "explosion":
-                    soundContent.explosion.Play();
+                    soundContent.explosion.Play(1f, 0f, panning);
                     break;
             }
-
-            //int durationOfSound = soundContent.playerShootingGun.Duration.Milliseconds;
-            //timeSinceLastPlayed += gameTime.ElapsedGameTime.Milliseconds;
-
-            //if (timeSinceLastPlayed > durationOfSound)
-            //{
-            //    timeSinceLastPlayed = 0;
-            //    soundContent.pang.Play();
-            //    timeSinceLastPlayed = gameTime.ElapsedGameTime.Milliseconds;
-
-            //}
         }
 
         public void playSoundtrack()

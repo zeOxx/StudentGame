@@ -132,7 +132,7 @@ namespace Perihelion.Controllers
                     if (gameWorld.getRock()[rockCollisionsIndex[i]].CurrentHealth <= 0)
                     {
                         spawnExplosionParticles(gameWorld.getRock()[rockCollisionsIndex[i]], projectile, gameWorld.getParticleSystem());
-                        soundManager.playSound("explosion");
+                        soundManager.playSoundWithPositioning("explosion", gameWorld.PlayerObject, gameWorld.getRock()[rockCollisionsIndex[i]]);
                         gameWorld.getRock().RemoveAt(rockCollisionsIndex[i]);
                     }
                 }
@@ -155,7 +155,7 @@ namespace Perihelion.Controllers
                     if (gameWorld.EnemyList[enemyCollisionsIndex[i]].CurrentHealth <= 0)
                     {
                         spawnExplosionParticles(gameWorld.EnemyList[enemyCollisionsIndex[i]], projectile, gameWorld.getParticleSystem());
-                        soundManager.playSound("explosion");
+                        soundManager.playSoundWithPositioning("explosion", gameWorld.PlayerObject, gameWorld.EnemyList[enemyCollisionsIndex[i]]);
                         gameWorld.EnemyList.RemoveAt(enemyCollisionsIndex[i]);
                     }
                 }
