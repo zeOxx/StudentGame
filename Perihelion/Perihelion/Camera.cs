@@ -28,7 +28,7 @@ namespace Perihelion
         public Camera(Viewport view)
         {
             this.view = view;
-
+            center = new Vector2(view.Height / 2, view.Width / 2);
             timeSinceLastUpdate = 0;
         }
 

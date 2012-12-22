@@ -130,20 +130,20 @@ namespace Perihelion.Controllers
 
 
 
-        //Matrix innertiaBodyA, Matrix innertiaBodyB,
-        //double massOfObjectA, double massObjectB, 
-        //Vector2 initialVelocityObjectA, Vector2 initialVelocityOfObjectB,
-        //Vector2 finalAngularVelocityOfObjectA, Vector2 finalAngularVelocityOfObjectB,
-        // finalVelocityOfObjectA, Vector2 finalVelocityOfObjectB,
-        //Vector2 normalToCollisionPoint,
+        /*
+         *  WARNING! MASSIVE FUNCTION BELOW!!
+         *  This proved to be a bit too complex....
+         *  
+         * It is supposed to provide collition resolution with rotation, angular innertia and all kinda funky stuff. 
+         * Sorry to say, it just bugs out. 
+         * 
+         */
         public void collisionUsingAllKindaCrazyStuff(Models.GameObject objectA, Models.GameObject objectB)
         {
-
             double massObjectA = 10;
             double massObjectB = 10;
 
-
-
+            //Elastic
             double e = 1;
 
             Vector2 initialAngularVelocityOfObjectA = objectA.AngularVelocity;
@@ -157,23 +157,12 @@ namespace Perihelion.Controllers
 
             double lengthBetweenObjects = Math.Sqrt((collisionPointRelativeToBodyA.X * collisionPointRelativeToBodyB.X) + (collisionPointRelativeToBodyA.Y * collisionPointRelativeToBodyA.Y));
 
-
             double innertiaBodyB = massObjectB * ((objectB.Position.X * objectB.Position.X) + (objectB.Position.Y * objectB.Position.Y));
             double innertiaBodyA = massObjectA * ((objectA.Position.X * objectA.Position.X) + (objectA.Position.Y * objectA.Position.Y));
-
-            
-
-            //double innertiaBodyA = 1;
-            //double innertiaBodyB = 1;
-
-            //double innertiaBodyA = Math.Atan2(initialAngularVelocityOfObjectA.X, initialAngularVelocityOfObjectA.Y + 0.001);
-            //double innertiaBodyB = Math.Atan2(initialAngularVelocityOfObjectB.X, initialAngularVelocityOfObjectB.Y + 0.001);
 
             double k = (1 / (massObjectA * massObjectA) + (2 / (massObjectA * massObjectB))) + (1 / (massObjectB * massObjectB)) - (collisionPointRelativeToBodyA.X * collisionPointRelativeToBodyA.X) / (massObjectA * innertiaBodyA) - (collisionPointRelativeToBodyB.X * collisionPointRelativeToBodyB.X) / (massObjectA * innertiaBodyB) - (collisionPointRelativeToBodyA.Y * collisionPointRelativeToBodyA.Y) / (massObjectA * innertiaBodyA)
                          - (collisionPointRelativeToBodyA.Y * collisionPointRelativeToBodyA.Y) / (massObjectB * innertiaBodyA) - (collisionPointRelativeToBodyA.X * collisionPointRelativeToBodyA.X) / (massObjectB * innertiaBodyA) - (collisionPointRelativeToBodyB.X * collisionPointRelativeToBodyB.X) / (massObjectB * innertiaBodyB) - (collisionPointRelativeToBodyB.Y * collisionPointRelativeToBodyB.Y) / (massObjectA * innertiaBodyB)
                          - (collisionPointRelativeToBodyB.Y * collisionPointRelativeToBodyB.Y) / (massObjectB * innertiaBodyB) + (collisionPointRelativeToBodyA.Y * collisionPointRelativeToBodyA.Y * collisionPointRelativeToBodyB.X * collisionPointRelativeToBodyB.X) / (innertiaBodyA * innertiaBodyB) + (collisionPointRelativeToBodyA.X * collisionPointRelativeToBodyA.X * collisionPointRelativeToBodyB.Y * collisionPointRelativeToBodyB.Y) / (innertiaBodyA * innertiaBodyB) - (2 * collisionPointRelativeToBodyA.X * collisionPointRelativeToBodyA.Y * collisionPointRelativeToBodyB.X * collisionPointRelativeToBodyB.Y) / (innertiaBodyA * innertiaBodyB);
-
-            
 
             double Jx =   (e + 1) /  k * (initialVelocityObjectA.X - initialVelocityObjectB.X) * (1 / massObjectA - collisionPointRelativeToBodyA.X * collisionPointRelativeToBodyA.X / innertiaBodyA + 1 / massObjectB - collisionPointRelativeToBodyB.X * collisionPointRelativeToBodyB.X / innertiaBodyB)
                         - (e + 1) /  k * (initialVelocityObjectA.Y - initialVelocityObjectB.Y) * (collisionPointRelativeToBodyA.X * collisionPointRelativeToBodyA.Y / innertiaBodyA + collisionPointRelativeToBodyB.X * collisionPointRelativeToBodyB.Y / innertiaBodyB);
@@ -191,15 +180,10 @@ namespace Perihelion.Controllers
             newVelocityB.Y = (float)(initialVelocityObjectB.Y - (Jy / massObjectB));
             objectB.Velocity = newVelocityB / objectB.Speed;
 
-            //Vector2 impulse = 2 * (initialVelocityObjectA.Y )
-
             objectA.AngularVelocity = new Vector2 ( (float) (initialAngularVelocityOfObjectA.X - (Jx * collisionPointRelativeToBodyA.Y - Jy * collisionPointRelativeToBodyA.X) / innertiaBodyA),
                                                     (float) (initialAngularVelocityOfObjectA.Y - (Jx * collisionPointRelativeToBodyA.Y - Jy * collisionPointRelativeToBodyA.X) / innertiaBodyA));
             objectB.AngularVelocity = new Vector2 ( (float) (initialAngularVelocityOfObjectB.X - (Jx * collisionPointRelativeToBodyB.Y - Jy * collisionPointRelativeToBodyB.X) / innertiaBodyB),
                                                     (float) (initialAngularVelocityOfObjectB.Y - (Jx * collisionPointRelativeToBodyB.Y - Jy * collisionPointRelativeToBodyB.X) / innertiaBodyB));
-
-            //objectA.AngularVelocity = objectA.AngularVelocity * 0.00000001f;
-            //objectB.AngularVelocity = objectB.AngularVelocity * 0.00000001f;
 
         }
 
@@ -357,7 +341,10 @@ namespace Perihelion.Controllers
         }
 
 
-        // Checks for per pixel collision between two objects.
+        /*
+         * Checks for per pixel collision between two objects.
+         * Typically called after returning true on intersecting boundingboxes. 
+         */
         private bool perPixelCollisionDetection(Models.GameObject playerObject, Models.GameObject collidingObject)
         {
             int top = Math.Max(playerObject.BoundingBox.Top, collidingObject.BoundingBox.Top);
@@ -370,35 +357,32 @@ namespace Perihelion.Controllers
             Texture2D playerTexture = playerObject.Texture;
             Texture2D collidableTexture = collidingObject.Texture;
 
-            Color[] playerTextureData = new Color[playerTexture.Width * playerTexture.Height];
+            Color[] playerTextureData = new Color    [playerTexture.Width     * playerTexture.Height];
             Color[] collidableTextureData = new Color[collidableTexture.Width * collidableTexture.Height];
 
             playerTexture.GetData(playerTextureData);
             collidableTexture.GetData(collidableTextureData);
 
-            //Vector2 velocity = playerObject.Velocity;
-
             for (int y = top; y < bottom; y++)
             {
-                int rowOffsetPlayer = (y - playerObject.BoundingBox.Top) * playerObject.BoundingBox.Width;
+                int rowOffsetPlayer  = (y - playerObject.BoundingBox.Top)    * playerObject.BoundingBox.Width;
                 int rowOffsetCollide = (y - collidingObject.BoundingBox.Top) * collidingObject.BoundingBox.Width;
                 for (int x = left; x < right; x++)
                 {
 
                     // Get the color of both pixels at this point
                     Color colorA = playerTextureData[rowOffsetPlayer +
-                                               (x - playerObject.BoundingBox.Left)
-                                        ];
+                                                        (x - playerObject.BoundingBox.Left)
+                                                ];
                     Color colorB = collidableTextureData[rowOffsetCollide +
-                                                (x - collidingObject.BoundingBox.Left)
-                                         ];
+                                                        (x - collidingObject.BoundingBox.Left)
+                                                ];
 
                     // If both pixels are not completely transparent,
                     if (colorA.A != 0 && colorB.A != 0)
                     {
                         return true;
                     }
-
                 }
             }
             return false;
