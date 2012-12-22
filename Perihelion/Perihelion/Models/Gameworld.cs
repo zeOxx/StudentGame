@@ -20,6 +20,7 @@ namespace Perihelion.Models
 
 		int levelSize = 4096;
 
+        private int score;
 		private Player playerObject;
 		private Boolean drawWell;
 		private GameObject gravityWell;
@@ -88,6 +89,12 @@ namespace Perihelion.Models
 			get { return this.debug; }
 			set { this.debug = value; }
 		}
+
+        public int Score
+        {
+            get { return this.score; }
+            set { this.score = value; }
+        }
 
 #if DEBUG
 		public void setDebug()

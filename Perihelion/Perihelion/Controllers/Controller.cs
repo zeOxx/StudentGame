@@ -85,6 +85,9 @@ namespace Perihelion.Controllers
             //return gameWorld;
         }
 
+        
+
+
         public void updateGravityWell(Gameworld gameWorld, float rightTrigger)
         {
             gameWorld.GravityWell.Position = gameWorld.PlayerObject.Position;
@@ -181,6 +184,7 @@ namespace Perihelion.Controllers
                     {
                         spawnExplosionParticles(gameWorld.EnemyList[enemyCollisionsIndex[i]], projectile, gameWorld.getParticleSystem());
                         soundManager.playSoundWithPositioning("explosion", gameWorld.PlayerObject, gameWorld.EnemyList[enemyCollisionsIndex[i]]);
+                        gameWorld.Score += gameWorld.EnemyList[enemyCollisionsIndex[i]].MaxHealth;
                         gameWorld.EnemyList.RemoveAt(enemyCollisionsIndex[i]);
                     }
                 }

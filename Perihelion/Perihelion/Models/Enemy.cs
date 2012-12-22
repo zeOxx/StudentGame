@@ -42,7 +42,7 @@ namespace Perihelion.Models
             ShootingBullets = false;
             ShootingRockets = false;
             timeBetweenBullets = 1000;
-            bulletSpeed = 5;
+            bulletSpeed = 10;
 
             // Temp
             
