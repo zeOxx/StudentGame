@@ -19,9 +19,15 @@ namespace Perihelion
         /************************************************************************/
         /* Positional vectors                                                   */
         /************************************************************************/
-        // THESE ARE ZERO BECAUSE THE CAMERA IS NOT IN PLACE YET.
-        Vector2 healthAuxBarPosition;
-        Vector2 specialPosition;
+        private Vector2 healthAuxBarPosition;
+        private Vector2 specialPosition;
+        private Vector2 specialAmmoPosition;
+        private SpriteFont ammoFont;
+
+        /************************************************************************/
+        /* Strings                                                              */
+        /************************************************************************/
+        private String ammoCounterSpecial;
 
 #if DEBUG
         /************************************************************************/
@@ -49,6 +55,9 @@ namespace Perihelion
 
             healthAuxBar = new Models.Interface(contentHolder.healthAuxBar, healthAuxBarPosition.X, healthAuxBarPosition.Y, new Vector2(0, 0), 0);
             special = new Models.Interface(contentHolder.special, specialPosition.X, specialPosition.Y, new Vector2(0, 0), 0);
+
+            ammoFont = contentHolder.creditsFont;
+            ammoCounterSpecial = "deo";
         
 #if DEBUG  
             this.debugFont = contentHolder.debugFont;
@@ -71,6 +80,8 @@ namespace Perihelion
         {
             healthAuxBar.Position = new Vector2(healthAuxBarPosition.X, healthAuxBarPosition.Y);
             special.Position = new Vector2(specialPosition.X, specialPosition.Y);
+
+            ammoCounterSpecial = player.RocketAmmo.ToString();
             // Calls update to all the objects to check health etc for the player. Yet to be implemented
         
 #if DEBUG
@@ -88,6 +99,7 @@ namespace Perihelion
             healthAuxBar.Draw(spriteBatch, debug);
             special.Draw(spriteBatch, debug);
 
+            spriteBatch.DrawString(ammoFont, ammoCounterSpecial, specialAmmoPosition, Color.White);
 #if DEBUG
             if (displayDebug)
             {
@@ -104,6 +116,7 @@ namespace Perihelion
                                                camera.Position.Y - (camera.View.Height / 2 - margin));
             specialPosition = new Vector2(camera.Position.X - (camera.View.Width  / 2 - margin),
                                           camera.Position.Y +  camera.View.Height / 2 - 42);  // 42 = texture.height + margin
+            specialAmmoPosition = new Vector2(specialPosition.X + 35, specialPosition.Y + 5);
 
 #if DEBUG
             if (displayDebug)

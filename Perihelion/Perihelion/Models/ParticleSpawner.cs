@@ -123,7 +123,7 @@ namespace Perihelion.Models
         /************************************************************************/
         /* XNA Methods                                                          */
         /************************************************************************/
-        public void update(GameTime gameTime, ContentHolder content)
+        public void update(GameTime gameTime)
         {
             TimeBetweenUpdates += gameTime.ElapsedGameTime.Milliseconds;
 

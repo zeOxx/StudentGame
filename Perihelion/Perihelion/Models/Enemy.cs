@@ -49,7 +49,6 @@ namespace Perihelion.Models
             MaxSpeed = 4;
 
             bullets = new List<Projectile>();
-            rockets = new List<DestructibleProjectile>();
         }
 
         public Enemy(Texture2D texture, float x, float y, Vector2 velocity, int health, float damageMultiplier, float attackMultiplier, bool projectiles, bool destructibleProjectiles, bool cloak)
@@ -186,10 +185,6 @@ namespace Perihelion.Models
             }
             
             foreach (Models.Projectile projectiles in bullets)
-            {
-                projectiles.Draw(spriteBatch, debug);
-            }
-            foreach (Models.DestructibleProjectile projectiles in rockets)
             {
                 projectiles.Draw(spriteBatch, debug);
             }

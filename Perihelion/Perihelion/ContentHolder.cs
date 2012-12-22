@@ -25,9 +25,11 @@ namespace Perihelion
         // Object textures
         public Texture2D textureRock01;
         public Texture2D textureRock02;
+        public Texture2D textureAsteroid;       // <- should only be used together with textureTurret
 
         // Enemy textures
         public Texture2D textureEnemy01;
+        public Texture2D textureTurret;
 
         // Background textures
         public Texture2D[] bg_variant0 = new Texture2D[2];
@@ -85,18 +87,19 @@ namespace Perihelion
             texturePlayerTurret     = content.Load<Texture2D>("PlayerTextures\\ship_turret");
             texturePlayerBullet     = content.Load<Texture2D>("PlayerTextures\\bullet");
             texturePlayerBullet2    = content.Load<Texture2D>("PlayerTextures\\bullet2");
-            texturePlayerSpecal01   = content.Load<Texture2D>("PlayerTextures\\weapon_special_01");
+            texturePlayerSpecal01   = content.Load<Texture2D>("PlayerTextures\\weapon_special_01");         // Rockets
             textureGravityWell      = content.Load<Texture2D>("PlayerTextures\\gravityWell");
 
             textureRectangle        = content.Load<Texture2D>("PlayerTextures\\rasstangle");
 
-
             // Objects
             textureRock01 = content.Load<Texture2D>("Environment\\rock_01");
             textureRock02 = content.Load<Texture2D>("Environment\\rock_02");
+            textureAsteroid = content.Load<Texture2D>("Environment\\asteroid");
 
             // Enemies
             textureEnemy01 = content.Load<Texture2D>("Enemies\\enemy_01");
+            textureTurret = content.Load<Texture2D>("Enemies\\turret");
 
             // Menu
             title = content.Load<Texture2D>("Menu\\Title");

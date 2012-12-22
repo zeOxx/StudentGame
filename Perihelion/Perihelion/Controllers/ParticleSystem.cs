@@ -45,14 +45,14 @@ namespace Perihelion.Controllers
         /************************************************************************/
         /* XNA Methods                                                          */
         /************************************************************************/
-        public void update(GameTime gameTime, ContentHolder content, Vector2 position, Vector2 velocity)
+        public void update(GameTime gameTime, Vector2 position, Vector2 velocity)
         {
             if (emitterList != null)
             {
                 for (int i = 0; i < emitterList.Count(); i++)
                 {
                     if (emitterList[i].IsActive)
-                        emitterList[i].update(gameTime, content, position, velocity);
+                        emitterList[i].update(gameTime, position, velocity);
                     else
                         emitterList.RemoveAt(i);
                 }
@@ -64,7 +64,7 @@ namespace Perihelion.Controllers
                 for (int i = 0; i < spawnerList.Count(); i++)
                 {
                     if (spawnerList[i].IsActive)
-                        spawnerList[i].update(gameTime, content);
+                        spawnerList[i].update(gameTime);
                     else
                         spawnerList.RemoveAt(i);
                 }

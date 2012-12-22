@@ -12,7 +12,6 @@ namespace Perihelion.Models
         private int activeTime;
         private int totalActiveTime;
         private int damage;
-        
 
         /************************************************************************/
         /* Constructor                                                          */
@@ -32,7 +31,7 @@ namespace Perihelion.Models
 
             Speed = speed;
 
-            setBulletDirection(velocity);
+            setProjectileDirection(velocity);
 
             TotalActiveTime = 0;
 
@@ -77,7 +76,7 @@ namespace Perihelion.Models
             this.totalActiveTime += gameTime.ElapsedGameTime.Milliseconds;
         }
 
-        public void setBulletDirection(Vector2 rightStick)
+        public void setProjectileDirection(Vector2 rightStick)
         {
             rotationAngle = Math.Atan2((double)rightStick.X, (double)rightStick.Y);
         }

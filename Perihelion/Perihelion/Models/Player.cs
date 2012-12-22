@@ -31,21 +31,25 @@ namespace Perihelion.Models
         }
 
         public Player(Texture2D texture_ship,   Texture2D texture_turret, 
-                      Texture2D texture_bullet,
+                      Texture2D texture_bullet, Texture2D texture_rocket,
                       float x, float y, Vector2 velocity, int health)
             : base(texture_ship, x, y, velocity, health)
         {
             TurretTexture = texture_turret;
             BulletTexture = texture_bullet;
+            RocketTexture = texture_rocket;
             WellMultiplier = 1;
             WellStatus = 0;
             AuxPower = 100;
             Bullets = true;
+            Rockets = true;
             // Temp
             Speed = 2;
             MaxSpeed = 5;
+            RocketAmmo = 5;
 
             ShootingBullets = false;
+            ShootingRockets = false;
 
             bullets = new List<Projectile>();
         }
@@ -112,12 +116,11 @@ namespace Perihelion.Models
                 SpriteEffects.None,
                 0f);
 
+            // Draw each projectile in the list
             foreach (Models.Projectile projectiles in bullets)
             {
                 projectiles.Draw(spriteBatch, debug);
             }
-
-            
         }
 
         public void stop()

@@ -126,7 +126,10 @@
     <Compile Include="Models\Enemy.cs" />
     <Compile Include="Models\GameObject.cs" />
     <Compile Include="Models\Gameworld.cs" />
+    <Compile Include="Models\Highscores.cs" />
+    <Compile Include="Models\HighscoreTable.cs" />
     <Compile Include="Models\Interface.cs" />
+    <Compile Include="Models\Leaderboards.cs" />
     <Compile Include="Models\MainMenu.cs" />
     <Compile Include="Models\Menu.cs" />
     <Compile Include="Models\Options.cs" />
