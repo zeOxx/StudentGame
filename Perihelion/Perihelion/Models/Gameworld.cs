@@ -16,7 +16,7 @@ namespace Perihelion.Models
 		const int numOfMaxCollidables = 10;
 		// current will also be used in the editor eventually, but for now it's set to const and
 		//  is used as a max for testing purposes
-		const int numbOfCurrentCollidables = 5;
+		
 
 		int levelSize = 4096;
 
@@ -81,11 +81,6 @@ namespace Perihelion.Models
 		{
 			get { return this.levelBounds; }
 			set { this.levelBounds = value; }
-		}
-
-		public int getNumberOfCurrentCollidables()
-		{
-			return numbOfCurrentCollidables;
 		}
 
 		private bool Debug
@@ -195,12 +190,23 @@ namespace Perihelion.Models
 
 			gravityWell.Position = playerObject.Position;
 
+            Vector2 vectorBetweenEnemyAndPlayer = new Vector2();
 			//System.Console.WriteLine("X = " + gravityWell.Position.X + " Y = " + gravityWell.Position.Y);
-
+            Vector2 playPos = new Vector2();
 			for (int i = 0; i < rocks.Count; i++)
 			{
 				rocks[i].updatePosition();
 			}
+            playPos = playerObject.Position;
+
+            for (int i = 0; i < enemies.Count; i++)
+            {
+                enemies[i].updatePosition(); 
+                vectorBetweenEnemyAndPlayer.X = (playerObject.Position.X - enemies[i].Position.X);
+                vectorBetweenEnemyAndPlayer.Y = - (playerObject.Position.Y - enemies[i].Position.Y);
+
+                enemies[i].update(vectorBetweenEnemyAndPlayer, gameTime, false);   
+            }
 
 		}
 
@@ -220,33 +226,94 @@ namespace Perihelion.Models
 			get { return enemies; }
 		}
 
-		public void updateEnemies(GameTime gameTime)
-		{
-			foreach (Enemy enemy in enemies)
-			{
-				Vector2 stick = unithandler.getEnemyStickVector(PlayerObject, enemy);
-				int shot = unithandler.getEnemyTarget(PlayerObject, enemy);
-				bool rocket = false;
-				if (shot == 0)
-				{
-					enemy.update(Vector2.Zero, stick, gameTime, rocket);
-				}
-				else if (shot == 1)
-				{
-					enemy.update(unithandler.restrictEnemy(enemy, stick), stick, gameTime, rocket);
-				}
-				else
-				{
-					enemy.update(Vector2.Zero, Vector2.Zero, gameTime, rocket);
-				}
-			}
-		}
+        //public void updateEnemies(GameTime gameTime)
+        //{
+        //    foreach (Enemy enemy in enemies)
+        //    {
+        //        Vector2 stick = unithandler.getEnemyStickVector(PlayerObject, enemy);
+        //        int shot = unithandler.getEnemyTarget(PlayerObject, enemy);
+        //        bool rocket = false;
+        //        if (shot == 0)
+        //        {
+        //            enemy.update(Vector2.Zero, stick, gameTime, rocket);
+        //        }
+        //        else if (shot == 1)
+        //        {
+        //            enemy.update(unithandler.restrictEnemy(enemy, stick), stick, gameTime, rocket);
+        //        }
+        //        else
+        //        {
+        //            enemy.update(Vector2.Zero, Vector2.Zero, gameTime, rocket);
+        //        }
+        //    }
+        //}
 		
 		public void setDrawGravityWell(bool draw, float wellStatus)
 		{
 			drawWell = draw;
 			playerObject.WellStatus = wellStatus;
 		}
+
+        public void spawnEnemiesAtRandom(ContentHolder contentHolder)
+        {
+            Random randGen = new Random();
+
+            int screenWidth     = 1280;
+            int screenHeight    = 720;
+            int randomXPosition = randGen.Next(-screenWidth , screenWidth / 2);
+            int randomYPosition = randGen.Next(-screenHeight , screenHeight / 2);
+            int spawnDirection  = randGen.Next(1, 5);
+            int randomHealth    = randGen.Next(100, 301);
+            Vector2 direction   = new Vector2();
+            Vector2 spawnPosition = new Vector2();
+            int numberOfEnemies = randGen.Next(4, 9);
+
+            switch (spawnDirection)
+            {
+                //Top
+                case 1:
+                    spawnPosition.X = randomXPosition;
+                    spawnPosition.Y = playerObject.Position.Y - screenHeight;
+                    direction       = new Vector2(0, -2);
+                    break;
+
+                //Right
+                case 2:
+                    spawnPosition.X = playerObject.Position.X + screenWidth;
+                    spawnPosition.Y = randomYPosition;
+                    direction       = new Vector2(-2, 0);
+                    break;
+
+                //Bottom
+                case 3:
+                    spawnPosition.X = randomXPosition;
+                    spawnPosition.Y = playerObject.Position.Y + screenHeight;
+                    direction       = new Vector2(0, 2);
+                    break;
+
+                //Left
+                case 4:
+                    spawnPosition.X = playerObject.Position.X - screenWidth;
+                    spawnPosition.Y = randomYPosition;
+                    direction       = new Vector2(2, 0);
+                    break;
+            }
+
+            //Magic numbers ftw. 
+            //direction = 3;
+            int offsetPosition = 32;
+            for (int i = 0; i < numberOfEnemies; i++)
+            {
+                enemies.Add(new Enemy(contentHolder.textureEnemy01, contentHolder.texturePlayerTurret, contentHolder.texturePlayerBullet, 
+                                      spawnPosition.X + offsetPosition, 
+                                      spawnPosition.Y + offsetPosition, 
+                                      direction * 0.8f, 
+                                      randomHealth));
+
+                offsetPosition += 32;
+            }
+            
+        }
 	
 	}
 

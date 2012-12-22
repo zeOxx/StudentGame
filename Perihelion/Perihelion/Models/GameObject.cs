@@ -20,7 +20,7 @@ namespace Perihelion.Models
         protected Vector2 angularVelocity;
         protected double rotationAngle = 0.0;
         protected float maxSpeed = 0;
-        protected float speed = 0;
+        protected float speed;
         private int identifier = 0;
         //private int health;
         private int currentHealth;
@@ -188,6 +188,7 @@ namespace Perihelion.Models
             position.X = position.X + (velocity.X * speed);
             position.Y = position.Y - (velocity.Y * speed);
             //position += velocity;
+            //Console.Out.WriteLine(position.Y - (velocity.Y * speed));
             updateRotation();
         }
 

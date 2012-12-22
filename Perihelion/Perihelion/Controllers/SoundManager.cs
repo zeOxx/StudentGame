@@ -35,6 +35,16 @@ namespace Perihelion.Controllers
             float panning = - (relativeHorizontalPosition / halfWidthOfScreen);
 
 
+            //In case outside of view
+            if (panning > 1)
+            {
+                panning = 1;
+            }
+            else if (panning < 0)
+            {
+                panning = 0;
+            }
+
             switch(soundName)
             {
                 case "pang":

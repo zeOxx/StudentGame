@@ -21,6 +21,9 @@ namespace Perihelion.Controllers
         private SoundManager soundManager;
         private PhysicsEngine physicsEngine;
         public MenuHandler menuHandler;
+        private int elapsed;
+        private int randomTimeBetweenSpawns;
+        private Random randGen;
 
         public Controller(ContentHolder content, SoundManager soundManager, Highscores hs, string title, int width, int height)
         {
@@ -30,6 +33,9 @@ namespace Perihelion.Controllers
             this.content = content;
             physicsEngine = new PhysicsEngine();
             menuHandler = new MenuHandler(content, width, height, hs);
+            elapsed = 0;
+            randGen = new Random();
+            randomTimeBetweenSpawns = randGen.Next(1, 5);
 
             soundManager.playSoundtrack();
         }
@@ -47,8 +53,25 @@ namespace Perihelion.Controllers
                 MediaPlayer.Play(content.soundtrack);
             }
 
+            
+            
+
+            elapsed = elapsed + gameTime.ElapsedGameTime.Milliseconds;
+
+            Console.Out.WriteLine(gameTime.ElapsedGameTime.Milliseconds);
+
+            if (elapsed > randomTimeBetweenSpawns)
+            {
+                randomTimeBetweenSpawns = randGen.Next(1, 3) * 1000;
+                elapsed = 0;
+
+                gameWorld.spawnEnemiesAtRandom(content);
+
+                //Console.Out.WriteLine("RAAAAp");
+            }
+
             checkInput(gameTime, inputHandler, gameWorld);
-            gameWorld.updateEnemies(gameTime);
+            //gameWorld.updateEnemies(gameTime);
             handleProjectileCollisions(gameWorld);
             //updateGravityWell(gameWorld);
 
@@ -149,7 +172,7 @@ namespace Perihelion.Controllers
                     damage = projectile.Damage;
 
                     enemyProjectileCollisions[i].updateCurrentHealth(-damage);
-
+                    spawnExplosionParticles(projectile, projectile, gameWorld.getParticleSystem());
                     
                 }
                 for (int i = enemyCollisionsIndex.Count -1; i >= 0; i--)

@@ -176,6 +176,20 @@ namespace Perihelion.Models
             base.update(scaleVelocity(leftStick));
         }
 
+        public void unitUpdate(Vector2 rightStick, GameTime gameTime)
+        {
+            updateTurret(rightStick);
+
+            if (Bullets)
+            {
+                updateBullets(gameTime, rightStick);
+            }
+            if (Rockets)
+            {
+                updateRockets(gameTime);
+            }
+        }
+
         private Vector2 scaleVelocity (Vector2 velocity)
         {
             float oldlength = this.velocity.Length();
