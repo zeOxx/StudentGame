@@ -41,15 +41,21 @@ namespace Perihelion.Models
             Cloaked = false;
             ShootingBullets = false;
             ShootingRockets = false;
-            timeBetweenBullets = 500;
-            bulletSpeed = 15;
+            timeBetweenBullets = 1000;
+            bulletSpeed = 10;
 
             // Temp
-            Speed = 0;
+            
             MaxSpeed = 4;
 
             bullets = new List<Projectile>();
         }
+
+        //public Enemy(Texture2D texture, Texture2D textureBullet, float posX, float posY, Vector2 velocity, int health)
+        //    : base(texture, textureBullet, posX, posY, velocity, health)
+        //{
+
+        //}
 
         public Enemy(Texture2D texture, float x, float y, Vector2 velocity, int health, float damageMultiplier, float attackMultiplier, bool projectiles, bool destructibleProjectiles, bool cloak)
             : base(texture, x, y, velocity, health, damageMultiplier, attackMultiplier)
@@ -103,14 +109,14 @@ namespace Perihelion.Models
         /************************************************************************/
         /*  Update functions for Enemy attributes                               */
         /************************************************************************/
-        public void update(Vector2 leftStick, Vector2 rightStick, GameTime gameTime, bool rocket)
+        public void update(Vector2 rightStick, GameTime gameTime, bool rocket)
         {
             //if (!leftStick.Equals(Vector2.Zero))
             //{
             //    leftStick = correctCourse(leftStick);
             //}
 
-            base.unitUpdate(leftStick, rightStick, gameTime);
+            base.unitUpdate(rightStick, gameTime);
         }
 
         //private Vector2 correctCourse(Vector2 direction)

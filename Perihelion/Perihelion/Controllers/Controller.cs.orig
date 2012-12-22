@@ -22,9 +22,15 @@ namespace Perihelion.Controllers
         private SoundManager soundManager;
         private PhysicsEngine physicsEngine;
         public MenuHandler menuHandler;
+<<<<<<< HEAD
+        public Highscores hs;
+
+        public Thread thread;
+=======
         private int elapsed;
         private int randomTimeBetweenSpawns;
         private Random randGen;
+>>>>>>> 21e4aef1046deea8d660bb6b419b1f6040d7b9da
 
         public Controller(ContentHolder content, SoundManager soundManager, Highscores hs, string title, int width, int height)
         {
