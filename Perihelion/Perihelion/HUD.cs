@@ -100,17 +100,17 @@ namespace Perihelion
 
         public void updateHudPositions(Camera camera)
         {
-            healthAuxBarPosition = new Vector2(camera.Center.X - (camera.View.Width / 2 - margin), 
-                camera.Center.Y - (camera.View.Height / 2 - margin));
-            specialPosition = new Vector2(camera.Center.X - (camera.View.Width / 2 - margin), 
-                camera.Center.Y + camera.View.Height / 2 - 42);  // 42 = texture.height + margin
+            healthAuxBarPosition = new Vector2(camera.Position.X - (camera.View.Width / 2 - margin),
+                                               camera.Position.Y - (camera.View.Height / 2 - margin));
+            specialPosition = new Vector2(camera.Position.X - (camera.View.Width  / 2 - margin),
+                                          camera.Position.Y +  camera.View.Height / 2 - 42);  // 42 = texture.height + margin
 
 #if DEBUG
             if (displayDebug)
             {
-                playerSpeedVector = new Vector2(camera.Center.X, camera.Center.Y + 330);
-                playerPositionVector = new Vector2(camera.Center.X, camera.Center.Y + 300);
-                numberOfBulletsVector = new Vector2(camera.Center.X, camera.Center.Y + 270);
+                playerSpeedVector = new Vector2(camera.Position.X, camera.Position.Y + 330);
+                playerPositionVector = new Vector2(camera.Position.X, camera.Position.Y + 300);
+                numberOfBulletsVector = new Vector2(camera.Position.X, camera.Position.Y + 270);
             }
 #endif
         }

@@ -20,12 +20,12 @@ namespace Perihelion.Controllers
 
         public PhysicsEngine()
         {
-            projectileCollisionsIndex   = new List<int>();
-            rockCollisionIndex          = new List<int>();
-            enemyCollisionIndex         = new List<int>();
-            rockProjectileCollisions    = new List<Models.GameObject>();
-            enemyProjectileCollisions   = new List<Models.GameObject>();
-            playerProjectileCollisions  = new List<Models.GameObject>();
+            projectileCollisionsIndex = new List<int>();
+            rockCollisionIndex = new List<int>();
+            enemyCollisionIndex = new List<int>();
+            rockProjectileCollisions = new List<Models.GameObject>();
+            enemyProjectileCollisions = new List<Models.GameObject>();
+            playerProjectileCollisions = new List<Models.GameObject>();
         }
 
         public void collisionDetection(ref Models.Gameworld gameWorld, Vector2 movementVector, Vector2 rightStick, GameTime gameTime)
@@ -41,8 +41,10 @@ namespace Perihelion.Controllers
             checkPlayerProjectileCollisions(gameWorld);
 
             checkEnemyProjectileCollisions(gameWorld);
-            
+
             playerCollisions(gameWorld, movementVector, rightStick, gameTime);
+
+            bounceThoseRocks(gameWorld.getRock());
         }
 
         public List<Models.GameObject> getRockProjectileCollisions()
@@ -67,7 +69,7 @@ namespace Perihelion.Controllers
 
         public void checkGravityWellCollision(Models.GameObject gravityWell, List<Models.Collidable> rocks)
         {
-            for(int i = 0; i < rocks.Count; i++)
+            for (int i = 0; i < rocks.Count; i++)
             {
                 if (gravityWell.BoundingBox.Intersects(rocks[i].BoundingBox))
                 {
@@ -85,7 +87,7 @@ namespace Perihelion.Controllers
          */
         private void calculateGravitationalPull(Models.GameObject gravityWell, Models.Collidable rock)
         {
-            float distance = ((float) Math.Sqrt(((rock.Position.X - gravityWell.Position.X) *
+            float distance = ((float)Math.Sqrt(((rock.Position.X - gravityWell.Position.X) *
                                                 (rock.Position.X - gravityWell.Position.X))
                                                            +
                                                ((rock.Position.Y - gravityWell.Position.Y) *
@@ -98,10 +100,107 @@ namespace Perihelion.Controllers
             float deltaY = rock.Position.Y - gravityWell.Position.Y;
 
             Vector2 force = new Vector2();
-            force.X = - (deltaX * (mass / (distance * distance)));              // <-------------------- Gotta flip the X for some reason.
-            force.Y =   (deltaY * (mass / (distance * distance)));
+            force.X = -(deltaX * (mass / (distance * distance)));              // <-------------------- Gotta flip the X for some reason.
+            force.Y = (deltaY * (mass / (distance * distance)));
 
-            rock.pushPull(force);   
+            rock.pushPull(force);
+        }
+
+
+
+        private void bounceThoseRocks(List<Models.Collidable> rocks)
+        {
+            for (int i = 0; i < rocks.Count; i++)
+            {
+                for (int j = 0; j < rocks.Count; j++)
+                {
+                    if (!(j == i))
+                    {
+                        if (rocks[i].BoundingBox.Intersects(rocks[j].BoundingBox))
+                        {
+                            if (perPixelCollisionDetection(rocks[j], rocks[i]))
+                            {
+                                collisionUsingAllKindaCrazyStuff(rocks[i], rocks[j]);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+
+        //Matrix innertiaBodyA, Matrix innertiaBodyB,
+        //double massOfObjectA, double massObjectB, 
+        //Vector2 initialVelocityObjectA, Vector2 initialVelocityOfObjectB,
+        //Vector2 finalAngularVelocityOfObjectA, Vector2 finalAngularVelocityOfObjectB,
+        // finalVelocityOfObjectA, Vector2 finalVelocityOfObjectB,
+        //Vector2 normalToCollisionPoint,
+        public void collisionUsingAllKindaCrazyStuff(Models.GameObject objectA, Models.GameObject objectB)
+        {
+
+            double massObjectA = 10;
+            double massObjectB = 10;
+
+
+
+            double e = 1;
+
+            Vector2 initialAngularVelocityOfObjectA = objectA.AngularVelocity;
+            Vector2 initialAngularVelocityOfObjectB = objectB.AngularVelocity;
+
+            Vector2 initialVelocityObjectA = objectA.Velocity * objectA.Speed;
+            Vector2 initialVelocityObjectB = objectB.Velocity * objectA.Speed;
+
+            Vector2 collisionPointRelativeToBodyB = new Vector2(objectA.Position.X - objectB.Position.X, objectA.Position.Y - objectB.Position.Y);
+            Vector2 collisionPointRelativeToBodyA = new Vector2(objectB.Position.X - objectA.Position.X, objectB.Position.Y - objectA.Position.Y);
+
+            double lengthBetweenObjects = Math.Sqrt((collisionPointRelativeToBodyA.X * collisionPointRelativeToBodyB.X) + (collisionPointRelativeToBodyA.Y * collisionPointRelativeToBodyA.Y));
+
+
+            double innertiaBodyB = massObjectB * ((objectB.Position.X * objectB.Position.X) + (objectB.Position.Y * objectB.Position.Y));
+            double innertiaBodyA = massObjectA * ((objectA.Position.X * objectA.Position.X) + (objectA.Position.Y * objectA.Position.Y));
+
+            
+
+            //double innertiaBodyA = 1;
+            //double innertiaBodyB = 1;
+
+            //double innertiaBodyA = Math.Atan2(initialAngularVelocityOfObjectA.X, initialAngularVelocityOfObjectA.Y + 0.001);
+            //double innertiaBodyB = Math.Atan2(initialAngularVelocityOfObjectB.X, initialAngularVelocityOfObjectB.Y + 0.001);
+
+            double k = (1 / (massObjectA * massObjectA) + (2 / (massObjectA * massObjectB))) + (1 / (massObjectB * massObjectB)) - (collisionPointRelativeToBodyA.X * collisionPointRelativeToBodyA.X) / (massObjectA * innertiaBodyA) - (collisionPointRelativeToBodyB.X * collisionPointRelativeToBodyB.X) / (massObjectA * innertiaBodyB) - (collisionPointRelativeToBodyA.Y * collisionPointRelativeToBodyA.Y) / (massObjectA * innertiaBodyA)
+                         - (collisionPointRelativeToBodyA.Y * collisionPointRelativeToBodyA.Y) / (massObjectB * innertiaBodyA) - (collisionPointRelativeToBodyA.X * collisionPointRelativeToBodyA.X) / (massObjectB * innertiaBodyA) - (collisionPointRelativeToBodyB.X * collisionPointRelativeToBodyB.X) / (massObjectB * innertiaBodyB) - (collisionPointRelativeToBodyB.Y * collisionPointRelativeToBodyB.Y) / (massObjectA * innertiaBodyB)
+                         - (collisionPointRelativeToBodyB.Y * collisionPointRelativeToBodyB.Y) / (massObjectB * innertiaBodyB) + (collisionPointRelativeToBodyA.Y * collisionPointRelativeToBodyA.Y * collisionPointRelativeToBodyB.X * collisionPointRelativeToBodyB.X) / (innertiaBodyA * innertiaBodyB) + (collisionPointRelativeToBodyA.X * collisionPointRelativeToBodyA.X * collisionPointRelativeToBodyB.Y * collisionPointRelativeToBodyB.Y) / (innertiaBodyA * innertiaBodyB) - (2 * collisionPointRelativeToBodyA.X * collisionPointRelativeToBodyA.Y * collisionPointRelativeToBodyB.X * collisionPointRelativeToBodyB.Y) / (innertiaBodyA * innertiaBodyB);
+
+            
+
+            double Jx =   (e + 1) /  k * (initialVelocityObjectA.X - initialVelocityObjectB.X) * (1 / massObjectA - collisionPointRelativeToBodyA.X * collisionPointRelativeToBodyA.X / innertiaBodyA + 1 / massObjectB - collisionPointRelativeToBodyB.X * collisionPointRelativeToBodyB.X / innertiaBodyB)
+                        - (e + 1) /  k * (initialVelocityObjectA.Y - initialVelocityObjectB.Y) * (collisionPointRelativeToBodyA.X * collisionPointRelativeToBodyA.Y / innertiaBodyA + collisionPointRelativeToBodyB.X * collisionPointRelativeToBodyB.Y / innertiaBodyB);
+
+            double Jy = - (e + 1) /  k * (initialVelocityObjectA.X - initialVelocityObjectB.X) * (collisionPointRelativeToBodyA.X * collisionPointRelativeToBodyA.Y / innertiaBodyA + collisionPointRelativeToBodyB.X * collisionPointRelativeToBodyB.Y / innertiaBodyB)
+                        + (e + 1) /  k * (initialVelocityObjectA.Y - initialVelocityObjectB.Y) * (1 / massObjectA - collisionPointRelativeToBodyA.Y * collisionPointRelativeToBodyA.Y / innertiaBodyA + 1 / massObjectB - collisionPointRelativeToBodyB.Y * collisionPointRelativeToBodyB.Y / innertiaBodyB);
+
+            Vector2 newVelocityA;
+            newVelocityA.X =  (float) (initialVelocityObjectA.X - (Jx / massObjectA));
+            newVelocityA.Y =  (float) (initialVelocityObjectA.Y - (Jy / massObjectA));
+            objectA.Velocity = newVelocityA / objectA.Speed;
+
+            Vector2 newVelocityB;
+            newVelocityB.X = (float)(initialVelocityObjectB.X - (Jx / massObjectB));
+            newVelocityB.Y = (float)(initialVelocityObjectB.Y - (Jy / massObjectB));
+            objectB.Velocity = newVelocityB / objectB.Speed;
+
+            //Vector2 impulse = 2 * (initialVelocityObjectA.Y )
+
+            objectA.AngularVelocity = new Vector2 ( (float) (initialAngularVelocityOfObjectA.X - (Jx * collisionPointRelativeToBodyA.Y - Jy * collisionPointRelativeToBodyA.X) / innertiaBodyA),
+                                                    (float) (initialAngularVelocityOfObjectA.Y - (Jx * collisionPointRelativeToBodyA.Y - Jy * collisionPointRelativeToBodyA.X) / innertiaBodyA));
+            objectB.AngularVelocity = new Vector2 ( (float) (initialAngularVelocityOfObjectB.X - (Jx * collisionPointRelativeToBodyB.Y - Jy * collisionPointRelativeToBodyB.X) / innertiaBodyB),
+                                                    (float) (initialAngularVelocityOfObjectB.Y - (Jx * collisionPointRelativeToBodyB.Y - Jy * collisionPointRelativeToBodyB.X) / innertiaBodyB));
+
+            //objectA.AngularVelocity = objectA.AngularVelocity * 0.00000001f;
+            //objectB.AngularVelocity = objectB.AngularVelocity * 0.00000001f;
+
         }
 
         private Vector2 angleToVector(float angle)
@@ -113,7 +212,7 @@ namespace Perihelion.Controllers
         {
             return (float)Math.Atan2(vector.X, -vector.Y);
         }
-        
+
         private void checkEnemyProjectileCollisions(Models.Gameworld gameWorld)
         {
             List<int> collidedProjectileIndexes = new List<int>();
@@ -156,9 +255,9 @@ namespace Perihelion.Controllers
             for (int i = 0; i < gameWorld.getPlayer().BulletList.Count; i++)
             {
                 flaggBecauseFuckYouThatsWhy = false;
-                for (int j = 0; j < gameWorld.getRock().Count; j++)   
+                for (int j = 0; j < gameWorld.getRock().Count; j++)
                 {
-                    if(gameWorld.getRock()[j].BoundingBox.Intersects(gameWorld.getPlayer().BulletList[i].BoundingBox))
+                    if (gameWorld.getRock()[j].BoundingBox.Intersects(gameWorld.getPlayer().BulletList[i].BoundingBox))
                     {
                         if (perPixelCollisionDetection(gameWorld.getPlayer().BulletList[i],
                                                         gameWorld.getRock()[j]))
@@ -168,10 +267,10 @@ namespace Perihelion.Controllers
                             rockProjectileCollisions.Add(gameWorld.getPlayer().BulletList[i]);
                             rockProjectileCollisions.Add(gameWorld.getRock()[j]);
                             flaggBecauseFuckYouThatsWhy = true;
-                            
+
                         }
                     }
-                    if(flaggBecauseFuckYouThatsWhy) break;
+                    if (flaggBecauseFuckYouThatsWhy) break;
                 }
                 if (!flaggBecauseFuckYouThatsWhy)
                 {
@@ -182,7 +281,7 @@ namespace Perihelion.Controllers
                             if (perPixelCollisionDetection(gameWorld.getPlayer().BulletList[i],
                                                             gameWorld.EnemyList[l]))
                             {
-                               
+
                                 collidedProjectileIndexes.Add(i);
                                 enemyCollisionIndex.Add(l);
                                 enemyProjectileCollisions.Add(gameWorld.getPlayer().BulletList[i]);
@@ -207,7 +306,7 @@ namespace Perihelion.Controllers
                     gameWorld.getPlayer().BulletList.RemoveAt(collidedProjectileIndexes[i]);
                 }
             }
-            
+
         }
 
         //Checks for collisions on the Player. 
@@ -245,7 +344,7 @@ namespace Perihelion.Controllers
         {
             collidingObject.Velocity += (knockBackObject.Velocity * 0.7f);
 
-            knockBackObject.Velocity = ((Vector2.Normalize(- knockBackObject.Velocity) * 1.2f));
+            knockBackObject.Velocity = ((Vector2.Normalize(-knockBackObject.Velocity) * 1.2f));
         }
 
         private void levelBoundCollision(Models.Gameworld gameWorld, Vector2 prePosition)

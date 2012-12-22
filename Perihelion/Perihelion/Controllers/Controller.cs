@@ -115,6 +115,7 @@ namespace Perihelion.Controllers
 
                     rockProjectileCollisions[i].updateCurrentHealth(- damage);
 
+                    physicsEngine.collisionUsingAllKindaCrazyStuff(rockProjectileCollisions[i], projectile);
  
                 }
                 for (int i = 0; i < rockCollisionsIndex.Count; i++)

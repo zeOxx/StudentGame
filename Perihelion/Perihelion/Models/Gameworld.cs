@@ -137,18 +137,18 @@ namespace Perihelion.Models
             
             
 
-			rocks.Add(new Collidable(contentHolder.textureRock01,  150,  300, Vector2.Zero, true, 400));
-			rocks.Add(new Collidable(contentHolder.textureRock02, -250, -330, Vector2.Zero, true,  40));
-			rocks.Add(new Collidable(contentHolder.textureRock01,  500,  300, Vector2.Zero, true,  70));
-			rocks.Add(new Collidable(contentHolder.textureRock02, -100,  250, Vector2.Zero, true, 200));
+			rocks.Add(new Collidable(contentHolder.textureRock01,  150,  300, Vector2.Zero, true, 600));
+            rocks.Add(new Collidable(contentHolder.textureRock02, -250, -330, Vector2.Zero, true, 400));
+            rocks.Add(new Collidable(contentHolder.textureRock01, 500, 300, Vector2.Zero, true, 100));
+            rocks.Add(new Collidable(contentHolder.textureRock02, -100, 250, Vector2.Zero, true, 250));
 
             rocks.Add(new Collidable(contentHolder.textureRock01, 0, -250, new Vector2(0, -2), true, 200));
 
-            for (int i = 0; i < 20; i++)
-            {
+            //for (int i = 0; i < 20; i++)
+            //{
 
-                enemies.Add(new Enemy(contentHolder.textureEnemy01, contentHolder.texturePlayerTurret, contentHolder.texturePlayerBullet, i * 20 + 200, i * 20 + 200, Vector2.Zero, 1000));
-            }
+            //    enemies.Add(new Enemy(contentHolder.textureEnemy01, contentHolder.texturePlayerTurret, contentHolder.texturePlayerBullet, i * 20 + 200, i * 20 + 200, Vector2.Zero, 1000));
+            //}
 		}
 
 		// Creates the bounds for the level
@@ -186,7 +186,7 @@ namespace Perihelion.Models
 
 		public void update(GameTime gameTime, ContentHolder contentHolder)
 		{
-			camera.update(playerObject.Position);
+			camera.update(playerObject, gameTime);
 			background01.update(playerObject.Velocity);
 			background02.update(playerObject.Velocity);
 			hud.updateHudPositions(camera);

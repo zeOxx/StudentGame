@@ -17,6 +17,7 @@ namespace Perihelion.Models
         protected Vector2 position;
         protected Vector2 velocity;
         protected Vector2 direction = new Vector2(-1, 0);
+        protected Vector2 angularVelocity;
         protected double rotationAngle = 0.0;
         protected float maxSpeed = 0;
         protected float speed = 0;
@@ -106,6 +107,12 @@ namespace Perihelion.Models
             set { this.direction = value; }
         }
 
+        public Vector2 AngularVelocity
+        {
+            get { return this.angularVelocity; }
+            set { this.angularVelocity = value; }
+        }
+
         //public ArrayList TextureData
         //{
         //    get { return textureData; }
@@ -165,6 +172,7 @@ namespace Perihelion.Models
             updateVelocity(velocity);
             updateAngle(velocity);
             updatePosition();
+            updateRotation();
         }
 
         // TEMP KEYBOARD UPDATING
@@ -176,8 +184,11 @@ namespace Perihelion.Models
 
         public void updatePosition()
         {
+            //velocity = velocity * speed;
             position.X = position.X + (velocity.X * speed);
             position.Y = position.Y - (velocity.Y * speed);
+            //position += velocity;
+            updateRotation();
         }
 
         public void updateVelocity(Vector2 velocity)
@@ -192,6 +203,12 @@ namespace Perihelion.Models
         public void pushPull(Vector2 force)
         {
             velocity += force;
+        }
+
+        private void updateRotation()
+        {
+            rotationAngle += (double ) (Math.Atan2(angularVelocity.X, angularVelocity.Y)) * 0.1d;
+            //Console.Out.WriteLine("Fittepikk");
         }
 
         public void updateAngle(Vector2 velocity)
