@@ -123,6 +123,7 @@
     <Compile Include="Models\Collidable.cs" />
     <Compile Include="Models\Credits.cs" />
     <Compile Include="Models\DestructibleProjectile.cs" />
+    <Compile Include="Models\EndMenu.cs" />
     <Compile Include="Models\Enemy.cs" />
     <Compile Include="Models\GameObject.cs" />
     <Compile Include="Models\Gameworld.cs" />

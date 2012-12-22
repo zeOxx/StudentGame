@@ -58,6 +58,8 @@ namespace Perihelion
 
         // Menu textures
         public Texture2D title;
+        public Texture2D arrow_up;
+        public Texture2D arrow_down;
 
 #if DEBUG
         // Debug font
@@ -105,6 +107,8 @@ namespace Perihelion
 
             // Menu
             title = content.Load<Texture2D>("Menu\\Title");
+            arrow_up = content.Load<Texture2D>("Menu\\arrow_up");
+            arrow_down = content.Load<Texture2D>("Menu\\arrow_down");
 
             //Background arrays
             bg_variant0[0] = content.Load<Texture2D>("Backgrounds\\bg_01_0");

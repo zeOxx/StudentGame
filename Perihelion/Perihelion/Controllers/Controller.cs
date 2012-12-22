@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Audio;
@@ -21,6 +22,9 @@ namespace Perihelion.Controllers
         private SoundManager soundManager;
         private PhysicsEngine physicsEngine;
         public MenuHandler menuHandler;
+        public Highscores hs;
+
+        public Thread thread;
 
         public Controller(ContentHolder content, SoundManager soundManager, Highscores hs, string title, int width, int height)
         {
@@ -30,6 +34,8 @@ namespace Perihelion.Controllers
             this.content = content;
             physicsEngine = new PhysicsEngine();
             menuHandler = new MenuHandler(content, width, height, hs);
+
+            this.hs = hs;
 
             soundManager.playSoundtrack();
         }
@@ -79,12 +85,18 @@ namespace Perihelion.Controllers
             bool aButton = false;                       // flagged if A button, or Enter, is pressed
             bool bButton = false;                       // flagged if B button, or backspace, is pressed
 
-            int movement = 0;                           // Tells the menu where to move next (-1 is up, 1 is down)
+            int movementY = 0;                           // Tells the menu where to move next (-1 is up, 1 is down)
+            int movementX = 0;
 
             if (inputHandler.ButtonPressed(Buttons.DPadDown) || movementVector.Y < 0 || inputHandler.KeyReleased(Keys.Down))
-                movement = 1;
+                movementY = 1;
             if (inputHandler.ButtonPressed(Buttons.DPadUp) || movementVector.Y > 0 || inputHandler.KeyReleased(Keys.Up))
-                movement = -1;
+                movementY = -1;
+
+            if (inputHandler.ButtonPressed(Buttons.DPadLeft) || movementVector.X < 0 || inputHandler.KeyReleased(Keys.Left))
+                movementX = -1;
+            if (inputHandler.ButtonPressed(Buttons.DPadRight) || movementVector.X > 0 || inputHandler.KeyReleased(Keys.Right))
+                movementX = 1;
 
             if (inputHandler.ButtonPressed(Buttons.A) || inputHandler.KeyDown(Keys.Enter))
                 aButton = true;
@@ -93,17 +105,28 @@ namespace Perihelion.Controllers
 
             if (menuHandler.ElapsedSinceLastInput > menuHandler.AllowedTimeBetweenInputs)
             {
-                if (movement != 0 || aButton || bButton)
+                if (movementY != 0 || movementX != 0 || aButton || bButton)
                 {
-                    menuHandler.update(movement, aButton, bButton);
+                    menuHandler.update(movementY, movementX, aButton, bButton);
                     menuHandler.ElapsedSinceLastInput = 0;
                 }
             }
 
             menuHandler.ElapsedSinceLastInput += gameTime.ElapsedGameTime.Milliseconds;
+
+            if (menuHandler.sendScore)
+            {
+                sendScore();
+
+                menuHandler.ExitGame = true;
+            }
         }
 
-        
+        public void sendScore()
+        {
+            thread = new Thread(() => hs.sendScore("1", "Inge", "yau", 180));
+            thread.Start();
+        }
         
         public void handleProjectileCollisions(Models.Gameworld gameWorld)
         {

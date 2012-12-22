@@ -133,11 +133,8 @@ namespace Perihelion
 
             // Exits the game when ESC is pressed
             if ((gamestate == GameStates.Running && keyboard.IsKeyDown(Keys.Escape))
-                || gameController.menuHandler.mainMenu.Exiting)
+                || gameController.menuHandler.mainMenu.Exiting || gameController.menuHandler.ExitGame)
             {
-                thread = new Thread(() => highScores.sendScore("1", "Inge", "yau", 180)); 
-                thread.Start();
-                
                 Exit();
             }
 

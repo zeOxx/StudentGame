@@ -11,8 +11,12 @@ namespace Perihelion.Controllers
         public Models.MainMenu mainMenu;
         public Models.Credits credits;
         public Models.Options options;
+        public Models.EndMenu endMenu;
         public Models.Leaderboards leaderboards;
+
         public bool active;
+        public bool exitGame;
+        public bool sendScore;
 
         public int elapsedSinceLastInput = 100;         // defaults to the same as below, since we want users to be able to interact as soon as the game starts.
         public int allowedTimeBetweenInputs = 100;      // in ms
@@ -22,9 +26,14 @@ namespace Perihelion.Controllers
             mainMenu = new Models.MainMenu(content, width, height);
             credits = new Models.Credits(content, width, height);
             options = new Models.Options(content, width, height);
+            endMenu = new Models.EndMenu(content, width, height);
             leaderboards = new Models.Leaderboards(content, width, height, hs);
 
+            sendScore = false;
+
             Active = true;
+
+            exitGame = false;
         }
 
         // ACCESSORS
@@ -32,6 +41,12 @@ namespace Perihelion.Controllers
         {
             get { return this.active; }
             private set { this.active = value; }
+        }
+
+        public bool ExitGame
+        {
+            get { return this.exitGame; }
+            set { this.exitGame = value; }
         }
 
         public int ElapsedSinceLastInput
@@ -49,7 +64,7 @@ namespace Perihelion.Controllers
         // Update function. takes in three parameters, yAxis, aButton and bButton.
         // yAxis holds which direction to move the selector on screen
         // aButton holds wether the aButton has been pressed or not.
-        public void update(int yAxis, bool aButton, bool bButton)
+        public void update(int yAxis, int xAxis, bool aButton, bool bButton)
         {
             if (mainMenu.Active)
             {
@@ -117,6 +132,17 @@ namespace Perihelion.Controllers
                     mainMenu.goCredits = false;
                 }
             }
+            else if (endMenu.Active)
+            {
+                endMenu.update(yAxis, xAxis, aButton);
+
+                // If endGame is finished
+                if (!endMenu.Active)
+                {
+                    if (endMenu.sendScore)
+                        sendScore = true;
+                }
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -129,6 +155,8 @@ namespace Perihelion.Controllers
                 options.draw(spriteBatch);
             else if (credits.Active)
                 credits.Draw(spriteBatch);
+            else if (endMenu.Active)
+                endMenu.draw(spriteBatch);
         }
     }
 }
