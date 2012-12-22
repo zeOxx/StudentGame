@@ -63,7 +63,7 @@ namespace Perihelion
             this.debugFont = contentHolder.debugFont;
 #endif
         }
-
+#if DEBUG  
         /************************************************************************/
         /* Accessors this doesn't compile in Release                                                            */
         /************************************************************************/
@@ -72,7 +72,7 @@ namespace Perihelion
             get { return this.displayDebug; }
             set { this.displayDebug = value; }
         }
-        
+#endif
         /************************************************************************/
         /* Methods                                                              */
         /************************************************************************/
