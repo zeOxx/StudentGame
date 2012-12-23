@@ -118,7 +118,7 @@ namespace Perihelion.Models
 										contentHolder.texturePlayerTurret, 
 										contentHolder.texturePlayerBullet, 
 										contentHolder.texturePlayerSpecal01,
-									  0, 0, Vector2.Zero, 100);
+									  0, 0, Vector2.Zero, 5000);
 
 			gravityWell = new GameObject(contentHolder.textureGravityWell,
 										 playerObject.Position.X,
@@ -319,6 +319,8 @@ namespace Perihelion.Models
 
                 offsetPosition += 32;
             }
+
+            rocks.Add(new Collidable(contentHolder.textureRock01, spawnPosition.X, spawnPosition.Y, Vector2.Zero, 300));
             
         }
 	
